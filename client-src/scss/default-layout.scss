@@ -20,6 +20,12 @@ body {
   border-color: $btn-warning-background-color;
 }
 
+.btn-default {
+  background-color: $btn-default-background-color;
+  border-color: $btn-default-background-color;
+  color: $btn-default-text-color;
+}
+
 .navbar {
   background: $navbar-bg-color;
   
@@ -113,7 +119,13 @@ body {
   }
   
   .quick-categories-container {
-    padding-bottom: 150px;
+    padding-top: 25px;
+    padding-bottom: 50px;
+    
+    @include media-breakpoint-up-lg {
+      padding-top: 0px;
+      padding-bottom: 150px;
+    }
     
     .quick-category-btn {
       background-color: $search-quick-category-background;
@@ -122,6 +134,7 @@ body {
       padding-top: 45px;
       padding-bottom: 45px;
       margin-right: 1px;
+      margin-bottom: 1px;
       
       .category-icon {
         padding-right: 10px;
@@ -129,14 +142,23 @@ body {
       
       h3 {
        display: inline;
-       color: $search-quick-category-text;   
+       color: $search-quick-category-text;
+       @include font-std(18px);
+       
+        @include media-breakpoint-up-sm {
+          @include font-std(28px);
+        }
       }
     } 
   }
 }
 
 .search-results-container {
-  margin-top: -25px;
+  margin-top: 50px;
+  
+  @include media-breakpoint-up-lg {
+    margin-top: -25px;
+  }
 }
 
 .sale-poster {

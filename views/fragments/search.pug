@@ -27,12 +27,12 @@ mixin search()
         while c < categories.length
           .row.no-gutters
             if [categories[c]]
-              .col
+              .col-lg
                 +quick-category-button(categories[c])
                 if [categories[c + 1]]
                   +quick-category-button(categories[c + 1])
             if [categories[c + 2]]
-              .col
+              .col-lg
                 +quick-category-button(categories[c + 2])
                 if [categories[c + 3]]
                   +quick-category-button(categories[c + 3])   
