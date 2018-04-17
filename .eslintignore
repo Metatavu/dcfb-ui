@@ -1,0 +1,3 @@
+plugins/pakkasmarja-berries-rest/model/*
+plugins/pakkasmarja-berries-rest/service/*
+plugins/pakkasmarja-berries-rest/model-utils.js

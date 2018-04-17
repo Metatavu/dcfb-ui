@@ -1,0 +1,35 @@
+mixin footer(categories, sidecategories)
+  .container
+    .row
+      .col
+        hr
+    .row
+      each category in categories
+        .col
+          dl
+            dt
+              =__("materials.categories."+ category.name +".plural")
+            each subcategory in category.subcategories
+              dd 
+                =subcategory
+      .col
+        dl
+          each sidecategory in sidecategories
+            dt
+              =__("materials.categories."+ sidecategory +".plural")
+    .row
+      .col
+        hr
+    .row
+      .col.text-center.bottom-links-container
+        a(href="#")
+          =__("footer.terms-of-service.link")
+        a(href="#")
+          =__("footer.privacy-policy.link")
+        a(href="#")
+          =__("footer.feedback.link")
+    .row
+      .col.text-center
+        p.copyright
+         =__("footer.copyright")
+

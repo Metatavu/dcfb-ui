@@ -1,0 +1,11 @@
+include ./sale-poster.pug
+
+mixin search-results(items)
+  .search-results-container.container
+    each item in items
+      +sale-poster(item)
+  .container
+    .row
+      .col.text-center.text-lg-right
+        button.btn.btn.sm.btn-default
+          =__("search.load-more.button")

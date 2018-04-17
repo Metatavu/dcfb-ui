@@ -1,0 +1,87 @@
+$bs-breakpoint-up-sm: 576px;
+$bs-breakpoint-up-md: 768px;
+$bs-breakpoint-up-lg: 992px;
+$bs-breakpoint-up-xl: 1200px;
+
+$bs-breakpoint-down-xs: 575.98px;
+$bs-breakpoint-down-sm: 767.98px;
+$bs-breakpoint-down-md: 991.98px;
+$bs-breakpoint-down-lg: 1199.98px;
+
+@mixin media-breakpoint-up-sm {
+  @media (min-width: $bs-breakpoint-up-sm) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-up-md {
+  @media (min-width: $bs-breakpoint-up-md) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-up-lg {
+  @media (min-width: $bs-breakpoint-up-lg) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-up-xl {
+  @media (min-width: $bs-breakpoint-up-xl) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down-sm {
+  @media (min-width: $bs-breakpoint-down-sm) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down-md {
+  @media (min-width: $bs-breakpoint-down-md) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down-lg {
+  @media (min-width: $bs-breakpoint-down-lg) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down-xl {
+  @media (min-width: $bs-breakpoint-down-xl) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-only-xs { 
+  @media (max-width: $bs-breakpoint-down-xs) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-only-sm {
+  @media (min-width: $bs-breakpoint-up-sm) and (max-width: $bs-breakpoint-down-sm) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-only-md {
+  @media (min-width: $bs-breakpoint-up-md) and (max-width: $bs-breakpoint-down-md) { 
+    @content;
+  }
+}
+
+@mixin media-breakpoint-only-lg {
+  @media (min-width: $bs-breakpoint-up-lg) and (max-width: $bs-breakpoint-down-lg) { 
+    @content;
+  }
+}
+
+@mixin media-breakpoint-only-xl {
+  @media (min-width: $bs-breakpoint-up-xl) { 
+    @content;
+  }
+}

@@ -1,0 +1,10 @@
+mixin sale-poster(item)
+  .sale-poster
+    .poster-img(style="background-image: url("+ item.image +");")
+    h3 
+      =item.title
+    small
+      =item.seller
+    p.item-location
+      img.location-icon(src="/gfx/icons/location-icon-small.png")
+      =item.location

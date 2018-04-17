@@ -1,0 +1,45 @@
+{
+  "name": "dcfb-ui",
+  "description": "UI for DCFB",
+  "version": "0.0.1",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "instrument": "node_modules/.bin/istanbul instrument . -o .instrument",
+    "run-cover": "node_modules/.bin/istanbul cover --report none app.js",
+    "test": "node_modules/.bin/istanbul cover --report none --dir coverage/unit node_modules/.bin/tape -- test/*-test.js|node_modules/.bin/tap-spec",
+    "coverage": "node_modules/.bin/istanbul report"
+  },
+  "author": {
+    "name": "Metatavu",
+    "email": "devs@metatavu.fi"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "connect-session-sequelize": "^5.2.0",
+    "cors": "^2.8.4",
+    "express": "4.16.2",
+    "express-session": "^1.15.6",
+    "i18n": "^0.8.3",
+    "keycloak-connect": "3.4.3",
+    "lodash": "^4.17.5",
+    "log4js": "^2.5.3",
+    "moment": "2.20.1",
+    "mysql": "^2.15.0",
+    "nconf": "0.10.0",
+    "pug": "^2.0.0-rc.4",
+    "umzug": "^2.1.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "blue-tape": "^1.0.0",
+    "grunt": "^1.0.2",
+    "grunt-babel": "^7.0.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "istanbul": "^1.1.0-alpha.1",
+    "load-grunt-tasks": "^3.5.2",
+    "tap-spec": "^4.1.1"
+  }
+}

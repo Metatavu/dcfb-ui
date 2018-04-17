@@ -1,0 +1,11 @@
+extends ../layout/default
+
+include ../fragments/search-results.pug
+include ../fragments/index-about.pug
+
+block custom-head
+  script(defer="defer", src="/js/index.min.js", type="text/javascript")
+
+block body
+  +search-results(items)
+  +index-about()

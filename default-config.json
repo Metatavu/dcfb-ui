@@ -1,0 +1,17 @@
+{
+  "mode": "PRODUCTION",
+  "keycloak": {
+    "admin": {
+      "grant_type": "password",
+      "client_id": "admin-cli"
+    }
+  },
+  "database": {
+    "dialect": "mysql",
+    "host": "localhost",
+    "port": "3306"
+  },
+  "migrations": {
+    "lock-file": "/tmp/dcfb-migrations.lock"
+  }
+}

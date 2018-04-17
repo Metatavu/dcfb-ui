@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+@import "https://fonts.googleapis.com/css?family=Roboto:400,700";
+
+@mixin font-bold($size) {
+  font-family: "Roboto", sans-serif;
+  font-size: $size;
+  font-weight: 700;
+}
+
+@mixin font-std($size) {
+  font-family: "Roboto", sans-serif;
+  font-size: $size;
+  font-weight: 400;
+}

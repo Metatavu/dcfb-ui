@@ -1,0 +1,41 @@
+include ./quick-category-button.pug
+
+mixin search()
+  .search-container
+    .container
+      .row
+        .col
+          h1.search-title.text-center
+            =__("search.title")
+      .row.no-gutters
+        .col-lg-4.py-2.py-lg-0.pr-lg-1
+          input.search-input.form-control.form-control-lg.py-2(name="search-freetext", type="text", placeholder=__("search.freetext.placeholder"))
+        .col-lg.py-2.py-lg-0.pr-lg-1
+          input.search-input.form-control.form-control-lg.py-2(name="search-category", type="text", placeholder=__("search.category.placeholder"))
+        .col-lg.py-2.py-lg-0.pr-lg-1
+          input.search-input.form-control.form-control-lg.py-2(name="search-location", type="text", placeholder=__("search.location.placeholder"))
+        .col-lg-2.pt-5.pb-3.pt-lg-0.pb-lg-0.pr-lg-1.pl-lg-1.text-center.text-lg-left
+          button.btn.btn-success.search-btn.btn-lg.search-btn
+            =__("search.button.text")
+      .row.no-gutters
+        .col
+        .col-lg-2.text-center.text-lg-left.px-2.py-lg-3
+          a.advanced-search-link(href="#")
+            =__("search.advanced.link")
+      .quick-categories-container
+        -var c = 0
+        while c < categories.length
+          .row.no-gutters
+            if [categories[c]]
+              .col
+                +quick-category-button(categories[c])
+                if [categories[c + 1]]
+                  +quick-category-button(categories[c + 1])
+            if [categories[c + 2]]
+              .col
+                +quick-category-button(categories[c + 2])
+                if [categories[c + 3]]
+                  +quick-category-button(categories[c + 3])   
+          -c+=4
+          
+    
