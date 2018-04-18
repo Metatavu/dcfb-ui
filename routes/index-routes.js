@@ -23,6 +23,7 @@
       super(app, keycloak);
       
       app.get("/", [ ], this.catchAsync(this.indexGet.bind(this)));
+      app.get("/login", keycloak.protect(), this.catchAsync(this.loginGet.bind(this)));
     }
     
     /**
@@ -32,7 +33,17 @@
      * @param {http.ServerResponse} res server response object
      **/
     async indexGet(req, res) {
-      res.render('pages/index', mockupData);
+      res.render("pages/index", mockupData);
+    }
+    
+    /**
+     * Handles / get request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     **/
+    async loginGet(req, res) {
+      res.redirect("/");
     }
     
   }

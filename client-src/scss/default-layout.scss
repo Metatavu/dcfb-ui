@@ -41,6 +41,15 @@ h5 {
     color: $navbar-calltoaction-btn-text-color;
   }
   
+  .login-link {
+    color: $top-menu-login-link;
+    padding-right: 15px;
+    
+    i {
+      padding-right: 5px;
+    }
+  }
+  
   .nav-item {
     .nav-link {
       @include font-bold(16px);

@@ -14,7 +14,7 @@
   const express = require("express");
   const bodyParser = require("body-parser");
   const log4js = require("log4js");
-  // const Keycloak = require("keycloak-connect");  
+  const Keycloak = require("keycloak-connect");  
   const session = require("express-session");
   const i18n = require("i18n");
   const cors = require("cors");
@@ -41,11 +41,7 @@
     table: "ConnectSession"
   });
   
- const keycloak =  {};//new Keycloak({ store: sessionStore }, config.get("keycloak:rest"));
-
-  httpServer.listen(config.get('port'), () => {
-    logger.info("Http server started");
-  });
+  const keycloak = new Keycloak({ store: sessionStore }, config.get("keycloak"));
 
   i18n.configure({
     locales:["en, fi"],
@@ -60,11 +56,11 @@
     saveUninitialized: true,
     secret: config.get("session-secret")
   }));
-/**
+
   app.use(keycloak.middleware({
     logout: "/logout"
   }));
-  **/
+
   app.set('trust proxy', true);
   app.use(cors());
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -74,6 +70,15 @@
   app.set("views", path.join(__dirname, "views"));
   app.set("view engine", "pug");
   
+  app.use((req, res, next) => {
+    res.locals.authenticated = req.kauth.grant ? true : false;
+    next();
+  });
+  
   new Routes(app, keycloak);
+  
+  httpServer.listen(config.get('port'), () => {
+    logger.info("Http server started");
+  });
   
 })();

@@ -23,5 +23,13 @@ mixin top-menu()
             a.nav-link(href="#")
               =__("top.menu.about")
         form.form-inline.mt-2.mt-md-0
+          if authenticated
+            a.login-link(href="/logout")
+              i.far.fa-user-circle
+              =__("top.menu.logout")
+          else
+            a.login-link(href="/login")
+              i.far.fa-user-circle
+              =__("top.menu.login")
           a.btn.btn-sm.btn-warning.calltoaction-btn(href="/add/item")
             =__("top.menu.calltoaction.btn")
