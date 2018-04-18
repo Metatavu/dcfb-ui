@@ -1,0 +1,10 @@
+extends ../layout/form
+
+include ../fragments/add-item-form.pug
+
+block body
+  .form-header.text-center
+    h2
+      =__("add-item.form.header")
+  .container.form-container.add-item-form-container
+    +add-item-form()

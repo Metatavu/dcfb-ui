@@ -10,6 +10,14 @@ body {
   background-color: $body-background-color;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: 700;
+}
+
 .btn-success {
   background-color: $btn-success-background-color;
   border-color: $btn-success-background-color;
@@ -153,7 +161,7 @@ body {
   }
 }
 
-.search-results-container {
+.index-search-preview-container {
   margin-top: 50px;
   
   @include media-breakpoint-up-lg {
@@ -166,6 +174,8 @@ body {
   background-color: $sale-poster-background-color;
   padding: 10px;
   margin-bottom: 10px;
+  text-decoration: none;
+  color: $sale-poster-text-color;
   
   @include media-breakpoint-up-sm {
     width: calc(50% - 20px);

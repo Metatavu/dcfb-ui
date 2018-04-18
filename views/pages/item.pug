@@ -1,0 +1,10 @@
+extends ../layout/default
+
+include ../fragments/item-info.pug
+
+block custom-head
+  link(rel="stylesheet", href="/css/item-page.min.css")
+
+block body
+  .item-info-container.container
+    +item-info(item)

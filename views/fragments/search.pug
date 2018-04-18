@@ -15,7 +15,7 @@ mixin search()
         .col-lg.py-2.py-lg-0.pr-lg-1
           input.search-input.form-control.form-control-lg.py-2(name="search-location", type="text", placeholder=__("search.location.placeholder"))
         .col-lg-2.pt-5.pb-3.pt-lg-0.pb-lg-0.pr-lg-1.pl-lg-1.text-center.text-lg-left
-          button.btn.btn-success.search-btn.btn-lg.search-btn
+          a.btn.btn-success.search-btn.btn-lg.search-btn(href="/search")
             =__("search.button.text")
       .row.no-gutters
         .col

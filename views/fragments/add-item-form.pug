@@ -1,0 +1,87 @@
+mixin add-item-form()
+  .add-item-form
+    section
+      strong
+        =__("add-item.form.basic.header")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputLocation')
+          =__("add-item.form.location")
+        .col-sm-10
+          input#inputLocation.form-control(type='text')
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputCategory')
+          =__("add-item.form.category")
+        .col-sm-10
+          input#inputCategory.form-control(type='text')
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            =__("add-item.form.type-of-business")
+          .col-sm-10
+            .form-check
+              input#sellingInput.form-check-input(type='radio', name='sellingInput', value='selling', checked='')
+              label.form-check-label(for='sellingInput')
+                =__("add-item.form.selling")
+            .form-check
+              input#buyingInput.form-check-input(type='radio', name='buyingInput', value='bying')
+              label.form-check-label(for='buyingInput')
+                =__("add-item.form.bying")
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            =__("add-item.form.delivery")
+          .col-sm-10
+            .form-check
+              input#deliveryIncludedInput.form-check-input(type='radio', name='deliveryIncludedInput', value='yes', checked='')
+              label.form-check-label(for='deliveryIncludedInput')
+                =__("add-item.form.delivery-included")
+            .form-check
+              input#deliveryNotIncludedInput.form-check-input(type='radio', name='deliveryNotIncludedInput', value='no')
+              label.form-check-label(for='deliveryNotIncludedInput')
+                =__("add-item.form.delivery-not-included")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputExpire')
+          =__("add-item.form.expires")
+        .col-sm-10
+          input#inputExpire.form-control(type='text')
+    section
+      strong
+        =__("add-item.form.detail.header")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputHeadline')
+          =__("add-item.form.headline")
+        .col-sm-10
+          input#inputHeadline.form-control(type='text')
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputDescription')
+          =__("add-item.form.description")
+        .col-sm-10
+          textarea#inputDescription.form-control(row="4")
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            =__("add-item.form.unit")
+          .col-sm-10
+            .form-check
+              input#unitKgInput.form-check-input(type='radio', name='unitKgInput', value='kg', checked='')
+              label.form-check-label(for='unitKgInput')
+                =__("add-item.form.unit-kg")
+            .form-check
+              input#unitKplInput.form-check-input(type='radio', name='unitKplInput', value='kpl')
+              label.form-check-label(for='unitKplInput')
+                =__("add-item.form.unit-kpl")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputAmount')
+          =__("add-item.form.amount")
+        .col-sm-10
+          input#inputAmount.form-control(type='text')
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputPricePerUnit')
+          =__("add-item.form.price")
+        .col-sm-10
+          input#inputPricePerUnit.form-control(type='text')
+    .row
+      .col.text-right.pt-3
+        button.btn.btn-warning.continue-btn
+          =__("add-item.form.continue.button")
+

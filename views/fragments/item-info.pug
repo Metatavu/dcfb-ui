@@ -1,0 +1,32 @@
+mixin item-info(item)
+  .item-info
+    .row
+      .col-lg-5
+        .result-img(style="background-image: url("+ item.image +");")
+      .col.pt-2
+        h2
+          =item.title
+        strong
+          =__("materials.categories."+ item.category +".single")
+        p
+          b
+            =item.price + " " + __("system.currency")
+          =" / " + __("search-results.unit")
+        .result-details
+          p
+            =__("search-results.amount")
+          p
+            =__("search-results.delivery-place")
+          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed lectus rhoncus, iaculis lacus eget, tempor dui. Aenean sagittis ultrices lectus nec efficitur. Morbi dapibus pretium quam, ac rhoncus ex tempor et. Morbi ligula arcu, sodales in rutrum vitae, interdum at ex.
+        button.btn.btn-primary.buy-btn
+          =__("item.purchase.button")
+          
+      .col-4.col-sm-2.pt-2
+        .result-side-details
+          p
+            =item.date
+            br
+            =item.time
+          p.item-location
+            img.location-icon(src="/gfx/icons/location-icon-small.png")
+            =item.location

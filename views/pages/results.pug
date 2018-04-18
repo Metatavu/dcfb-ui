@@ -1,0 +1,9 @@
+extends ../layout/default
+
+include ../fragments/search-results.pug
+
+block custom-head
+  link(rel="stylesheet", href="/css/search-results.min.css")
+
+block body
+  +search-results(items)

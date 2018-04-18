@@ -1,11 +1,6 @@
-include ./sale-poster.pug
+include ./search-result.pug
 
 mixin search-results(items)
   .search-results-container.container
     each item in items
-      +sale-poster(item)
-  .container
-    .row
-      .col.text-center.text-lg-right.pt-4.pb-5.pt-lg-2.pb-lg-0
-        button.btn.btn.sm.btn-default
-          =__("search.load-more.button")
+      +search-result(item)

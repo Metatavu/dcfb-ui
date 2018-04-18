@@ -1,0 +1,29 @@
+mixin search-result(item)
+  a(href="/item/" + item.id)
+    .search-result
+      .row
+        .col-md-3.d-none.d-sm-block
+          .result-img(style="background-image: url("+ item.image +");")
+        .col.pt-2
+          h2
+            =item.title
+          strong
+            =__("materials.categories."+ item.category +".single")
+          p
+            b
+              =item.price + " " + __("system.currency")
+            =" / " + __("search-results.unit")
+          .result-details
+            p
+              =__("search-results.amount")
+            p
+              =__("search-results.delivery-place")
+        .col-4.col-sm-2.pt-2
+          .result-side-details
+            p
+              =item.date
+              br
+              =item.time
+            p.item-location
+              img.location-icon(src="/gfx/icons/location-icon-small.png")
+              =item.location

@@ -1,11 +1,5 @@
 {
   "mode": "PRODUCTION",
-  "keycloak": {
-    "admin": {
-      "grant_type": "password",
-      "client_id": "admin-cli"
-    }
-  },
   "database": {
     "dialect": "mysql",
     "host": "localhost",

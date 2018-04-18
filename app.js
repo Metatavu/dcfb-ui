@@ -4,7 +4,10 @@
   "use strict";
   
   const config = require("nconf");
-  config.file({file: `${__dirname}/config.json`}).defaults(require(`${__dirname}/default-config.json`));
+  config
+    .argv()
+    .file({file: `${__dirname}/config.json`})
+    .defaults(require(`${__dirname}/default-config.json`));
   
   const http = require("http");
   const path = require("path");
