@@ -1,0 +1,10 @@
+/nbproject
+node_modules
+/config.json
+.sass-cache
+keycloak-3.*
+keycloak.log
+.instrument
+.nyc_output
+coverage
+*~
