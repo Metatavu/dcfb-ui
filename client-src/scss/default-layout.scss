@@ -64,6 +64,10 @@ h5 {
   background-size: cover;
   background-position: center center;
   
+  select.form-control.form-control-lg {
+    height: 2.6rem;
+  }
+  
   .search-title {
     @include font-bold(45px);
     letter-spacing: -0.8px;
@@ -152,9 +156,13 @@ h5 {
       padding-bottom: 45px;
       margin-right: 1px;
       margin-bottom: 1px;
+      height: 125px;
+
       
       .category-icon {
         padding-right: 10px;
+        max-width: 45px;
+        margin-top: -5px;
       }
       
       h3 {

@@ -2,6 +2,7 @@ module.exports = {
     categories: [
       {
         name: "metal",
+        icon: "/gfx/icons/metal-icon.png",
         subcategories: [
           "pipes",
           "steel",
@@ -10,6 +11,7 @@ module.exports = {
       },
       {
         name: "timber",
+        icon: "/gfx/icons/timber-icon.png",
         subcategories: [
           "pipes",
           "steel",
@@ -18,6 +20,7 @@ module.exports = {
       },
       {
         name: "composite",
+        icon: "/gfx/icons/composite-icon.png",
         subcategories: [
           "pipes",
           "steel",
@@ -26,6 +29,7 @@ module.exports = {
       },
       {
         name: "plastic",
+        icon: "/gfx/icons/plastic-icon.png",
         subcategories: [
           "pipes",
           "steel",

@@ -1,6 +1,6 @@
 mixin quick-category-button(category)
   a(href="/search?category=" + category.name)
     .quick-category-btn.text-center
-      img.img-fluid.category-icon(src="/gfx/icons/quick-category-icon.png")
+      img.img-fluid.category-icon(src=category.icon)
       h3
         =__("materials.categories."+ category.name +".plural")
