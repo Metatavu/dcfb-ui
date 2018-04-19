@@ -48,7 +48,7 @@ module.exports = {
         price: 10,
         time: "10.10.2017",
         date: "15:23",
-        image: "/gfx/mock/iron.jpg",
+        image: "/gfx/mock/steel-2.jpg",
         category: "metal",
         title: "NELIÖPUTKI RST 20X20X1,5 AISI 304 GRIT 320 EN 1.4301",
         seller: "Joros Oy",
@@ -58,7 +58,7 @@ module.exports = {
         price: 8.33,
         time: "9.10.2017",
         date: "15:23",
-        image: "/gfx/mock/steel-img.jpg",
+        image: "/gfx/mock/terasta.jpg",
         category: "metal",
         title: "SUORAKAIDE PUTKI RST 30X40X1,5 AISI 304 GRIT 320 TIG HITSATTU",
         seller: "Joros Oy",
@@ -82,6 +82,26 @@ module.exports = {
         category: "composite",
         title: "PROSESSIJÄTE",
         seller: "Ahlstrom-Munksjö Oy",
+        location: "Mikkeli"
+      }, {
+        id: 9,
+        price: 8.40,
+        time: "10.1.2017",
+        date: "15:23",
+        image: "/gfx/mock/terasta.jpg",
+        category: "metal",
+        title: "PUTKIPALKKI NELIÖ 50X50X4X6000 MUSTA, S355J2H",
+        seller: "Joros Oy",
+        location: "Mikkeli"
+      }, {
+        id: 10,
+        price: 13.33,
+        time: "10.2.2017",
+        date: "15:23",
+        image: "/gfx/mock/steel-pipes-2.jpg",
+        category: "metal",
+        title: "TERÄSPUTKI SAUMATON EN 10216-2 31,8X5,0",
+        seller: "Joros Oy",
         location: "Mikkeli"
       }, {
         id: 4,
@@ -118,21 +138,31 @@ module.exports = {
         price: 3.60,
         time: "10.10.2017",
         date: "15:32",
-        image: "/gfx/mock/steel-img.jpg",
+        image: "/gfx/mock/steel-2.jpg",
         title: "PUTKIPALKKI NELIÖ 30X30X3X6000 MUSTA, S355J2H",
         category: "metal",
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
-        id: 7,
-        price: 23,
-        time: "10.8.2017",
+        id: 33,
+        price: 432,
+        time: "3.3.2017",
         date: "15:23",
-        image: "/gfx/mock/iron.jpg",
+        image: "/gfx/mock/puuta-3.jpg",
+        category: "timber",
+        title: "Amazing timber",
+        seller: "Timber company Co",
+        location: "Oulu"
+      }, {
+        id: 1231,
+        price: 432,
+        time: "3.3.2017",
+        date: "15:23",
+        image: "/gfx/mock/steel-img.jpg",
         category: "metal",
-        title: "Amazing iron",
-        seller: "Iron company Co",
-        location: "Turku"
+        title: "Amazing steel",
+        seller: "Steel company Co",
+        location: "Oulu"
       }, {
         id: 8,
         price: 53,
@@ -148,7 +178,7 @@ module.exports = {
         price: 8.40,
         time: "10.1.2017",
         date: "15:23",
-        image: "/gfx/mock/steel-img.jpg",
+        image: "/gfx/mock/terasta.jpg",
         category: "metal",
         title: "PUTKIPALKKI NELIÖ 50X50X4X6000 MUSTA, S355J2H",
         seller: "Joros Oy",
@@ -158,11 +188,31 @@ module.exports = {
         price: 13.33,
         time: "10.2.2017",
         date: "15:23",
-        image: "/gfx/mock/steel-img.jpg",
+        image: "/gfx/mock/steel-pipes-2.jpg",
         category: "metal",
         title: "TERÄSPUTKI SAUMATON EN 10216-2 31,8X5,0",
         seller: "Joros Oy",
         location: "Mikkeli"
+      }, {
+        id: 333,
+        price: 432,
+        time: "3.3.2017",
+        date: "15:23",
+        image: "/gfx/mock/puuta-2.jpg",
+        category: "timber",
+        title: "Amazing timber",
+        seller: "Timber company Co",
+        location: "Oulu"
+      }, {
+        id: 321,
+        price: 432,
+        time: "3.3.2017",
+        date: "15:23",
+        image: "/gfx/mock/timberrr-4.jpg",
+        category: "timber",
+        title: "Amazing timber",
+        seller: "Timber company Co",
+        location: "Oulu"
       }
     ]
   };
