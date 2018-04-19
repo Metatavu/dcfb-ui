@@ -172,6 +172,7 @@ h5 {
 
 .index-search-preview-container {
   margin-top: 50px;
+  min-height: 1500px;
   
   @include media-breakpoint-up-lg {
     margin-top: -25px;
