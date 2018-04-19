@@ -30,6 +30,12 @@
           .isotope('appended', items);
       });
     });
+    
+    //TODO: remove. fail safe for cases that isotope layout randomly fails
+    setTimeout(() => {
+      iso.isotope('layout');
+    }, 5000);
+    
   });
 
 })();
