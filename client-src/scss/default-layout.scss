@@ -198,6 +198,8 @@ h5 {
   h3 {
     @include font-std(18px);
     padding-top: 20px;
+    height: 65px;
+    overflow: hidden;
   }
   
   small {

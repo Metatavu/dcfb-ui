@@ -4,3 +4,7 @@ mixin search-results(items)
   .search-results-container.container
     each item in items
       +search-result(item)
+    else
+      .no-results-container
+        p
+          =__("search.no-results")

@@ -11,12 +11,23 @@
     margin-top: -50px;
   }
   
+  .no-results-container {
+    padding-top: 120px;
+    padding-bottom: 40px;
+  }
+  
   .search-result {
     background-color: $search-result-background-color;
     padding: 10px;
     margin-bottom: 10px;
     color: $search-result-text-color;
     text-decoration: none;
+    
+    h2 {
+      @include font-bold(28px);
+      height: 70px;
+      overflow: hidden;
+    }
     
     .result-img {
       width: 100%;

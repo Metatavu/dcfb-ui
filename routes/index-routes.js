@@ -33,7 +33,14 @@
      * @param {http.ServerResponse} res server response object
      **/
     async indexGet(req, res) {
-      res.render("pages/index", mockupData);
+      const categories = mockupData.categories;
+      const sidecategories = mockupData.sidecategories;
+      
+      res.render("pages/index", {
+        categories: categories,
+        sidecategories: sidecategories,
+        items: mockupData.items.slice(0, 12)
+      });
     }
     
     /**
