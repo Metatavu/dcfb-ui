@@ -1,12 +1,14 @@
-mixin search-result(item)
+mixin search-result(item, currentLocale)
   a(href="/item/" + item.id)
     .search-result
       .row
         .col-md-3.d-none.d-sm-block
           .result-img(style="background-image: url("+ item.image +");")
         .col.pt-2
-          h2
-            =item.title
+          each localizedTitle in item.title
+            if localizedTitle.locale === currentLocale
+              h2
+                =localizedTitle.value
           strong
             =__("materials.categories."+ item.category +".single")
           p

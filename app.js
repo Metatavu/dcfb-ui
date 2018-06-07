@@ -13,6 +13,7 @@
   const path = require("path");
   const express = require("express");
   const bodyParser = require("body-parser");
+  const cookieParser = require('cookie-parser')
   const log4js = require("log4js");
   const Keycloak = require("keycloak-connect");  
   const session = require("express-session");
@@ -21,6 +22,9 @@
   const SequelizeStore = require("connect-session-sequelize")(session.Store);
   const models = require(`${__dirname}/models`);
   const Routes = require(`${__dirname}/routes`);
+  
+  const LOCALE_COOKIE = "dcfb-locale";
+  const SUPPORTED_LOCALES = ["en", "fi"];
   
   if (config.get("logging")) {
     log4js.configure(config.get("logging"));
@@ -43,11 +47,23 @@
   
   const keycloak = new Keycloak({ store: sessionStore }, config.get("keycloak"));
 
+  app.use((req, res, next) => {
+    const lang = req.query["lang"];
+    if (lang && SUPPORTED_LOCALES.indexOf(lang) > -1) {
+      res.cookie(LOCALE_COOKIE, lang, { maxAge: 900000, httpOnly: true });
+    }
+
+    next();
+  });
+
   i18n.configure({
-    locales:["en, fi"],
+    locales: SUPPORTED_LOCALES,
     directory: `${__dirname}/locales`,
     defaultLocale: "en",
-    autoReload: false
+    autoReload: false,
+    updateFiles: false,
+    queryParameter: "lang",
+    cookie: LOCALE_COOKIE
   });
 
   app.use(session({
@@ -63,6 +79,7 @@
 
   app.set('trust proxy', true);
   app.use(cors());
+  app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
   app.use(express.static(path.join(__dirname, "public")));

@@ -50,7 +50,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/steel-2.jpg",
         category: "metal",
-        title: "NELIÖPUTKI RST 20X20X1,5 AISI 304 GRIT 320 EN 1.4301",
+        title: [{ locale: "en", value: "SQUARE TUBE RST 20X20X1,5 AISI 304 GRIT 320 EN 1.4301"}, { locale: "fi", value: "NELIÖPUTKI RST 20X20X1,5 AISI 304 GRIT 320 EN 1.4301" }],
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
@@ -60,7 +60,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/terasta.jpg",
         category: "metal",
-        title: "SUORAKAIDE PUTKI RST 30X40X1,5 AISI 304 GRIT 320 TIG HITSATTU",
+        title: [{ locale: "en", value:"RECTANGULAR TUBE RST 30X40X1,5 AISI 304 GRIT 320 TIG WELDED"}, { locale: "fi", value: "SUORAKAIDE PUTKI RST 30X40X1,5 AISI 304 GRIT 320 TIG HITSATTU" }],
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
@@ -70,7 +70,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/iron.jpg",
         category: "metal",
-        title: "Amazing iron",
+        title: [{ locale: "en", value:"Amazing iron"}, { locale: "fi", value: "Mahtavaa rautaa" }],
         seller: "Iron company Co",
         location: "Oulu"
       }, {
@@ -80,7 +80,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/fiber.jpg",
         category: "composite",
-        title: "PROSESSIJÄTE",
+        title: [{ locale: "en", value:"PROCESS WASTE"}, { locale: "fi", value: "PROSESSIJÄTE" }],
         seller: "Ahlstrom-Munksjö Oy",
         location: "Mikkeli"
       }, {
@@ -90,7 +90,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/terasta.jpg",
         category: "metal",
-        title: "PUTKIPALKKI NELIÖ 50X50X4X6000 MUSTA, S355J2H",
+        title: [{ locale: "en", value:"SQUARE BEAM 50X50X4X6000 BLACK, S355J2H"}, { locale: "fi", value: "PUTKIPALKKI NELIÖ 50X50X4X6000 MUSTA, S355J2H" }],
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
@@ -100,7 +100,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/steel-pipes-2.jpg",
         category: "metal",
-        title: "TERÄSPUTKI SAUMATON EN 10216-2 31,8X5,0",
+        title: [{ locale: "en", value:"STEELPIPE SEAMLESS EN 10216-2 31,8X5,0"}, { locale: "fi", value: "TERÄSPUTKI SAUMATON EN 10216-2 31,8X5,0" }],
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
@@ -110,7 +110,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/timber-img2.jpg",
         category: "timber",
-        title: "Amazing timber",
+        title: [{ locale: "en", value:"Amazing timber"}, { locale: "fi", value: "Mahtavaa puuta" }],
         seller: "Timber company Co",
         location: "Espoo"
       }, {
@@ -120,7 +120,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/fiber.jpg",
         category: "composite",
-        title: "PROSESSIJÄTE",
+        title: [{ locale: "en", value:"PROCESS WASTE"}, { locale: "fi", value: "PROSESSIJÄTE" }],
         seller: "Ahlstrom-Munksjö Oy",
         location: "Mikkeli"
       }, {
@@ -130,7 +130,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/fiber2.jpg",
         category: "composite",
-        title: "REUNAHUKKA",
+        title: [{ locale: "en", value:"EDGE WASTE"}, { locale: "fi", value: "REUNAHUKKA" }],
         seller: "Ahlstrom-Munksjö Oy",
         location: "Mikkeli"
       }, {
@@ -139,7 +139,7 @@ module.exports = {
         time: "10.10.2017",
         date: "15:32",
         image: "/gfx/mock/steel-2.jpg",
-        title: "PUTKIPALKKI NELIÖ 30X30X3X6000 MUSTA, S355J2H",
+        title: [{ locale: "en", value:"SQUARE BEAM 30X30X3X6000 BLACK, S355J2H"}, { locale: "fi", value: "PUTKIPALKKI NELIÖ 30X30X3X6000 MUSTA, S355J2H" }],
         category: "metal",
         seller: "Joros Oy",
         location: "Mikkeli"
@@ -150,7 +150,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/puuta-3.jpg",
         category: "timber",
-        title: "Amazing timber",
+        title: [{ locale: "en", value:"Amazing timber"}, { locale: "fi", value: "Mahtavaa puuta" }],
         seller: "Timber company Co",
         location: "Oulu"
       }, {
@@ -160,7 +160,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/steel-img.jpg",
         category: "metal",
-        title: "Amazing steel",
+        title: [{ locale: "en", value:"Amazing steel"}, { locale: "fi", value: "Mahtavaa terästä" }],
         seller: "Steel company Co",
         location: "Oulu"
       }, {
@@ -170,7 +170,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/timber-img.jpg",
         category: "timber",
-        title: "Amazing timber",
+        title: [{ locale: "en", value:"Amazing timber"}, { locale: "fi", value: "Mahtavaa puuta" }],
         seller: "Timber company Co",
         location: "Rovaniemi"
       }, {
@@ -180,7 +180,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/terasta.jpg",
         category: "metal",
-        title: "PUTKIPALKKI NELIÖ 50X50X4X6000 MUSTA, S355J2H",
+        title: [{ locale: "en", value:"SQUARE BEAM 50X50X4X6000 BLACK, S355J2H"}, { locale: "fi", value: "PUTKIPALKKI NELIÖ 50X50X4X6000 MUSTA, S355J2H" }],
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
@@ -190,7 +190,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/steel-pipes-2.jpg",
         category: "metal",
-        title: "TERÄSPUTKI SAUMATON EN 10216-2 31,8X5,0",
+        title: [{ locale: "en", value:"STEELPIPE SEAMLESS EN 10216-2 31,8X5,0"}, { locale: "fi", value: "TERÄSPUTKI SAUMATON EN 10216-2 31,8X5,0" }],
         seller: "Joros Oy",
         location: "Mikkeli"
       }, {
@@ -200,7 +200,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/puuta-2.jpg",
         category: "timber",
-        title: "Amazing timber",
+        title: [{ locale: "en", value:"Amazing timber"}, { locale: "fi", value: "Mahtavaa puuta" }],
         seller: "Timber company Co",
         location: "Oulu"
       }, {
@@ -210,7 +210,7 @@ module.exports = {
         date: "15:23",
         image: "/gfx/mock/timberrr-4.jpg",
         category: "timber",
-        title: "Amazing timber",
+        title: [{ locale: "en", value:"Amazing timber"}, { locale: "fi", value: "Mahtavaa puuta" }],
         seller: "Timber company Co",
         location: "Oulu"
       }

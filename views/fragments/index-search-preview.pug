@@ -3,7 +3,7 @@ include ./sale-poster.pug
 mixin index-search-preview(items)
   .index-search-preview-container.container
     each item in items
-      +sale-poster(item)
+      +sale-poster(item, locale)
   .container
     .row
       .col.text-center.text-lg-right.pt-4.pb-5.pt-lg-2.pb-lg-0

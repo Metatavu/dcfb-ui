@@ -41,8 +41,38 @@ h5 {
     color: $navbar-calltoaction-btn-text-color;
   }
   
+  .navbar-collapse.collapsing {
+    .locale-btn {
+      display: none;
+    }
+  }
+  
+  .navbar-brand {
+    @include media-breakpoint-only-lg {
+      padding-right: 15px !important;
+    }
+  }
+  
+  .locale-btn {
+    margin-right: 7px;
+    
+    @include media-breakpoint-down-md {
+      position: absolute;
+      top: 65px;
+
+      &.locale-btn-fi {
+        right: 55px;
+      }
+
+      &.locale-btn-en {
+        right: 15px;
+      }
+    }
+  }
+  
   .login-link {
     color: $top-menu-login-link;
+    margin-left: 15px;
     padding-right: 15px;
     
     i {
@@ -54,6 +84,12 @@ h5 {
     .nav-link {
       @include font-bold(16px);
       color: $top-menu-font-color;
+      
+      @include media-breakpoint-only-lg {
+        @include font-bold(13px);
+        padding-right: 5px;
+        padding-left: 5px;
+      }
     }
   }
 }

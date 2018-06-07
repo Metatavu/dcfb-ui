@@ -10,8 +10,8 @@ mixin footer(categories, sidecategories)
             dt
               =__("materials.categories."+ category.name +".plural")
             each subcategory in category.subcategories
-              dd 
-                =subcategory
+              dd
+                =__("materials.categories."+ subcategory +".plural")
       .col
         dl
           each sidecategory in sidecategories

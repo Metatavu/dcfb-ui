@@ -1,9 +1,11 @@
-mixin sale-poster(item)
+mixin sale-poster(item, currentLocale)
   a(href="/item/" + item.id)
     .sale-poster
       .poster-img(style="background-image: url("+ item.image +");")
-      h3 
-        =item.title
+      each localizedTitle in item.title
+        if localizedTitle.locale === currentLocale
+          h3
+            =localizedTitle.value
       small
         =item.seller
       p.item-location

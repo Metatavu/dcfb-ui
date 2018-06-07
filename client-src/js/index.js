@@ -1,3 +1,5 @@
+/* global DCFB_CURRENT_LOCALE */
+
 (() => {
   "use strict";
   
@@ -19,10 +21,11 @@
     });
 
     $(".load-more-btn").click(() => {
+      const currentLocale = $("body").attr("data-current-locale");
       $.getJSON("/search/ajax", (results) => {
         const items = [];
         results.forEach((result) => {
-          items.push($(pugSalePoster({item: result}))[0]);
+          items.push($(pugSalePoster({item: result, currentLocale: currentLocale}))[0]);
         });
 
         iso

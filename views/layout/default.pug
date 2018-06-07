@@ -30,7 +30,7 @@ html(lang="en")
         })(window,document,"script","https://www.google-analytics.com/analytics.js","ga");
         ga("create", "#{googleAnalytics}", "auto");
         ga("send", "pageview");
-  body
+  body(data-current-locale=locale)
     +top-menu()
     +search()
     block body

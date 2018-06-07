@@ -33,25 +33,25 @@ $bs-breakpoint-down-lg: 1199.98px;
 }
 
 @mixin media-breakpoint-down-sm {
-  @media (min-width: $bs-breakpoint-down-sm) {
+  @media (max-width: $bs-breakpoint-down-sm) {
     @content;
   }
 }
 
 @mixin media-breakpoint-down-md {
-  @media (min-width: $bs-breakpoint-down-md) {
+  @media (max-width: $bs-breakpoint-down-md) {
     @content;
   }
 }
 
 @mixin media-breakpoint-down-lg {
-  @media (min-width: $bs-breakpoint-down-lg) {
+  @media (max-width: $bs-breakpoint-down-lg) {
     @content;
   }
 }
 
 @mixin media-breakpoint-down-xl {
-  @media (min-width: $bs-breakpoint-down-xl) {
+  @media (max-width: $bs-breakpoint-down-xl) {
     @content;
   }
 }

@@ -23,6 +23,10 @@ mixin top-menu()
             a.nav-link(href="#")
               =__("top.menu.about")
         form.form-inline.mt-2.mt-md-0
+          a.locale-btn.locale-btn-fi(href="/?lang=fi")
+            img(src="/gfx/locale_fi.png")
+          a.locale-btn.locale-btn-en(href="/?lang=en")
+            img(src="/gfx/locale_en.png")
           if authenticated
             a.login-link(href="/logout")
               i.far.fa-user-circle

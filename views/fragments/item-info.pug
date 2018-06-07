@@ -1,11 +1,13 @@
-mixin item-info(item)
+mixin item-info(item, currentLocale)
   .item-info
     .row
       .col-lg-5
         .result-img(style="background-image: url("+ item.image +");")
       .col.pt-2
-        h2
-          =item.title
+        each localizedTitle in item.title
+          if localizedTitle.locale === currentLocale
+            h2
+              =localizedTitle.value
         strong
           =__("materials.categories."+ item.category +".single")
         p

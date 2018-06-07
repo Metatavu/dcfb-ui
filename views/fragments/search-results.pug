@@ -3,7 +3,7 @@ include ./search-result.pug
 mixin search-results(items)
   .search-results-container.container
     each item in items
-      +search-result(item)
+      +search-result(item, locale)
     else
       .no-results-container
         p
