@@ -7,6 +7,7 @@
   const Promise = require("bluebird");
   const log4js = require("log4js");
   const logger = log4js.getLogger(`${__dirname}/${__filename}`);
+  const anonymousAuth = require(`${__dirname}/../anonymous-auth`);
 
   /**
    * Abstract base class for all route classes
@@ -22,6 +23,65 @@
     constructor (app, keycloak) {
       this.app = app;
       this.keycloak = keycloak;
+    }
+
+    /**
+     * Returns category data for rendering main views
+     * 
+     * @param {CategoriesApi} categoriesApi 
+     * @return {Promise} promise for category datas
+     */
+    async getCategoryDatas(categoriesApi) {
+      const allCategories = await categoriesApi.listCategories();
+
+      const indexCategories = [];
+      const footerMainCategories = [];
+      const footerSideCategories = [];
+      const childCategories = {};
+      const categoryMap = {};
+
+      allCategories.forEach((category) => {
+        categoryMap[category.id] = category;
+
+        if (!category.parentId) {
+          const metas = category.meta||[];
+          const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true" }).length > 0;
+          const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true" }).length > 0;
+
+          if (indexCategory) {
+            indexCategories.push(category);
+          } 
+          
+          if (sideCategory) {
+            footerSideCategories.push(category); 
+          } else {
+            footerMainCategories.push(category);
+          }
+        } else {
+          childCategories[category.parentId] = childCategories[category.parentId] || [];
+          childCategories[category.parentId].push(category);
+        }
+      });
+
+      return {
+        indexCategories: indexCategories,
+        allCategories: allCategories,
+        footerMainCategories: footerMainCategories,
+        footerSideCategories: footerSideCategories,
+        childCategories: childCategories,
+        categoryMap: categoryMap
+      };
+    }
+
+    /**
+     * Gets bare access token from request
+     * 
+     * @param {object} req express request
+     * @returns access token
+     */
+    getToken(req) {
+      const accessToken = this.getAccessToken(req);
+      return accessToken ? accessToken.token : anonymousAuth.getAccessToken();
     }
 
     /**
