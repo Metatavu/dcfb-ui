@@ -1,5 +1,5 @@
 mixin quick-category-button(category)
-  a(href="/search?category=" + category.slug)
+  a(href="/search?category=" + category.id)
     .quick-category-btn.text-center
       img.img-fluid.category-icon(src=category.icon)
       h3

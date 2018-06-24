@@ -3,23 +3,25 @@ mixin search-result(item, currentLocale)
     .search-result
       .row
         .col-md-3.d-none.d-sm-block
-          .result-img(style="background-image: url("+ item.image +");")
+          .result-img(style="background-image: url("+ item.images[0].url +");")
         .col.pt-2
-          each localizedTitle in item.title
-            if localizedTitle.locale === currentLocale
-              h2
-                =localizedTitle.value
+          h2
+            = _LS(item.title)
           strong
-            =__("materials.categories."+ item.category +".single")
+            = _LS(categoryMap[item.categoryId].title)
           p
             b
-              =item.price + " " + __("system.currency")
-            =" / " + __("search-results.unit")
+              =item.unitPrice.price + " " + item.unitPrice.currency
+            = " / " + __("search-results.unit")
           .result-details
             p
-              =__("search-results.amount")
+              = __("search-results.amount")
+              b
+                = " " + item.amount + " " + item.unit
             p
               =__("search-results.location")
+              b
+                = " " + _LS(locationMap[item.locationId].name)
         .col-4.col-sm-2.pt-2
           .result-side-details
             p

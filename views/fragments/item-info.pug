@@ -11,7 +11,7 @@ mixin item-info(item, currentLocale)
         p
           b
             =item.unitPrice.price + " " + item.unitPrice.currency
-          =" / " + __("search-results.unit")
+          = " / " + __("search-results.unit")
         .result-details
           p
             = __("search-results.amount")
@@ -24,7 +24,7 @@ mixin item-info(item, currentLocale)
           p
             = _LS(item.description)
         button.btn.btn-primary.buy-btn
-          =__("item.purchase.button")
+          = __("item.purchase.button")
           
       .col-4.col-sm-2.pt-2
         .result-side-details
