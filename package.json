@@ -15,33 +15,35 @@
     "email": "devs@metatavu.fi"
   },
   "dependencies": {
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "connect-session-sequelize": "^5.2.1",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
+    "dcfb-api-client": "0.0.25",
     "express": "4.16.3",
     "express-session": "^1.15.6",
     "i18n": "^0.8.3",
-    "keycloak-connect": "4.0.0-beta.1",
-    "lodash": "^4.17.5",
-    "log4js": "^2.5.3",
-    "moment": "2.22.1",
+    "keycloak-connect": "4.0.0",
+    "lodash": "^4.17.10",
+    "log4js": "^2.9.0",
+    "moment": "2.22.2",
     "mysql2": "^1.5.3",
     "nconf": "0.10.0",
     "pug": "^2.0.3",
-    "sequelize": "^4.37.6",
+    "sequelize": "^4.38.0",
     "umzug": "^2.1.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "blue-tape": "^1.0.0",
-    "grunt": "^1.0.2",
+    "grunt": "^1.0.3",
     "grunt-babel": "^7.0.0",
     "grunt-contrib-sass": "^1.0.0",
     "istanbul": "^1.1.0-alpha.1",
-    "load-grunt-tasks": "^3.5.2",
-    "tap-spec": "^4.1.1"
+    "load-grunt-tasks": "^4.0.0",
+    "tap-spec": "^5.0.0"
   }
 }
