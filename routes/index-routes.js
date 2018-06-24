@@ -5,9 +5,8 @@
   "use strict";
 
   const AbstractRoutes = require(`${__dirname}/abstract-routes`);
-  const config = require("nconf");
-  const mockupData = require(`${__dirname}/mockup-data`);
-
+  const ApiClient = require(`${__dirname}/../api-client`);
+  
   /**
    * Index routes
    */
@@ -33,14 +32,9 @@
      * @param {http.ServerResponse} res server response object
      **/
     async indexGet(req, res) {
-      const categories = mockupData.categories;
-      const sidecategories = mockupData.sidecategories;
-      
-      res.render("pages/index", {
-        categories: categories,
-        sidecategories: sidecategories,
-        items: mockupData.items.slice(0, 12)
-      });
+      const apiClient = new ApiClient(await this.getToken(req));
+      const categoriesApi = apiClient.getCategoriesApi();
+      res.render("pages/index", await this.getCategoryDatas(categoriesApi));
     }
     
     /**

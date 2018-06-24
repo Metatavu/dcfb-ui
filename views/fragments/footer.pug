@@ -1,22 +1,23 @@
-mixin footer(categories, sidecategories)
+mixin footer()
   .container
     .row
       .col
         hr
     .row
-      each category in categories
+      each category in footerMainCategories
         .col
           dl
             dt
-              =__("materials.categories."+ category.name +".plural")
-            each subcategory in category.subcategories
-              dd
-                =__("materials.categories."+ subcategory +".plural")
+              = _LP(category.title)
+            if childCategories[category.id]
+              each childCategory in childCategories[category.id]
+                dd
+                  = _LP(childCategory.title)
       .col
         dl
-          each sidecategory in sidecategories
+          each category in footerSideCategories
             dt
-              =__("materials.categories."+ sidecategory +".plural")
+              = _LP(category.title)
     .row
       .col
         hr

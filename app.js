@@ -91,7 +91,45 @@
     res.locals.authenticated = req.kauth.grant ? true : false;
     next();
   });
-  
+
+  app.use((req, res, next) => {
+    res.locals._L = (localizedValues, type) => {
+      if (!localizedValues) {
+        return "Locale entry not found"
+      }
+
+      const desiredLocale = req.getLocale();
+      const typeMatches = localizedValues.filter((localizedValue) => {
+        return localizedValue.type === type; 
+      });
+
+      const desiredMatches = typeMatches.filter((typeMatch) => {
+        return typeMatch.language === desiredLocale;
+      });
+
+      if (desiredMatches.length === 1) {
+        return desiredMatches[0].value;
+      }
+
+      typeMatches.sort((typeMatch) => {
+        const localeIndex = SUPPORTED_LOCALES.indexOf(typeMatch.language);
+        return localeIndex === -1 ? Number.MAX_SAFE_INTEGER : localeIndex;
+      });
+
+      return typeMatches.length ? typeMatches[0].value : "";
+    };
+
+    res.locals._LS = (localizedValues) => {
+      return res.locals._L(localizedValues, "SINGLE");
+    };
+    
+    res.locals._LP = (localizedValues) => {
+      return res.locals._L(localizedValues, "PLURAL");
+    };
+
+    next();
+  });
+
   new Routes(app, keycloak);
   
   httpServer.listen(config.get('port'), () => {

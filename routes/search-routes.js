@@ -5,8 +5,7 @@
   "use strict";
 
   const AbstractRoutes = require(`${__dirname}/abstract-routes`);
-  const config = require("nconf");
-  const mockupData = require(`${__dirname}/mockup-data`);
+  const ApiClient = require(`${__dirname}/../api-client`);
 
   /**
    * Search routes
@@ -23,7 +22,6 @@
       super(app, keycloak);
       
       app.get("/search", [ ], this.catchAsync(this.searchGet.bind(this)));
-      app.get("/search/ajax", [ ], this.catchAsync(this.searchAjaxGet.bind(this)));
     }
     
     /**
@@ -33,27 +31,32 @@
      * @param {http.ServerResponse} res server response object
      **/
     async searchGet(req, res) {
-      const selectedCategory = req.query.category || null;
+      const categoryIds = req.query.category ? [ req.query.category ] : null;
       
-      const categories = mockupData.categories;
-      const sidecategories = mockupData.sidecategories;
-      const items = selectedCategory ? mockupData.items.filter(item => item.category === selectedCategory) : mockupData.items;
-      
-      res.render('pages/results', {
-        categories: categories,
-        sidecategories: sidecategories,
-        items: items
+      const apiClient = new ApiClient(await this.getToken(req));
+      const categoriesApi = apiClient.getCategoriesApi();
+      const itemsApi = apiClient.getItemsApi();
+      const locationsApi = apiClient.getLocationsApi();
+      const items = await itemsApi.listItems({
+        categoryIds: categoryIds
       });
-    }
-    
-    /**
-     * Handles / get request
-     * 
-     * @param {http.ClientRequest} req client request object
-     * @param {http.ServerResponse} res server response object
-     **/
-    async searchAjaxGet(req, res) {
-      res.send(mockupData.items);
+
+      const locations = await Promise.all(items
+        .map((item) => item.locationId)
+        .filter((itemId, index, array) => index === array.indexOf(itemId))
+        .map((locationId) => {
+          return locationsApi.findLocation(locationId);
+        }));
+
+      const locationMap = locations.reduce((map, location) => {
+        map[location.id] = location;
+        return map;
+      }, {});
+
+      res.render("pages/results", Object.assign({ 
+        items: items,
+        locationMap: locationMap
+      }, await this.getCategoryDatas(categoriesApi)));
     }
     
   }

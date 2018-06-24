@@ -14,9 +14,9 @@ mixin search()
           select.search-input.form-control.form-control-lg.py-2(name="search-category")
             option(value="")
               =__("search.category.placeholder")
-            each category in categories
-              option(value="")
-                =__("materials.categories."+ category.name +".single")
+            each category in allCategories
+              option(value=category.id)
+                = _LS(category.title)
         .col-lg.py-2.py-lg-0.pr-lg-1
           input.search-input.form-control.form-control-lg.py-2(name="search-location", type="text", placeholder=__("search.location.placeholder"))
         .col-lg-2.pt-5.pb-3.pt-lg-0.pb-lg-0.pr-lg-1.pl-lg-1.text-center.text-lg-left
@@ -29,18 +29,18 @@ mixin search()
             =__("search.advanced.link")
       .quick-categories-container
         -var c = 0
-        while c < categories.length
+        while c < indexCategories.length
           .row.no-gutters
-            if [categories[c]]
+            if indexCategories[c]
               .col-lg
-                +quick-category-button(categories[c])
-                if [categories[c + 1]]
-                  +quick-category-button(categories[c + 1])
-            if [categories[c + 2]]
+                +quick-category-button(indexCategories[c])
+                if indexCategories[c + 1]
+                  +quick-category-button(indexCategories[c + 1])
+            if indexCategories[c + 2]
               .col-lg
-                +quick-category-button(categories[c + 2])
-                if [categories[c + 3]]
-                  +quick-category-button(categories[c + 3])   
+                +quick-category-button(indexCategories[c + 2])
+                if indexCategories[c + 3]
+                  +quick-category-button(indexCategories[c + 3])   
           -c+=4
           
     
