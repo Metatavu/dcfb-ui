@@ -5,7 +5,6 @@
   "use strict";
 
   const AbstractRoutes = require(`${__dirname}/abstract-routes`);
-  const config = require("nconf");
   const mockupData = require(`${__dirname}/mockup-data`);
 
   /**
@@ -23,7 +22,6 @@
       super(app, keycloak);
       
       app.get("/search", [ ], this.catchAsync(this.searchGet.bind(this)));
-      app.get("/search/ajax", [ ], this.catchAsync(this.searchAjaxGet.bind(this)));
     }
     
     /**
@@ -44,16 +42,6 @@
         sidecategories: sidecategories,
         items: items
       });
-    }
-    
-    /**
-     * Handles / get request
-     * 
-     * @param {http.ClientRequest} req client request object
-     * @param {http.ServerResponse} res server response object
-     **/
-    async searchAjaxGet(req, res) {
-      res.send(mockupData.items);
     }
     
   }

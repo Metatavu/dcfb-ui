@@ -2,24 +2,27 @@ mixin item-info(item, currentLocale)
   .item-info
     .row
       .col-lg-5
-        .result-img(style="background-image: url("+ item.image +");")
+        .result-img(style="background-image: url("+ item.images[0].url +");")
       .col.pt-2
-        each localizedTitle in item.title
-          if localizedTitle.locale === currentLocale
-            h2
-              =localizedTitle.value
+        h2
+          = _LS(item.title)
         strong
-          =__("materials.categories."+ item.category +".single")
+          = _LS(categoryMap[item.categoryId].title)
         p
           b
-            =item.price + " " + __("system.currency")
+            =item.unitPrice.price + " " + item.unitPrice.currency
           =" / " + __("search-results.unit")
         .result-details
           p
-            =__("search-results.amount")
+            = __("search-results.amount")
+            b
+              = " " + item.amount + " " + item.unit
           p
-            =__("search-results.delivery-place")
-          p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed lectus rhoncus, iaculis lacus eget, tempor dui. Aenean sagittis ultrices lectus nec efficitur. Morbi dapibus pretium quam, ac rhoncus ex tempor et. Morbi ligula arcu, sodales in rutrum vitae, interdum at ex.
+            =__("search-results.location")
+            b
+              = " " + _LS(location.name)
+          p
+            = _LS(item.description)
         button.btn.btn-primary.buy-btn
           =__("item.purchase.button")
           
