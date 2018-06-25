@@ -2,7 +2,8 @@ mixin item-info(item, currentLocale)
   .item-info
     .row
       .col-lg-5
-        .result-img(style="background-image: url("+ item.images[0].url +");")
+        if item.images.length
+          .result-img(style="background-image: url("+ item.images[0].url +");")
       .col.pt-2
         h2
           = _LS(item.title)
@@ -18,7 +19,7 @@ mixin item-info(item, currentLocale)
             b
               = " " + item.amount + " " + item.unit
           p
-            =__("search-results.location")
+            = __("search-results.location")
             b
               = " " + _LS(location.name)
           p
