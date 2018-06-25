@@ -3,7 +3,8 @@ mixin search-result(item, currentLocale)
     .search-result
       .row
         .col-md-3.d-none.d-sm-block
-          .result-img(style="background-image: url("+ item.images[0].url +");")
+          if item.images.length
+            .result-img(style="background-image: url("+ item.images[0].url +");")
         .col.pt-2
           h2
             = _LS(item.title)
@@ -19,7 +20,7 @@ mixin search-result(item, currentLocale)
               b
                 = " " + item.amount + " " + item.unit
             p
-              =__("search-results.location")
+              = __("search-results.location")
               b
                 = " " + _LS(locationMap[item.locationId].name)
         .col-4.col-sm-2.pt-2
