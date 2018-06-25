@@ -63,3 +63,16 @@
     color: $form-continue-button;
   }
 }
+
+.ui-autocomplete  {
+  padding-left: 25px;
+ 
+  .ui-menu-item {
+    list-style: none;
+
+    .ui-menu-item-wrapper {
+      padding-left: 25px;
+      margin-left: -25px;
+    }
+  }
+}
