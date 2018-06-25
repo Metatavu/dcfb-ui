@@ -18,4 +18,28 @@
     });
   }
 
+  /**
+   * Posts a JSON request into URL
+   * 
+   * @param {String} url url
+   * @param {Object} data data
+   * @returns {Promise} promise for JSON 
+   */
+  window.postJSON = (url, data) => {
+    return new Promise((resolve, reject) => {
+      $.ajax(url, {
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        type: "POST",
+        success: (data) => {
+          resolve(data);
+        },
+        error: (jqxhr, textStatus, error) => {
+          const message = jqxhr.responseJSON && jqxhr.responseJSON.message ? jqxhr.responseJSON.message : null; 
+          reject(message || error || textStatus || "Error");
+        }
+      });
+    });
+  }
+
 })();

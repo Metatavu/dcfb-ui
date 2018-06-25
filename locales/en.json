@@ -70,6 +70,7 @@
   "add-item.form.amount": "Amount:",
   "add-item.form.unitPrice": "Price per unit (EUR):",
   "add-item.form.continue.button": "Continue",
+  "add-item.created-message": "Success! Redirecting you to the created item in couple of seconds...",
   "footer.terms-of-service.link": "Terms of service",
   "footer.privacy-policy.link": "Privacy policy",
   "footer.feedback.link": "Give us feedback or make a bug report",

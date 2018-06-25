@@ -10,6 +10,7 @@
   const Item = DcfbApiClient.Item;
   const LocalizedValue = DcfbApiClient.LocalizedValue;
   const Price = DcfbApiClient.Price;
+  const i18n = require("i18n");
 
   /**
    * Item routes
@@ -95,6 +96,8 @@
      * @param {http.ServerResponse} res server response object
      */
     async addItemPost(req, res) {
+      const requiredFields = ["location-id", "category-id", "type", "title-fi", "description-fi", "unit-price", "unit", "amount"];
+
       const locationId = req.body["location-id"];
       const categoryId = req.body["category-id"];
       const type = req.body["type"];
@@ -103,8 +106,18 @@
       const unitPrice = req.body["unit-price"];
       const amount = req.body["amount"];
 
+      for (let i = 0; i < requiredFields.length; i++) {
+        if (!req.body[requiredFields[i]]) {
+          return res.status(400).send({
+            "message": `${requiredFields[i]} is required`
+          });
+        }
+      }
+
       if (type !== "selling") {
-        return res.status(400).send(`Unknown type ${type}`);
+        return res.status(400).send({
+          "message": `Unknown type ${type}`
+        });
       }
 
       const title = this.constructLocalizedFromPostBody(req.body, "title");
@@ -127,7 +140,10 @@
         return res.status(500).send("Failed to create item");
       }
 
-      res.redirect(`/item/${createdItem.id}`);
+      res.send({
+        "message": i18n.__('add-item.created-message'), 
+        "location": `/item/${createdItem.id}`
+      });
     }
 
     /**

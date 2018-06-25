@@ -25,6 +25,8 @@
         minLength: 1,
         source: this.searchCategories.bind(this) 
       });
+
+      $("form").submit(this.onFormSubmit.bind(this));
     }
 
     async searchLocations(term) {
@@ -45,6 +47,43 @@
           value: category.id
         };
       });
+    }
+
+    async onFormSubmit(event) {
+      event.preventDefault();
+      const form = $(event.target);
+      
+      form.find(".btn").attr("disabled", "disabled");
+      const data = form.serializeArray().reduce((map, item) => {
+        map[item.name] = item.value;
+        return map;
+      }, {});
+
+
+      try {
+        const response = await postJSON("/add/item", data);
+        const location = response.location;
+        const message = response.message;
+
+        new Noty({
+          timeout: 5000,
+          text: message,
+          type: "success",
+          callbacks: {
+            onClose: () => {
+              window.location.href = location;
+            }
+          }
+        }).show();
+      } catch (e) {
+        form.find(".btn").removeAttr("disabled");
+
+        new Noty({
+          timeout: 5000,
+          text: e || "Failed to send the form",
+          type: "error"
+        }).show();
+      }
     }
   }
   

@@ -70,6 +70,7 @@
   "add-item.form.amount": "Määrä:",
   "add-item.form.unitPrice": "Yksikköhinta:",
   "add-item.form.continue.button": "Jatka",
+  "add-item.created-message": "Lisääminen onnistui! Uudelleenohjataan ilmoitukseen muutaman sekunnin kuluttua...",
   "footer.terms-of-service.link": "Käyttöehdot",
   "footer.privacy-policy.link": "Tietosuojakäytäntö",
   "footer.feedback.link": "Lähetä palautetta tai ilmoita ongelmasta",
