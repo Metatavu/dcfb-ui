@@ -2,6 +2,10 @@ extends ../layout/form
 
 include ../fragments/add-item-form.pug
 
+block custom-head
+  script(defer="defer", src="/js/autocomplete.min.js", type="text/javascript")
+  script(defer="defer", src="/js/add-item.min.js", type="text/javascript")
+
 block body
   .form-header.text-center
     h2

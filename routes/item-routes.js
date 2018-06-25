@@ -6,6 +6,10 @@
 
   const AbstractRoutes = require(`${__dirname}/abstract-routes`);
   const ApiClient = require(`${__dirname}/../api-client`);
+  const DcfbApiClient = require("dcfb-api-client");
+  const Item = DcfbApiClient.Item;
+  const LocalizedValue = DcfbApiClient.LocalizedValue;
+  const Price = DcfbApiClient.Price;
 
   /**
    * Item routes
@@ -23,7 +27,8 @@
       
       app.get("/ajax/searchItems", [ ], this.catchAsync(this.searchItemsGet.bind(this)));
       app.get("/item/:id", [ ], this.catchAsync(this.itemGet.bind(this)));
-      app.get("/add/item", [ ], this.catchAsync(this.addItemGet.bind(this)));
+      app.get("/add/item", [ keycloak.protect() ], this.catchAsync(this.addItemGet.bind(this)));
+      app.post("/add/item", [ keycloak.protect() ], this.catchAsync(this.addItemPost.bind(this)));
     }
 
     /**
@@ -81,6 +86,71 @@
      **/
     async addItemGet(req, res) {
       res.render("pages/add-item");
+    }
+
+    /**
+     * Handles /add/item post request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     */
+    async addItemPost(req, res) {
+      const locationId = req.body["location-id"];
+      const categoryId = req.body["category-id"];
+      const type = req.body["type"];
+      const expiresAt = req.body["expires"];
+      const unit = req.body["unit"];
+      const unitPrice = req.body["unit-price"];
+      const amount = req.body["amount"];
+
+      if (type !== "selling") {
+        return res.status(400).send(`Unknown type ${type}`);
+      }
+
+      const title = this.constructLocalizedFromPostBody(req.body, "title");
+      const description = this.constructLocalizedFromPostBody(req.body, "description");
+      const apiClient = new ApiClient(await this.getToken(req));
+      const itemsApi = apiClient.getItemsApi();
+      const item = Item.constructFromObject({
+        "title": title,
+        "description": description,
+        "categoryId": categoryId,
+        "locationId": locationId,
+        "expiresAt": expiresAt,
+        "unitPrice": Price.constructFromObject({ "price": unitPrice, "currency": "EUR" }),
+        "unit": unit,
+        "amount": amount
+      });
+   
+      const createdItem = await itemsApi.createItem(item);
+      if (!createdItem) {
+        return res.status(500).send("Failed to create item");
+      }
+
+      res.redirect(`/item/${createdItem.id}`);
+    }
+
+    /**
+     * Constructs localized value from post body
+     * 
+     * @param {Object} body post body
+     * @param {String} prefix value prefix 
+     */
+    constructLocalizedFromPostBody(body, prefix) {
+      return ["fi", "sv", "en"]
+        .map((language) => {
+          const value = body[`${prefix}-${language}`];
+          if (!value) {
+            return null;
+          }
+
+          return LocalizedValue.constructFromObject({
+            "language": language,
+            "value": value,
+            "type": "SINGLE"
+          });
+        })
+        .filter((value) => !!value);
     }
     
   }
