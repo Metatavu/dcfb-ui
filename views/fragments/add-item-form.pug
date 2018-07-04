@@ -44,6 +44,17 @@ mixin add-item-form()
           =__("add-item.form.expires")
         .col-sm-10
           input#inputExpire.form-control(type='text',name='expires')
+      .form-group.row
+        label.col-sm-2.col-form-label(for="images")
+          = __("add-item.form.images")
+        .col-sm-10
+          button.upload-add-file-button.btn.btn-success
+            = __("add-item.form.add-image")
+          input#images(aria-labelledby="images", type="file", multiple="multiple", name="file", data-max-file-size=maxFileSize, data-invalid-file-type=__("add-item.form.add-image-invalid-file-type-message"), data-file-size-too-big=__("add-item.form.add-image-file-size-too-big-message"), data-upload-fail-message=__("add-item.form.add-image-upload-failed-message"), data-remove-button-text=__("add-item.form.add-image-upload-remove-button-text"))
+          input(type="hidden",name="images")
+          .progress.upload-progress.mt-2
+            .progress-bar(role="progressbar",aria-valuemin="0",aria-valuemax="100",aria-valuenow="0")
+          .upload-files
     section
       strong
         =__("add-item.form.detail.header")

@@ -26,6 +26,15 @@
         source: this.searchCategories.bind(this) 
       });
 
+      new ImageUpload({
+        maxFileSize: parseInt($("#images").attr("data-max-file-size")), 
+        progressBar: ".upload-progress .progress-bar",
+        fileInput: "#images",
+        filesContainer: ".upload-files",
+        addFileButton: ".upload-add-file-button",
+        hiddenInput: "[name='images']"
+      });
+
       $("form").submit(this.onFormSubmit.bind(this));
     }
 
