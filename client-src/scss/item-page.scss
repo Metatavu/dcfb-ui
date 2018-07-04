@@ -24,6 +24,30 @@
       background-repeat: no-repeat;
       background-position: center center;
     }
+
+    .result-sm-imgs {
+      position: absolute;
+      bottom: 5px;
+      right: 15px;
+      left: 15px;
+      overflow: hidden;
+
+      .result-sm-img {
+        height: 38px;
+        width: 38px;
+        float: right;
+        border-radius: 5px;
+        margin-right: 5px;
+        opacity: 0.9;
+        border: 1px solid #88666666;
+        background-size: cover;
+        background-position: center;
+
+        &:hover {
+          opacity: 1;
+        }
+      }
+    }
     
     strong {
       color: $search-result-category-color;

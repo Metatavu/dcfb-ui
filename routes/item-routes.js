@@ -4,13 +4,16 @@
 (() => {
   "use strict";
 
+  const config = require("nconf");
   const AbstractRoutes = require(`${__dirname}/abstract-routes`);
   const ApiClient = require(`${__dirname}/../api-client`);
   const DcfbApiClient = require("dcfb-api-client");
   const Item = DcfbApiClient.Item;
   const LocalizedValue = DcfbApiClient.LocalizedValue;
   const Price = DcfbApiClient.Price;
+  const Image = DcfbApiClient.Image;
   const i18n = require("i18n");
+  const imageUploads = require(`${__dirname}/../images/uploads`);
 
   /**
    * Item routes
@@ -86,7 +89,9 @@
      * @param {http.ServerResponse} res server response object
      **/
     async addItemGet(req, res) {
-      res.render("pages/add-item");
+      res.render("pages/add-item", {
+        maxFileSize: config.get("images:max-file-size") || 2097152
+      });
     }
 
     /**
@@ -105,8 +110,22 @@
       const unit = req.body["unit"];
       const unitPrice = req.body["unit-price"];
       const amount = req.body["amount"];
+      const imageNames = req.body["images"];
+      
+      if (!imageNames) {
+        return res.status(400).send({
+          "message": "At least one image is required"
+        });
+      }
 
-      for (let i = 0; i < requiredFields.length; i++) {
+      const images = imageNames.split(",").map((imageName) => {
+        return Image.constructFromObject({
+          "url": imageUploads.getUrl(imageName),
+          "type": imageUploads.getType(imageName)
+        });
+      });
+
+      for (let i = 0; i < requiredFields.length; i++) {
         if (!req.body[requiredFields[i]]) {
           return res.status(400).send({
             "message": `${requiredFields[i]} is required`
@@ -132,7 +151,8 @@
         "expiresAt": expiresAt,
         "unitPrice": Price.constructFromObject({ "price": unitPrice, "currency": "EUR" }),
         "unit": unit,
-        "amount": amount
+        "amount": amount,
+        "images": images
       });
    
       const createdItem = await itemsApi.createItem(item);
@@ -152,7 +172,7 @@
      * @param {Object} body post body
      * @param {String} prefix value prefix 
      */
-    constructLocalizedFromPostBody(body, prefix) {
+    constructLocalizedFromPostBody(body, prefix) {
       return ["fi", "sv", "en"]
         .map((language) => {
           const value = body[`${prefix}-${language}`];

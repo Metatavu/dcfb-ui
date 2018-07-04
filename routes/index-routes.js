@@ -13,7 +13,7 @@
   class IndexRoutes extends AbstractRoutes {
     
     /**
-     * Constructor for abstract routes class
+     * Constructor for index routes class
      * 
      * @param {Object} app Express app
      * @param {Object} keycloak keycloak
