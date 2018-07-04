@@ -4,6 +4,10 @@ mixin item-info(item, currentLocale)
       .col-lg-5
         if item.images.length
           .result-img(style="background-image: url("+ item.images[0].url +");")
+            .result-sm-imgs
+              each image, index in item.images
+                .result-sm-img(style="background-image: url("+ image.url +");")
+
       .col.pt-2
         h2
           = _LS(item.title)
