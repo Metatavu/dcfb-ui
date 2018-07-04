@@ -6,7 +6,7 @@
   const path = require("path");
   const fs = require("fs");
   const slugify = require("slugify");
-  const mime = require('mime');
+  const mime = require("mime");
 
   /**
    * Class for handling image uploads
@@ -29,7 +29,7 @@
         storage: this.storage, 
         fileFilter: this.uploadFileFilter.bind(this),
         limits: {
-          fileSize: config.get("images:max-file-size") || 2097152,
+          fileSize: config.get("images:max-file-size") || 2097152,
           files: 1
         } 
       });
@@ -39,7 +39,7 @@
      * Middleware for uploading single file. The file will be stored in req.file
      * 
      * @param {String} fieldName file's field name in request
-     * @return {Object} middleware 
+     * @return {Object} middleware 
      */
     uploadSingleMiddleware(fieldName) {
       return this.upload.single(fieldName);
@@ -136,7 +136,7 @@
       let fileCount = 0;
       let filePath = this.getPath(fileName);
       let nameWithoutExtension = fileName;
-      let extension = '';
+      let extension = "";
 
       if (fileName.lastIndexOf(".") > -1 ){
         nameWithoutExtension = fileName.substring(0, fileName.lastIndexOf("."));
@@ -145,7 +145,7 @@
 
       while (fs.existsSync(filePath)) {
         fileCount++;
-        fileName = nameWithoutExtension + '_' + fileCount + extension;
+        fileName = `${nameWithoutExtension}_${fileCount}${extension}`;
         filePath = this.getPath(fileName);
       }
 

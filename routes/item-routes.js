@@ -89,8 +89,8 @@
      * @param {http.ServerResponse} res server response object
      **/
     async addItemGet(req, res) {
-      res.render("pages/add-item", {
-        maxFileSize: config.get("images:max-file-size") || 2097152
+      res.render("pages/add-item", {
+        maxFileSize: config.get("images:max-file-size") || 2097152
       });
     }
 
@@ -114,7 +114,7 @@
       
       if (!imageNames) {
         return res.status(400).send({
-          "message": `At least one image is required`
+          "message": "At least one image is required"
         });
       }
 
@@ -125,7 +125,7 @@
         });
       });
 
-      for (let i = 0; i < requiredFields.length; i++) {
+      for (let i = 0; i < requiredFields.length; i++) {
         if (!req.body[requiredFields[i]]) {
           return res.status(400).send({
             "message": `${requiredFields[i]} is required`
@@ -172,7 +172,7 @@
      * @param {Object} body post body
      * @param {String} prefix value prefix 
      */
-    constructLocalizedFromPostBody(body, prefix) {
+    constructLocalizedFromPostBody(body, prefix) {
       return ["fi", "sv", "en"]
         .map((language) => {
           const value = body[`${prefix}-${language}`];

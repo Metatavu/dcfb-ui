@@ -207,8 +207,8 @@
     onRemoveFileButtonClick(event) {
       event.preventDefault();
       
-      const button = $(event.target).closest('.remove-file-button');
-      const filename = button.attr('data-filename');
+      const button = $(event.target).closest(".remove-file-button");
+      const filename = button.attr("data-filename");
       
       $.ajax({
         url: `/images/${filename}`,
