@@ -1,3 +1,4 @@
+/*global ImageUpload, Autocomplete */
 (() => {
   "use strict";
 

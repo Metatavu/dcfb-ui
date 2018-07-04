@@ -1,3 +1,4 @@
+/** global Noty */
 (() => {
   "use strict";
 
@@ -10,7 +11,7 @@
      * Constructor.
      * 
      * @param {Object} options options
-     * @param {int} options.maxFileSize maximum upload size. Defaults to 2097152 (2 MB)
+     * @param {int} options.maxFileSize maximum upload size. Defaults to 2097152 (2 MB)
      * @param {String} options.progressBar progress bar element selector
      * @param {String} options.fileInput file input element selector
      * @param {String} options.addFileButton add file button element selector
@@ -26,7 +27,7 @@
         .hide()
         .css({ opacity: 0 })
         .fileupload(Object.assign({
-          maxFileSize: this.options.maxFileSize || 2097152,
+          maxFileSize: this.options.maxFileSize || 2097152,
           dataType: "json",
           url: "/images",
           acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
@@ -111,11 +112,8 @@
 
     /**
      * Event hander triggered when file uploading has failed
-     * 
-     * @param {Object} event 
-     * @param {Object} data 
      */
-    onUploadFail(event, data) {
+    onUploadFail() {
       $(this.options.progressBar)
         .removeClass("progress-bar-animated progress-bar-striped")
         .addClass("bg-danger");
