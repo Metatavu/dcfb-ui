@@ -19,8 +19,7 @@
   const session = require("express-session");
   const i18n = require("i18n");
   const cors = require("cors");
-  const SequelizeStore = require("connect-session-sequelize")(session.Store);
-  const models = require(`${__dirname}/models`);
+  const RedisStore = require("connect-redis")(session);
   const Routes = require(`${__dirname}/routes`);
   
   const LOCALE_COOKIE = "dcfb-locale";
@@ -30,7 +29,7 @@
     log4js.configure(config.get("logging"));
   }
   
-  const logger = log4js.getLogger(`${__dirname}/${__filename}`);
+  const logger = log4js.getLogger(__filename);
   
   process.on("unhandledRejection", (error) => {
     console.error("UNHANDLED REJECTION", error ? error.stack : null);
@@ -38,13 +37,7 @@
   
   const app = express();
   const httpServer = http.createServer(app);
-  const sequelize = await models.init();
-  
-  const sessionStore = new SequelizeStore({
-    db: sequelize,
-    table: "ConnectSession"
-  });
-  
+  const sessionStore = new RedisStore(config.get("redis"));
   const keycloak = new Keycloak({ store: sessionStore }, config.get("keycloak"));
 
   app.use((req, res, next) => {
