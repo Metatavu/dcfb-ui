@@ -120,7 +120,7 @@
       const accessToken = this.getAccessToken(req);
       return accessToken.hasRealmRole(role);
     }
-    
+
     /**
      * Catch unhandled promise errors
      * 

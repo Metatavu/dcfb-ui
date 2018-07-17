@@ -151,6 +151,8 @@
             images: images,
             unitPrice: unitPrice,
             unit: unit,
+            visibleToUsers: [],
+            visibilityLimited: false,
             amount: amount
           };
           
