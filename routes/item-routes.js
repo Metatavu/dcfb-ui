@@ -110,7 +110,7 @@
       const unitPrice = req.body["unit-price"];
       const amount = req.body["amount"];
       const imageNames = req.body["images"];
-      const visibilityLimited = req.body["visibilityLimited"] || false;
+      const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
 
       if (!imageNames) {

@@ -4,7 +4,7 @@
   const config = require("nconf");
   const DcfbApiClient = require("dcfb-api-client");
   const fetch = require("node-fetch");
-  const { URLSearchParams } = require('url');
+  const { URLSearchParams } = require("url");
   const log4js = require("log4js");
   const logger = log4js.getLogger(__filename);
 
@@ -65,7 +65,7 @@
       try {
         return await itemsApi.findItem(itemId);
       } catch (err) {
-        if (!(err.status === 401 || err.status === 403) || isRetry) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
           return Promise.reject(err);
         }
 
@@ -101,7 +101,7 @@
       let ticket = null;
       headerComponents.forEach((component) => {
         if (component.startsWith("ticket")) {
-          ticket = component.split("=")[1].replace(/\"/g, "");
+          ticket = component.split("=")[1].replace(/"/g, "");
         }
       });
 
@@ -128,7 +128,7 @@
       params.append("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
       params.append("ticket", ticket);
       try {
-        const res = await fetch(url, { method: 'POST', headers: headers, body: params });
+        const res = await fetch(url, { method: "POST", headers: headers, body: params });
         if (res.status !== 200) {
           return null;
         }
