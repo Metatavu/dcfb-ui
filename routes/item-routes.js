@@ -66,9 +66,8 @@
 
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
-      const itemsApi = apiClient.getItemsApi();
       const locationsApi = apiClient.getLocationsApi();
-      const item = await itemsApi.findItem(itemId);
+      const item = await apiClient.findItemById(itemId);
       const location = await locationsApi.findLocation(item.locationId);
 
       if (!item) {
@@ -111,7 +110,9 @@
       const unitPrice = req.body["unit-price"];
       const amount = req.body["amount"];
       const imageNames = req.body["images"];
-      
+      const visibilityLimited = req.body["visibilityLimited"] || false;
+      const allowedUserIds = [];
+
       if (!imageNames) {
         return res.status(400).send({
           "message": "At least one image is required"
@@ -152,9 +153,11 @@
         "unitPrice": Price.constructFromObject({ "price": unitPrice, "currency": "EUR" }),
         "unit": unit,
         "amount": amount,
-        "images": images
+        "images": images,
+        "visibleToUsers": allowedUserIds,
+        "visibilityLimited": visibilityLimited
       });
-   
+
       const createdItem = await itemsApi.createItem(item);
       if (!createdItem) {
         return res.status(500).send("Failed to create item");

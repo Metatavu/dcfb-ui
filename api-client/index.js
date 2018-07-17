@@ -3,6 +3,10 @@
 
   const config = require("nconf");
   const DcfbApiClient = require("dcfb-api-client");
+  const fetch = require("node-fetch");
+  const { URLSearchParams } = require("url");
+  const log4js = require("log4js");
+  const logger = log4js.getLogger(__filename);
 
   /**
    * Api client for Metaform API
@@ -53,6 +57,87 @@
      */
     getLocationsApi() {
       return new DcfbApiClient.LocationsApi(this.createClient());
+    }
+
+    async findItemById(itemId, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const itemsApi = this.getItemsApi();
+      try {
+        return await itemsApi.findItem(itemId);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.findItemById(itemId, true);
+      }
+    }
+
+    /**
+     * Returns UMA ticket from www-authenticate header or null if not found
+     * 
+     * @param {object} errorResponse 401 or 403 error response from api call
+     * 
+     * @returns {string} returns uma ticket or null
+     */
+    getUMATicket(errorResponse) {
+      const response = errorResponse.response && errorResponse.response.res ? errorResponse.response.res : null;
+      if (!response) {
+        return null;
+      }
+
+      const wwwAuthenticateHeader = response.headers ? response.headers["www-authenticate"] : null;
+      if (!wwwAuthenticateHeader) {
+        return null;
+      }
+
+      const headerComponents = wwwAuthenticateHeader.split(",");
+      let ticket = null;
+      headerComponents.forEach((component) => {
+        if (component.startsWith("ticket")) {
+          ticket = component.split("=")[1].replace(/"/g, "");
+        }
+      });
+
+      return ticket;
+    }
+
+    /**
+     * Queries RPT token from authorization server by error response containing www-authenticate header
+     * 
+     * @param {object} errorResponse error response containing www-authenticate header 
+     */
+    async getRPT(errorResponse) {
+      const ticket = this.getUMATicket(errorResponse);
+
+      const keycloak = config.get("keycloak");
+      const realm = keycloak.realm;
+      const authServerUrl = keycloak["auth-server-url"];
+      const headers = {
+        "Authorization": `Bearer ${this.accessToken}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      };
+      const url = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
+      const params = new URLSearchParams();
+      params.append("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+      params.append("ticket", ticket);
+      try {
+        const res = await fetch(url, { method: "POST", headers: headers, body: params });
+        if (res.status !== 200) {
+          return null;
+        }
+        const data = await res.json();
+        return data["access_token"];
+      } catch(err) {
+        logger.error("Error requesting RPT token", err);
+        return null;
+      }
     }
 
     /**
