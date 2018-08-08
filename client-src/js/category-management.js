@@ -1,4 +1,4 @@
-/* global getValueByLocaleAndType, getJSON, postJSON, putJSON, deleteJSON **/
+/** global getValueByLocaleAndType, getJSON, postJSON, putJSON, deleteJSON */
 
 (() => {
   "use strict";
@@ -49,7 +49,7 @@
       e.move_info.do_move();
       const movedNode = e.move_info.moved_node;
       const category = movedNode.category;
-      if (!movedNode.parent || movedNode.parent.name.length  == 0) {
+      if (!movedNode.parent || movedNode.parent.name.length  == 0) {
         category.parentId = null;
       } else {
         category.parentId = movedNode.parent.id;
