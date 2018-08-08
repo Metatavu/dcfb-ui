@@ -18,6 +18,7 @@
       $(document).on("click", "#edit-category-button", this.onEditCategoryClick.bind(this));
       $(document).on("click", "#delete-category-button", this.onDeleteCategoryClick.bind(this));
       this.createTree();
+      this.renderCategoryForm(null);
     }
 
     async createTree() {
@@ -133,14 +134,19 @@
         });
       }
 
-      metas.push({
-        key: "ui-index-page",
-        value: inIndexPage
-      });
-      metas.push({
-        key: "ui-footer-side",
-        value: inFooterSide
-      });
+      if (inIndexPage) {
+        metas.push({
+          key: "ui-index-page",
+          value: inIndexPage
+        });
+      }
+
+      if (inFooterSide) {
+        metas.push({
+          key: "ui-footer-side",
+          value: inFooterSide
+        });
+      }
 
       return {
         parentId: updateParent ? this.selectedNode ? this.selectedNode.id : null : this.selectedNode ? this.selectedNode.category.parentId : null,
