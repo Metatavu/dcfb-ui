@@ -76,7 +76,7 @@
         if (!category.parentId) {
           rootCategories.push(category);
         } else {
-          childCategories[category.parentId] = childCategories[category.parentId] || [];
+          childCategories[category.parentId] = childCategories[category.parentId] || [];
           childCategories[category.parentId].push(category);
         }
       });

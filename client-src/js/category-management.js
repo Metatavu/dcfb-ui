@@ -1,3 +1,4 @@
+/* global getValueByLocaleAndType, getJSON, postJSON, putJSON, deleteJSON **/
 
 (() => {
   "use strict";

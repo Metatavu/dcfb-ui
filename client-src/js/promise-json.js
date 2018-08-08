@@ -16,7 +16,7 @@
         reject(error || textStatus || "Error");
       })
     });
-  }
+  };
 
   /**
    * Posts a JSON request into URL
@@ -36,11 +36,11 @@
         },
         error: (jqxhr, textStatus, error) => {
           const message = jqxhr.responseJSON && jqxhr.responseJSON.message ? jqxhr.responseJSON.message : null; 
-          reject(message || error || textStatus || "Error");
+          reject(message || error || textStatus || "Error");
         }
       });
     });
-  }
+  };
 
   /**
    * Puts a JSON request into URL
@@ -61,11 +61,11 @@
         },
         error: (jqxhr, textStatus, error) => {
           const message = jqxhr.responseJSON && jqxhr.responseJSON.message ? jqxhr.responseJSON.message : null; 
-          reject(message || error || textStatus || "Error");
+          reject(message || error || textStatus || "Error");
         }
       });
     });
-  }
+  };
 
   /**
    * Sends delete request a JSON request into URL
@@ -84,9 +84,9 @@
         },
         error: (jqxhr, textStatus, error) => {
           const message = jqxhr.responseJSON && jqxhr.responseJSON.message ? jqxhr.responseJSON.message : null; 
-          reject(message || error || textStatus || "Error");
+          reject(message || error || textStatus || "Error");
         }
       });
     });
-  }
+  };
 })();
