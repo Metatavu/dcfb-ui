@@ -14,6 +14,7 @@
   const Image = DcfbApiClient.Image;
   const i18n = require("i18n");
   const imageUploads = require(`${__dirname}/../images/uploads`);
+  const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
 
   /**
    * Item routes
@@ -31,8 +32,8 @@
       
       app.get("/ajax/searchItems", [ ], this.catchAsync(this.searchItemsGet.bind(this)));
       app.get("/item/:id", [ ], this.catchAsync(this.itemGet.bind(this)));
-      app.get("/add/item", [ keycloak.protect() ], this.catchAsync(this.addItemGet.bind(this)));
-      app.post("/add/item", [ keycloak.protect() ], this.catchAsync(this.addItemPost.bind(this)));
+      app.get("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemGet.bind(this)));
+      app.post("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemPost.bind(this)));
     }
 
     /**

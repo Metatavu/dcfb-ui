@@ -95,5 +95,8 @@
   "footer.terms-of-service.link": "Terms of service",
   "footer.privacy-policy.link": "Privacy policy",
   "footer.feedback.link": "Give us feedback or make a bug report",
-  "footer.copyright": "Copyright © 2018 Mansys" 
+  "footer.copyright": "Copyright © 2018 Mansyns",
+  "stripe.onboard-header": "Connect you account with Stripe to start selling",
+  "stripe.onboard-text": "In order to receive payments for your goods you need to connect yout account with Stripe payments platform. Please click the button below and follow instructions",
+  "stripe.onboard-link": "Connect with Stripe"
 }

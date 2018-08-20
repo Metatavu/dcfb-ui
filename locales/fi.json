@@ -95,5 +95,8 @@
   "footer.terms-of-service.link": "Käyttöehdot",
   "footer.privacy-policy.link": "Tietosuojakäytäntö",
   "footer.feedback.link": "Lähetä palautetta tai ilmoita ongelmasta",
-  "footer.copyright": "Copyright © 2018 Mansys" 
+  "footer.copyright": "Copyright © 2018 Mansyns" ,
+  "stripe.onboard-header": "Yhdistä tilisi Stripeen aloittaaksesi myynnin",
+  "stripe.onboard-text": "In order to receive payments for your goods you need to connect yout account with Stripe payments platform. Please click the button below and follow instructions",
+  "stripe.onboard-link": "Yhdistä Stripe tiliisi"
 }
