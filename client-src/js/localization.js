@@ -35,6 +35,21 @@
   };
 
   /**
+   * Returns value by provided locale and type
+   */
+  window.getValueByLocaleAndType = (localizedValues, locale, type) => {
+    const typeMatches = localizedValues.filter((localizedValue) => {
+      return localizedValue.type === type; 
+    });
+
+    const desiredMatches = typeMatches.filter((typeMatch) => {
+      return typeMatch.language === locale;
+    });
+    
+    return desiredMatches.length ? desiredMatches[0].value : "";
+  };
+
+  /**
    * Adds support for locales into pug templates
    */
   window.pugLocaleSupport = () => {

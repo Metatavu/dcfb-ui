@@ -1,0 +1,33 @@
+include ../fragments/top-menu
+
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    meta(name="description", content="DCFB")
+    meta(name="author", content="")
+    script(defer='defer', src='//cdn.metatavu.io/libs/regenerator-runtime/0.11.1/runtime.js')
+    script(defer="defer", src="//cdn.metatavu.io/libs/jquery/3.2.1/jquery.min.js",type="text/javascript")
+    script(defer="defer", src="//cdn.metatavu.io/libs/imagesloaded/4.1.4/imagesloaded.pkgd.min.js")
+    script(defer="defer", src="//cdn.metatavu.io/libs/isotope/3.0.6/isotope.pkgd.min.js")
+    script(defer="defer", src="//cdn.metatavu.io/libs/popper.js/1.11.0/popper.min.js",type="text/javascript")
+    script(defer="defer", src="//cdn.metatavu.io/libs/bootstrap/4.0.0/js/bootstrap.min.js",type="text/javascript")
+    script(defer="defer", src="//cdn.metatavu.io/libs/lodash/4.16.4/lodash.min.js", type="text/javascript")
+    script(defer="defer", src="/js/pug-templates.min.js", type="text/javascript")
+    script(defer="defer", src="/js/localization.min.js", type="text/javascript")
+    script(defer="defer", src="/js/promise-json.min.js", type="text/javascript")
+    script(defer="defer", src="/js/demo.min.js", type="text/javascript")
+    link(rel="stylesheet", href="//cdn.metatavu.io/libs/bootstrap/4.0.0/css/bootstrap.min.css")
+    link(rel="stylesheet", href="//cdn.metatavu.io/libs/font-awesome/5.0.10/web-fonts-with-css/css/fontawesome-all.min.css")
+    link(rel="stylesheet", href="/css/default-layout.min.css")
+    link(rel="stylesheet", href="/css/admin.min.css")
+    block custom-head
+  body(data-current-locale=locale)
+    +top-menu()
+    block body
+  .container.d-lg-none.text-center.py-5
+    .row
+      .col
+        img.img-fluid(src="/gfx/eu_logot.png")

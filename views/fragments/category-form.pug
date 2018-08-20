@@ -1,0 +1,44 @@
+h5
+  = __("admin.category.header")
+input#category-id(type="hidden", value=data.id)
+.form-group
+  label(for="name-fi-single")
+    = __("admin.category.name-fi-single")
+  input#name-fi-single.form-control(type='text', value=data.namefisingle, placeholder=__("admin.category.name-fi-single-placeholder"))
+.form-group
+  label(for="name-fi-plural")
+    = __("admin.category.name-fi-plural")
+  input#name-fi-plural.form-control(type='text', value=data.namefiplural, placeholder=__("admin.category.name-fi-plural-placeholder"))
+.form-group
+  label(for="name-en-single")
+    = __("admin.category.name-en-single")
+  input#name-en-single.form-control(type='text', value=data.nameensingle, placeholder=__("admin.category.name-en-single-placeholder"))
+.form-group
+  label(for="name-en-plural")
+    = __("admin.category.name-en-plural")
+  input#name-en-plural.form-control(type='text',value=data.nameenplural, placeholder=__("admin.category.name-en-plural-placeholder"))
+.form-group
+  label(for="meta-ui-icon")
+    = __("admin.category.icon")
+  input#meta-ui-icon.form-control(type='text',value=data.icon)
+.form-check
+  input#meta-ui-index-page.form-check-input(type='checkbox', value='', checked=data.indexpage)
+  label.form-check-label(for="meta-ui-index-page") 
+    = __("admin.category.ui-index-page")
+.form-check
+  input#meta-ui-footer-side.form-check-input(type='checkbox', value='', checked=data.footerside)
+  label.form-check-label(for="meta-ui-footer-side")
+    = __("admin.category.ui-footer-side")
+br
+br
+button.btn.btn-success#add-category-button
+  = __("admin.category.button.add")
+
+if data.id
+  button.btn.btn-primary#edit-category-button
+    = __("admin.category.button.edit")
+else
+  button.btn.btn-primary#edit-category-button(disabled="disabled")
+    = __("admin.category.button.edit")
+button.btn.btn-danger#delete-category-button(disabled=!data.id || data.hasChildren)
+  = __("admin.category.button.delete")

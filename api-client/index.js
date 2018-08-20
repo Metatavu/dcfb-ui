@@ -59,6 +59,12 @@
       return new DcfbApiClient.LocationsApi(this.createClient());
     }
 
+    /**
+     * Finds item by id and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {string} itemId uuid of item to find
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
     async findItemById(itemId, isRetryParam) {
       const isRetry =  isRetryParam ? isRetryParam : false;
       const itemsApi = this.getItemsApi();
@@ -76,6 +82,85 @@
 
         this.accessToken = rpt;
         return this.findItemById(itemId, true);
+      }
+    }
+
+    /**
+     * Creates category and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {DcfbApiClient.Category} category category object
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
+    async createCategory(category, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const categoriesApi = this.getCategoriesApi();
+      try {
+        return await categoriesApi.createCategory(category);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.createCategory(category, true);
+      }
+    }
+
+    /**
+     * Updates category and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {String} categoryId id of the category to update
+     * @param {DcfbApiClient.Category} category category object
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
+    async updateCategory(categoryId, category, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const categoriesApi = this.getCategoriesApi();
+      try {
+        return await categoriesApi.updateCategory(categoryId, category);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.updateCategory(categoryId, category, true);
+      }
+    }
+
+    /**
+     * Deletes category and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {String} categoryId id of the category to delete
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
+    async deleteCategory(categoryId, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const categoriesApi = this.getCategoriesApi();
+      try {
+        return await categoriesApi.deleteCategory(categoryId);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.deleteCategory(categoryId, true);
       }
     }
 
