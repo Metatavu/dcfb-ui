@@ -16,6 +16,7 @@
   const Address = DcfbApiClient.Address;
   const Location = DcfbApiClient.Location;
   const i18n = require("i18n");
+  const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
 
   /**
    * Index routes
@@ -31,9 +32,9 @@
     constructor (app, keycloak) {
       super(app, keycloak);
       
-      app.get("/migrateTestLocations", keycloak.protect(), this.catchAsync(this.getMigrateTestLocations.bind(this)));
-      app.get("/migrateTestCategories", keycloak.protect(), this.catchAsync(this.getMigrateTestCategories.bind(this)));
-      app.get("/migrateTestItems", keycloak.protect(), this.catchAsync(this.getMigrateTestItems.bind(this)));
+      app.get("/migrateTestLocations", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.getMigrateTestLocations.bind(this)));
+      app.get("/migrateTestCategories", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.getMigrateTestCategories.bind(this)));
+      app.get("/migrateTestItems", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.getMigrateTestItems.bind(this)));
     }
 
     async getMigrateTestLocations(req, res) {
@@ -141,6 +142,7 @@
             "currency": "EUR"
           });
 
+          const sellerId = this.getLoggedUserId(req);
           const unit = "kg";
           const amount = Math.round(Math.random() * 100);
           const payloadData = {
@@ -153,7 +155,9 @@
             unit: unit,
             visibleToUsers: [],
             visibilityLimited: false,
-            amount: amount
+            amount: amount,
+            soldAmount: 0,
+            sellerId: sellerId
           };
           
           const payload = Item.constructFromObject(payloadData);

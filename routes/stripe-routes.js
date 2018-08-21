@@ -11,6 +11,10 @@
   const fetch = require("node-fetch");
   const { URLSearchParams } = require("url");
   const keycloakAdmin = require(`${__dirname}/../keycloak-admin`);
+  const ApiClient = require(`${__dirname}/../api-client`);
+  const Stripe = require('stripe');
+  const stripe = Stripe(config.get("stripe:secret-key"));
+
   
   /*
    * Stripe routes
@@ -28,6 +32,7 @@
       
       app.get("/stripe/onboard", [ keycloak.protect() ], this.catchAsync(this.stripeOnBoardGet.bind(this)));
       app.get("/stripe/onboardreturn", [ keycloak.protect() ], this.catchAsync(this.stripeOnBoardReturnGet.bind(this)));
+      app.post("/ajax/stripe/purchase/:itemId", [ keycloak.protect() ], this.catchAsync(this.stripePurchaseItemGet.bind(this)));
     }
 
     /**
@@ -105,6 +110,75 @@
         }
 
       }
+    }
+
+    /**
+     * Handles Stripe onboard return request
+     * 
+     * @param {Express.Request} req client request object
+     * @param {Express.Response} res server response object
+     **/
+    async stripePurchaseItemGet(req, res) {
+      const itemId = req.params.itemId;
+      const token = req.body.token;
+      const units = req.body.units;
+
+      if (!itemId || !token || !units) {
+        res.status(400).send("Missing reequired parameters");
+        return;
+      }
+
+      const apiClient = new ApiClient(await this.getToken(req));
+      const item = await apiClient.findItemById(itemId);
+      if (!item) {
+        res.status(400).send("missing item");
+        return;
+      }
+
+      const sellerId = item.sellerId;
+      if (!sellerId) {
+        res.status(400).send("missing seller id");
+        return;
+      }
+
+      const seller = await keycloakAdmin.findUser(sellerId);
+      if (!seller) {
+        res.status(400).send("missing seller");
+        return;
+      }
+
+      const stripeAccountId = keycloakAdmin.getSingleAttribute(seller, "stripe-account-id");
+      if (!stripeAccountId) {
+        res.status(400).send("Missing Stripe account");
+        return;
+      }
+
+      const amount = Math.round(units * parseFloat(item.unitPrice.price) * 100);
+      const currency = item.unitPrice.currency;
+
+      console.log({
+        amount: amount,
+        currency: currency,
+        source: token,
+        destination: {
+          account: stripeAccountId
+        }
+      });
+
+      await stripe.charges.create({
+        amount: amount,
+        currency: currency,
+        source: token,
+        destination: {
+          account: stripeAccountId
+        },
+        metadata: {
+          "item-id": item.id,
+          "item-quantity": units
+        }
+      });
+
+      res.send("ok");
     }
   }
 

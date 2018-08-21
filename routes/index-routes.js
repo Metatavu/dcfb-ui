@@ -23,6 +23,7 @@
       
       app.get("/", [ ], this.catchAsync(this.indexGet.bind(this)));
       app.get("/login", keycloak.protect(), this.catchAsync(this.loginGet.bind(this)));
+      app.get("/logout", keycloak.protect(), this.catchAsync(this.logoutGet.bind(this)));
     }
     
     /**
@@ -38,13 +39,24 @@
     }
     
     /**
-     * Handles / get request
+     * Handles /login get request
      * 
      * @param {http.ClientRequest} req client request object
      * @param {http.ServerResponse} res server response object
      **/
     async loginGet(req, res) {
       res.redirect("/");
+    }
+    
+    /**
+     * Handles /logout get request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     **/
+    async logoutGet(req, res) {
+      req.session.destroy();
+      res.redirect("/kclogout");
     }
     
   }

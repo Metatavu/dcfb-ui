@@ -28,9 +28,11 @@ mixin item-info(item, currentLocale)
               = " " + _LS(location.name)
           p
             = _LS(item.description)
+        
+        p
+          input.product-units(type="number",step=1)
         button.btn.btn-primary.buy-btn
           = __("item.purchase.button")
-          
       .col-4.col-sm-2.pt-2
         .result-side-details
           p
@@ -40,3 +42,4 @@ mixin item-info(item, currentLocale)
           p.item-location
             img.location-icon(src="/gfx/icons/location-icon-small.png")
             =item.location
+  input.stripe-details(type="hidden",value=stripeDetails)

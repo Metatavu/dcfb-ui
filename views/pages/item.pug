@@ -3,6 +3,7 @@ extends ../layout/default
 include ../fragments/item-info.pug
 
 block custom-head
+  script(defer="defer", src="https://checkout.stripe.com/checkout.js", type="text/javascript")
   script(defer="defer", src="/js/item.min.js", type="text/javascript")
   link(rel="stylesheet", href="/css/item-page.min.css")
 

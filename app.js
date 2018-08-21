@@ -67,7 +67,7 @@
   }));
 
   app.use(keycloak.middleware({
-    logout: "/logout"
+    logout: "/kclogout"
   }));
 
   app.set('trust proxy', true);

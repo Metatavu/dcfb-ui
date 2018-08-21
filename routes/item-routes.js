@@ -75,10 +75,20 @@
         res.status(404).send("Item not found");
         return;
       }
-      
+
+      const stripeDetails = {
+        itemId: item.id,
+        unitPrice: item.unitPrice,
+        publicKey: config.get("stripe:public-key"),
+        productDescription: res.locals._LS(item.title),
+        processingMessage: null,
+        successMessage: null
+      };
+
       res.render("pages/item", Object.assign({ 
         item: item, 
-        location: location 
+        location: location,
+        stripeDetails: JSON.stringify(stripeDetails)
       }, await this.getCategoryDatas(categoriesApi)));
     }
     

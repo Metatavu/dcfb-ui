@@ -1,6 +1,7 @@
 (() => {
   "use strict";
 
+  const _ = require("lodash");
   const config = require("nconf");
   const KeycloakAdminClient = require("keycloak-admin-client");
   const log4js = require("log4js");
@@ -34,6 +35,28 @@
       const client = await this.getClient();
       return client.users.find(config.get("keycloak-admin:realm"), { userId: id });
     }    
+
+    /**
+     * Returns single user attribute
+     * 
+     * @param {Object} user Keycloak user
+     * @param {String[]} names attribute name or names
+     * @return {String} attribute value or null if not found
+     */
+    getSingleAttribute(user, names) {
+      const attributes = user.attributes || {};
+      const nameAttr = _.isArray(names) ? names : [ names ];
+      for (let i = 0; i < nameAttr.length; i++) {
+        const name = nameAttr[i];        
+        const values = _.isArray(attributes[name]) ? _.compact(attributes[name]) : [];
+
+        if (values.length === 1) {
+          return values[0];
+        }
+      }
+      
+      return null;
+    }
 
     /**
      * Sets single user attribute
