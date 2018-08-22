@@ -11,6 +11,7 @@
   const LocationRoutes = require(`${__dirname}/location-routes`);
   const CategoryRoutes = require(`${__dirname}/category-routes`);
   const MigrateRoutes = require(`${__dirname}/migrate-routes`);
+  const StripeRoutes = require(`${__dirname}/stripe-routes`);
   
   /**
    * Routes
@@ -31,6 +32,7 @@
       new LocationRoutes(app, keycloak);
       new CategoryRoutes(app, keycloak);
       new MigrateRoutes(app, keycloak);
+      new StripeRoutes(app, keycloak);
     }
   }
 

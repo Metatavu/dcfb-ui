@@ -14,6 +14,7 @@
   const Image = DcfbApiClient.Image;
   const i18n = require("i18n");
   const imageUploads = require(`${__dirname}/../images/uploads`);
+  const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
 
   /**
    * Item routes
@@ -31,8 +32,8 @@
       
       app.get("/ajax/searchItems", [ ], this.catchAsync(this.searchItemsGet.bind(this)));
       app.get("/item/:id", [ ], this.catchAsync(this.itemGet.bind(this)));
-      app.get("/add/item", [ keycloak.protect() ], this.catchAsync(this.addItemGet.bind(this)));
-      app.post("/add/item", [ keycloak.protect() ], this.catchAsync(this.addItemPost.bind(this)));
+      app.get("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemGet.bind(this)));
+      app.post("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemPost.bind(this)));
     }
 
     /**
@@ -69,15 +70,27 @@
       const locationsApi = apiClient.getLocationsApi();
       const item = await apiClient.findItemById(itemId);
       const location = await locationsApi.findLocation(item.locationId);
+      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
 
       if (!item) {
         res.status(404).send("Item not found");
         return;
       }
-      
+
+      const stripeDetails = {
+        itemId: item.id,
+        unitPrice: item.unitPrice,
+        publicKey: config.get("stripe:public-key"),
+        productDescription: res.locals._LS(item.title),
+        processingMessage: res.__("item.purchase.processing-message"),
+        successMessage:  res.__("item.purchase.success-message")
+      };
+
       res.render("pages/item", Object.assign({ 
         item: item, 
-        location: location 
+        itemsLeft: itemsLeft,
+        location: location,
+        stripeDetails: JSON.stringify(stripeDetails)
       }, await this.getCategoryDatas(categoriesApi)));
     }
     
@@ -164,7 +177,7 @@
       }
 
       res.send({
-        "message": i18n.__('add-item.created-message'), 
+        "message": res.__("add-item.created-message"), 
         "location": `/item/${createdItem.id}`
       });
     }

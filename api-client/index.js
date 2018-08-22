@@ -86,6 +86,32 @@
     }
 
     /**
+     * Creates item reservation and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {DcfbApiClient.ItemReservation} itemReservation itemReservation object
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
+    async createItemReservation(itemId, itemReservation, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const itemsApi = this.getItemsApi();
+      try {
+        return await itemsApi.createItemReservation(itemId, itemReservation);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.createItemReservation(itemId, itemReservation, true);
+      }
+    }
+
+    /**
      * Creates category and retries request if 401 or 403 response is received with www-authenticate header
      * 
      * @param {DcfbApiClient.Category} category category object

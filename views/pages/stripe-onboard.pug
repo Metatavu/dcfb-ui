@@ -1,0 +1,17 @@
+extends ../layout/form
+
+include ../fragments/add-item-form.pug
+
+block custom-head
+  link(rel="stylesheet", href="//cdn.metatavu.io/assets/stripe/connect-button.css")
+
+block body
+  .form-header.text-center
+    h2
+      =__("stripe.onboard-header")
+  .container.form-container.add-item-form-container
+    p
+      =__("stripe.onboard-text")
+    a.stripe-connect(href=stripeLink)
+      span
+         =__("stripe.onboard-link")
