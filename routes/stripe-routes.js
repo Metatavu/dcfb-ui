@@ -82,7 +82,7 @@
 
           const livemode = data["livemode"];
 
-          if (config.get("stripe:livemode") !== livemode)  {
+          if (config.get("stripe:livemode") !== livemode) {
             res.status(500).send("Stripe livemode mismatch");  
             return;
           }
@@ -92,7 +92,7 @@
           const loggedUserId = this.getLoggedUserId(req);
           const user = await keycloakAdmin.findUser(loggedUserId);
           
-          if (!user) {
+          if (!user) {
             res.status(500).send("Failed to find user");  
             return;
           }
@@ -125,7 +125,7 @@
       const token = req.body.token;
       const units = parseInt(req.body.units);
 
-      if (!itemId || !token || !units) {
+      if (!itemId || !token || !units) {
         res.status(400).send("Missing reequired parameters");
         return;
       }
