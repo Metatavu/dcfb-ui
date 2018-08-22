@@ -15,7 +15,7 @@
 
       this.stripeHandler = StripeCheckout.configure({
         key: this.stripeDetails.publicKey,
-        image: 'https://cdn.metatavu.io/assets/mansyns/logo-small.png',
+        image: "https://cdn.metatavu.io/assets/mansyns/logo-small.png",
         locale: getCurrentLocale(),
         token: this.onStripeToken.bind(this)
       });
@@ -26,8 +26,8 @@
     }
 
     async onStripeToken(token) {
-      const processingMessage = this.stripeDetails.processingMessage || "Processing your payment...";
-      const successMessage = this.stripeDetails.successMessage|| "Thank you for your purchase";
+      const processingMessage = this.stripeDetails.processingMessage || "Processing your payment...";
+      const successMessage = this.stripeDetails.successMessage || "Thank you for your purchase";
 
       const loadNoty = new Noty({
         theme: "bootstrap-v4",
@@ -97,7 +97,7 @@
     onProductUnitsInputChange(event) {
       event.preventDefault();
       const input = $(".product-units");
-      let value = parseInt(input.val()) || 0;
+      let value = parseInt(input.val()) || 0;
       const max = input.attr("max");
 
       if (value > max) {
