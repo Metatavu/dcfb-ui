@@ -137,10 +137,6 @@
         return;
       }
 
-      const itemReservation = await apiClient.createItemReservation(itemId, ItemReservation.constructFromObject({
-        amount: units
-      }));
-
       const sellerId = item.sellerId;
       if (!sellerId) {
         res.status(400).send("missing seller id");
@@ -158,6 +154,10 @@
         res.status(400).send("Missing Stripe account");
         return;
       }
+
+      const itemReservation = await apiClient.createItemReservation(itemId, ItemReservation.constructFromObject({
+        amount: units
+      }));
 
       const amount = Math.round(units * parseFloat(item.unitPrice.price) * 100);
       const currency = item.unitPrice.currency;
