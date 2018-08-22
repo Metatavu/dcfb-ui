@@ -177,7 +177,7 @@
       }
 
       res.send({
-        "message": res.__('add-item.created-message'), 
+        "message": res.__("add-item.created-message"), 
         "location": `/item/${createdItem.id}`
       });
     }
