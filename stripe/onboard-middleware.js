@@ -15,8 +15,8 @@
       return;
     }
 
-    const accessToken = kauth.grant.access_token.content || {};
-    const stripe = accessToken["stripe"] || req.session.stripe || {};
+    const accessToken = kauth.grant.access_token.content || {};
+    const stripe = accessToken["stripe"] || req.session.stripe || {};
 
     if (!stripe.accountId) {
       res.redirect("/stripe/onboard");
@@ -25,5 +25,5 @@
     
     next();
   };
-  
+
 })();
