@@ -19,20 +19,27 @@ mixin item-info(item, currentLocale)
           = " / " + __("search-results.unit")
         .result-details
           p
-            = __("search-results.amount")
+            = __("search-results.in-stock")
+            | 
             b
-              = " " + item.amount + " " + item.unit
+              if itemsLeft > 0
+                = " " + itemsLeft + " " + item.unit
+              else
+                span.out-of-stock
+                  = __("search-results.out-of-stock")
           p
             = __("search-results.location")
             b
               = " " + _LS(location.name)
           p
             = _LS(item.description)
-        
-        p
-          input.product-units(type="number",step=1)
-        button.btn.btn-primary.buy-btn
-          = __("item.purchase.button")
+        if itemsLeft > 0
+          p
+            = __("item.purchase.units") 
+            span.ml-2
+            input.product-units(type="number",step=1,min=1,max=itemsLeft, required=true,placeholder=__("item.purchase.units-placeholder"))
+          button.btn.btn-primary.buy-btn(disabled=true)
+            = __("item.purchase.button")
       .col-4.col-sm-2.pt-2
         .result-side-details
           p

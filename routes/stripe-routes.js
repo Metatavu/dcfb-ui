@@ -14,6 +14,8 @@
   const ApiClient = require(`${__dirname}/../api-client`);
   const Stripe = require('stripe');
   const stripe = Stripe(config.get("stripe:secret-key"));
+  const DcfbApiClient = require("dcfb-api-client");
+  const ItemReservation = DcfbApiClient.ItemReservation;
 
   
   /*
@@ -121,7 +123,7 @@
     async stripePurchaseItemGet(req, res) {
       const itemId = req.params.itemId;
       const token = req.body.token;
-      const units = req.body.units;
+      const units = parseInt(req.body.units);
 
       if (!itemId || !token || !units) {
         res.status(400).send("Missing reequired parameters");
@@ -134,6 +136,10 @@
         res.status(400).send("missing item");
         return;
       }
+
+      const itemReservation = await apiClient.createItemReservation(itemId, ItemReservation.constructFromObject({
+        amount: units
+      }));
 
       const sellerId = item.sellerId;
       if (!sellerId) {
@@ -156,15 +162,6 @@
       const amount = Math.round(units * parseFloat(item.unitPrice.price) * 100);
       const currency = item.unitPrice.currency;
 
-      console.log({
-        amount: amount,
-        currency: currency,
-        source: token,
-        destination: {
-          account: stripeAccountId
-        }
-      });
-
       await stripe.charges.create({
         amount: amount,
         currency: currency,
@@ -173,8 +170,7 @@
           account: stripeAccountId
         },
         metadata: {
-          "item-id": item.id,
-          "item-quantity": units
+          "item-reservation-id": itemReservation.id
         }
       });
 

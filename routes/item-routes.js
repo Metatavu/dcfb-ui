@@ -70,6 +70,7 @@
       const locationsApi = apiClient.getLocationsApi();
       const item = await apiClient.findItemById(itemId);
       const location = await locationsApi.findLocation(item.locationId);
+      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
 
       if (!item) {
         res.status(404).send("Item not found");
@@ -81,12 +82,13 @@
         unitPrice: item.unitPrice,
         publicKey: config.get("stripe:public-key"),
         productDescription: res.locals._LS(item.title),
-        processingMessage: null,
-        successMessage: null
+        processingMessage: res.__("item.purchase.processing-message"),
+        successMessage:  res.__("item.purchase.success-message")
       };
 
       res.render("pages/item", Object.assign({ 
         item: item, 
+        itemsLeft: itemsLeft,
         location: location,
         stripeDetails: JSON.stringify(stripeDetails)
       }, await this.getCategoryDatas(categoriesApi)));
@@ -175,7 +177,7 @@
       }
 
       res.send({
-        "message": i18n.__('add-item.created-message'), 
+        "message": res.__('add-item.created-message'), 
         "location": `/item/${createdItem.id}`
       });
     }

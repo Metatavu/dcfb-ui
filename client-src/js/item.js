@@ -15,13 +15,14 @@
 
       this.stripeHandler = StripeCheckout.configure({
         key: this.stripeDetails.publicKey,
-        image: 'https://cdn.metatavu.io/assets/mansyns/logo.png',
+        image: 'https://cdn.metatavu.io/assets/mansyns/logo-small.png',
         locale: getCurrentLocale(),
         token: this.onStripeToken.bind(this)
       });
 
       $(document).on("click", ".item-info .result-sm-img", this.onItemInfoSmallImageClick.bind(this));
       $(document).on("click", ".buy-btn", this.onItemBuyClick.bind(this));
+      $(document).on("change", ".product-units", this.onProductUnitsInputChange.bind(this));
     }
 
     async onStripeToken(token) {
@@ -47,9 +48,10 @@
 
         new Noty({ 
           theme: "bootstrap-v4",
-          text: `<div class="p-4"><i class="p-2 fas fa-thumbs-up"></i> ${successMessage}</div>`,
+          text: `<div class="p-4">${successMessage}</div>`,
           layout: "center",
           type: "success",
+          timeout: 3000,
           closeWith: ["click", "button"],
           callbacks: {
             onClose: () => {
@@ -90,6 +92,24 @@
         amount: amount
       });
 
+    }
+
+    onProductUnitsInputChange(event) {
+      event.preventDefault();
+      const input = $(".product-units");
+      let value = parseInt(input.val()) || 0;
+      const max = input.attr("max");
+
+      if (value > max) {
+        value = max;
+        input.val(value);
+      }
+
+      if (value > 0) {
+        $(".buy-btn").removeAttr("disabled");
+      } else {
+        $(".buy-btn").attr("disabled", "disabled");
+      }
     }
 
   }
