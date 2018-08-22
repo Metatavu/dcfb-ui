@@ -12,7 +12,7 @@
   const { URLSearchParams } = require("url");
   const keycloakAdmin = require(`${__dirname}/../keycloak-admin`);
   const ApiClient = require(`${__dirname}/../api-client`);
-  const Stripe = require('stripe');
+  const Stripe = require("stripe");
   const stripe = Stripe(config.get("stripe:secret-key"));
   const DcfbApiClient = require("dcfb-api-client");
   const ItemReservation = DcfbApiClient.ItemReservation;
