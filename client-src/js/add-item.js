@@ -32,7 +32,7 @@
         fileInput: "#images",
         filesContainer: ".upload-files",
         addFileButton: ".upload-add-file-button",
-        hiddenInput: "[name="images"]"
+        hiddenInput: "[name='images']"
       });
 
       $("form").submit(this.onFormSubmit.bind(this));
