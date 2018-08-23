@@ -32,12 +32,18 @@
      **/
     async searchGet(req, res) {
       const categoryIds = req.query.category ? [ req.query.category ] : null;
-      
+      const search = req.query.search || null;
+      const nearLat = req.query.nearLat || null;
+      const nearLon = req.query.nearLon || null;
+
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
       const itemsApi = apiClient.getItemsApi();
       const locationsApi = apiClient.getLocationsApi();
       const items = await itemsApi.listItems({
+        search: search,
+        nearLat: nearLat,
+        nearLon: nearLon,
         categoryIds: categoryIds
       });
 

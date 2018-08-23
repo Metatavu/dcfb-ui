@@ -85,6 +85,8 @@
     next();
   });
 
+  app.locals.googleApiKey = config.get("google:apikey");
+
   app.use((req, res, next) => {
     res.locals._L = (localizedValues, type) => {
       if (!localizedValues) {

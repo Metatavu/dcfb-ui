@@ -12,6 +12,7 @@
   const LocalizedValue = DcfbApiClient.LocalizedValue;
   const Price = DcfbApiClient.Price;
   const Image = DcfbApiClient.Image;
+  const Location = DcfbApiClient.Location;
   const i18n = require("i18n");
   const imageUploads = require(`${__dirname}/../images/uploads`);
   const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
@@ -113,9 +114,8 @@
      * @param {http.ServerResponse} res server response object
      */
     async addItemPost(req, res) {
-      const requiredFields = ["location-id", "category-id", "type", "title-fi", "description-fi", "unit-price", "unit", "amount"];
-
-      const locationId = req.body["location-id"];
+      const requiredFields = ["category-id", "type", "title-fi", "description-fi", "unit-price", "unit", "amount"];
+      const locationData = req.body.location;
       const categoryId = req.body["category-id"];
       const type = req.body["type"];
       const expiresAt = req.body["expires"];
@@ -153,10 +153,39 @@
         });
       }
 
+      if (!locationData) {
+        return res.status(400).send({
+          "message": "Location is required"
+        });
+      }
+
+      const locationName = [{
+        "language": "en",
+        "value": locationData.name,
+        "type": "SINGLE"
+      }];
+
+      const coordinates = {
+        crs: "epsg4326",
+        latitude: locationData.coordinates.lat,
+        longitude: locationData.coordinates.lng
+      };
+
+      const address = this.parseAddress(locationData.addressComponents);
+      const location = Location.constructFromObject({
+        name: locationName,
+        coordinate: coordinates,
+        address: address
+      });
+      
+      const apiClient = new ApiClient(await this.getToken(req));
+      const locationsApi = apiClient.getLocationsApi();
+      const createdLocation = await locationsApi.createLocation(location);
+      const locationId = createdLocation.id;
       const title = this.constructLocalizedFromPostBody(req.body, "title");
       const description = this.constructLocalizedFromPostBody(req.body, "description");
-      const apiClient = new ApiClient(await this.getToken(req));
       const itemsApi = apiClient.getItemsApi();
+
       const item = Item.constructFromObject({
         "title": title,
         "description": description,
@@ -168,7 +197,8 @@
         "amount": amount,
         "images": images,
         "visibleToUsers": allowedUserIds,
-        "visibilityLimited": visibilityLimited
+        "visibilityLimited": visibilityLimited,
+        "sellerId": this.getLoggedUserId(req)
       });
 
       const createdItem = await itemsApi.createItem(item);
@@ -205,6 +235,34 @@
         .filter((value) => !!value);
     }
     
+    parseAddress(addressComponents) {
+      if (!Array.isArray(addressComponents)) {
+        return {};
+      }
+
+      return {
+        streetAddress: `${this.getAddressComponent(addressComponents, "route")} ${this.getAddressComponent(addressComponents, "street_number")}`,
+        postalCode: this.getAddressComponent(addressComponents, "postal_code"),
+        postOffice: this.getAddressComponent(addressComponents, "locality"),
+        country: this.getAddressComponent(addressComponents, "country")
+      };
+    }
+
+    getAddressComponent(components, name) {
+      if (!Array.isArray(components)) {
+        return null;
+      }
+
+      for(let i = 0; i < components.length; i++) {
+        let component = components[i];
+        if (component.types.indexOf(name) > -1) {
+          return component.long_name;
+        }
+      }
+
+      return null;
+    }
+
   }
 
   module.exports = ItemRoutes;
