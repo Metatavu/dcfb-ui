@@ -34,7 +34,7 @@
       const categoryIds = req.query.category ? [ req.query.category ] : null;
       const search = req.query.search || null;
       const nearLat = req.query.nearLat || null;
-      const nearLon = req.query.nearLon || null;
+      const nearLon = req.query.nearLon || null;
 
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();

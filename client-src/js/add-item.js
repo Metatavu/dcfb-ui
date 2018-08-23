@@ -17,8 +17,8 @@
         altFormat: "d.m.Y"
       });
 
-      this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById('inputLocation')),{
-        types: ['geocode']
+      this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById("inputLocation")),{
+        types: ["geocode"]
       });
 
       new Autocomplete($("#inputCategory"), {
@@ -32,7 +32,7 @@
         fileInput: "#images",
         filesContainer: ".upload-files",
         addFileButton: ".upload-add-file-button",
-        hiddenInput: "[name='images']"
+        hiddenInput: "[name="images"]"
       });
 
       $("form").submit(this.onFormSubmit.bind(this));
@@ -64,7 +64,6 @@
       
       const place = this.locationAutocomplete.getPlace();
       if (!place) {
-        console.log("missing place");
         return;
       }
       const locationName = place.formatted_address;

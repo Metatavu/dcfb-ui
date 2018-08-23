@@ -4,9 +4,9 @@
   class Common {
 
     constructor() {
-      $(document).on('click', '#search-execute-btn', this.onSearchBtnClick.bind(this));
-      this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById('search-location-input')),{
-        types: ['geocode']
+      $(document).on("click", "#search-execute-btn", this.onSearchBtnClick.bind(this));
+      this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById("search-location-input")),{
+        types: ["geocode"]
       });
     }
 
