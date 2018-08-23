@@ -9,18 +9,18 @@ mixin search()
             =__("search.title")
       .row.no-gutters
         .col-lg-4.py-2.py-lg-0.pr-lg-1
-          input.search-input.form-control.form-control-lg.py-2(name="search-freetext", type="text", placeholder=__("search.freetext.placeholder"))
+          input#search-freetext-input.search-input.form-control.form-control-lg.py-2(name="search-freetext", type="text", placeholder=__("search.freetext.placeholder"))
         .col-lg.py-2.py-lg-0.pr-lg-1
-          select.search-input.form-control.form-control-lg.py-2(name="search-category")
+          select#search-category-input.search-input.form-control.form-control-lg.py-2(name="search-category")
             option(value="")
               =__("search.category.placeholder")
             each category in allCategories
               option(value=category.id)
                 = _LS(category.title)
         .col-lg.py-2.py-lg-0.pr-lg-1
-          input.search-input.form-control.form-control-lg.py-2(name="search-location", type="text", placeholder=__("search.location.placeholder"))
+          input#search-location-input.search-input.form-control.form-control-lg.py-2(name="search-location", type="text", placeholder=__("search.location.placeholder"))
         .col-lg-2.pt-5.pb-3.pt-lg-0.pb-lg-0.pr-lg-1.pl-lg-1.text-center.text-lg-left
-          a.btn.btn-success.search-btn.btn-lg.search-btn(href="/search")
+          a#search-execute-btn.btn.btn-success.search-btn.btn-lg(href="#")
             =__("search.button.text")
       .row.no-gutters
         .col

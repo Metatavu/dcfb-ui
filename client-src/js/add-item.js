@@ -17,9 +17,8 @@
         altFormat: "d.m.Y"
       });
 
-      new Autocomplete($("#inputLocation"), {
-        minLength: 1,
-        source: this.searchLocations.bind(this) 
+      this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById('inputLocation')),{
+        types: ['geocode']
       });
 
       new Autocomplete($("#inputCategory"), {
@@ -63,12 +62,34 @@
       event.preventDefault();
       const form = $(event.target);
       
+      const place = this.locationAutocomplete.getPlace();
+      if (!place) {
+        console.log("missing place");
+        return;
+      }
+      const locationName = place.formatted_address;
+      const addressComponents = place.address_components;
+      const latitude = place.geometry.location.lat();
+      const longitude = place.geometry.location.lng();
+
+      if (!locationName) {
+        return;
+      }
+
       form.find(".btn").attr("disabled", "disabled");
       const data = form.serializeArray().reduce((map, item) => {
         map[item.name] = item.value;
         return map;
       }, {});
 
+      data.location = {
+        name: locationName,
+        addressComponents: addressComponents,
+        coordinates: {
+          lat: latitude,
+          lng: longitude
+        }
+      };
 
       try {
         const response = await postJSON("/add/item", data);
