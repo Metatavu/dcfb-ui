@@ -67,21 +67,8 @@
     async adminAjaxCategoriesGet(req, res) {
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
-      const allCategories = await categoriesApi.listCategories({
-        maxResults: 1000
-      });
-      const rootCategories = [];
-      const childCategories = {};
-      allCategories.forEach((category) => {
-        if (!category.parentId) {
-          rootCategories.push(category);
-        } else {
-          childCategories[category.parentId] = childCategories[category.parentId] || [];
-          childCategories[category.parentId].push(category);
-        }
-      });
 
-      res.send(rootCategories.map(rootCategory => this.processCategoryData(rootCategory, childCategories)));
+      res.send(await this.getCategoryTree(categoriesApi, null, "name", "children", req));
     }
 
     /**
@@ -121,21 +108,6 @@
       const apiClient = new ApiClient(await this.getToken(req));
       await apiClient.deleteCategory(categoryId);
       res.send(204);
-    }
-
-    /**
-     * Creates tree - like presentation from categories
-     * 
-     * @param {DcfbApiClient.Category} category category object
-     * @param {object} childCategories child category map
-     */
-    processCategoryData(category, childCategories) {
-      return {
-        id: category.id,
-        name: category.slug,
-        category: category,
-        children: childCategories[category.id] ? childCategories[category.id].map(childCategory => this.processCategoryData(childCategory, childCategories)) : []
-      };
     }
 
     categoryManagementGet(req, res) {

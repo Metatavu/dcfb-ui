@@ -92,7 +92,7 @@
         itemsLeft: itemsLeft,
         location: location,
         stripeDetails: JSON.stringify(stripeDetails)
-      }, await this.getCategoryDatas(categoriesApi)));
+      }, await this.getCategoryDatas(categoriesApi, req)));
     }
     
     /**

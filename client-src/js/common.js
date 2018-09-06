@@ -8,6 +8,11 @@
       this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById("search-location-input")),{
         types: ["geocode"]
       });
+
+      this.categorySelect = $("#search-category-input").comboTree({
+        source : JSON.parse($("#search-category-input").attr("data-source")),
+        isMultiple: false
+      });
     }
 
     onSearchBtnClick() {
@@ -18,8 +23,10 @@
         params.nearLon = place.geometry.location.lng();
       }
 
-      if ($("#search-category-input").val()) {
-        params.category = $("#search-category-input").val();
+      if (this.categorySelect.getSelectedItemsId()) {
+        const categoryFilter = this.categorySelect.getSelectedItemsId();
+        
+        params.category = Array.isArray(categoryFilter) ? categoryFilter.join(",") : categoryFilter;
       }
 
       if ($("#search-freetext-input").val()) {

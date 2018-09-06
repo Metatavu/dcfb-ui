@@ -23,8 +23,8 @@
   const Routes = require(`${__dirname}/routes`);
   
   const LOCALE_COOKIE = "dcfb-locale";
-  const SUPPORTED_LOCALES = ["en", "fi"];
-  
+  const localeHelpers = require(`${__dirname}/util/locale-helpers`);
+
   if (config.get("logging")) {
     log4js.configure(config.get("logging"));
   }
@@ -42,7 +42,7 @@
 
   app.use((req, res, next) => {
     const lang = req.query["lang"];
-    if (lang && SUPPORTED_LOCALES.indexOf(lang) > -1) {
+    if (lang && localeHelpers.SUPPORTED_LOCALES.indexOf(lang) > -1) {
       res.cookie(LOCALE_COOKIE, lang, { maxAge: 900000, httpOnly: true });
     }
 
@@ -50,7 +50,7 @@
   });
 
   i18n.configure({
-    locales: SUPPORTED_LOCALES,
+    locales: localeHelpers.SUPPORTED_LOCALES,
     directory: `${__dirname}/locales`,
     defaultLocale: "en",
     autoReload: false,
@@ -87,39 +87,16 @@
 
   app.locals.googleApiKey = config.get("google:apikey");
 
+
   app.use((req, res, next) => {
     res.locals._L = (localizedValues, type) => {
-      if (!localizedValues) {
-        return "Locale entry not found"
-      }
-
-      const desiredLocale = req.getLocale();
-      const typeMatches = localizedValues.filter((localizedValue) => {
-        return localizedValue.type === type; 
-      });
-
-      const desiredMatches = typeMatches.filter((typeMatch) => {
-        return typeMatch.language === desiredLocale;
-      });
-
-      if (desiredMatches.length === 1) {
-        return desiredMatches[0].value;
-      }
-
-      typeMatches.sort((typeMatch) => {
-        const localeIndex = SUPPORTED_LOCALES.indexOf(typeMatch.language);
-        return localeIndex === -1 ? Number.MAX_SAFE_INTEGER : localeIndex;
-      });
-
-      return typeMatches.length ? typeMatches[0].value : "";
-    };
-
+      return localeHelpers._L(localizedValues, type, req); 
+    }; 
     res.locals._LS = (localizedValues) => {
-      return res.locals._L(localizedValues, "SINGLE");
+      return localeHelpers._LS(localizedValues, req);
     };
-    
     res.locals._LP = (localizedValues) => {
-      return res.locals._L(localizedValues, "PLURAL");
+      return localeHelpers._LP(localizedValues, req);
     };
 
     next();

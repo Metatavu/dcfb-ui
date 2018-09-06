@@ -62,7 +62,7 @@
       res.render("pages/results", Object.assign({ 
         items: items,
         locationMap: locationMap
-      }, await this.getCategoryDatas(categoriesApi)));
+      }, await this.getCategoryDatas(categoriesApi, req)));
     }
     
   }
