@@ -23,8 +23,8 @@
   const Routes = require(`${__dirname}/routes`);
   
   const LOCALE_COOKIE = "dcfb-locale";
-  const SUPPORTED_LOCALES = ["en", "fi"];
-  
+  const localeHelpers = require(`${__dirname}/util/locale-helpers`);
+
   if (config.get("logging")) {
     log4js.configure(config.get("logging"));
   }
@@ -42,7 +42,7 @@
 
   app.use((req, res, next) => {
     const lang = req.query["lang"];
-    if (lang && SUPPORTED_LOCALES.indexOf(lang) > -1) {
+    if (lang && localeHelpers.SUPPORTED_LOCALES.indexOf(lang) > -1) {
       res.cookie(LOCALE_COOKIE, lang, { maxAge: 900000, httpOnly: true });
     }
 
@@ -50,7 +50,7 @@
   });
 
   i18n.configure({
-    locales: SUPPORTED_LOCALES,
+    locales: localeHelpers.SUPPORTED_LOCALES,
     directory: `${__dirname}/locales`,
     defaultLocale: "en",
     autoReload: false,
@@ -87,7 +87,6 @@
 
   app.locals.googleApiKey = config.get("google:apikey");
 
-  const localeHelpers = require(`${__dirname}/util/locale-helpers`);
 
   app.use((req, res, next) => {
     res.locals._L = (localizedValues, type) => {
@@ -95,10 +94,10 @@
     }; 
     res.locals._LS = (localizedValues) => {
       return localeHelpers._LS(localizedValues, req);
-    }
+    };
     res.locals._LP = (localizedValues) => {
       return localeHelpers._LP(localizedValues, req);
-    }
+    };
 
     next();
   });

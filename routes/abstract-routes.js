@@ -67,13 +67,6 @@
         }
       });
 
-      let categoryTree = {};
-      try {
-        categoryTree = await this.getCategoryTree(null, allCategories, "title", "subs", req);
-      } catch (err) {
-        console.log(err);
-      }
-
       return {
         indexCategories: indexCategories,
         allCategories: allCategories,
@@ -81,7 +74,7 @@
         footerSideCategories: footerSideCategories,
         childCategories: childCategories,
         categoryMap: categoryMap,
-        categoryTree: categoryTree
+        categoryTree: await this.getCategoryTree(null, allCategories, "title", "subs", req)
       };
     }
 

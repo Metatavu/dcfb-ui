@@ -1,6 +1,10 @@
+const SUPPORTED_LOCALES = ["en", "fi"];
+
+exports.SUPPORTED_LOCALES = SUPPORTED_LOCALES; 
+
 exports._L = (localizedValues, type, req) => {
   if (!localizedValues) {
-    return "Locale entry not found"
+    return "Locale entry not found";
   }
 
   const desiredLocale = req.getLocale();

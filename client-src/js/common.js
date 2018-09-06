@@ -26,7 +26,7 @@
       if (this.categorySelect.getSelectedItemsId()) {
         const categoryFilter = this.categorySelect.getSelectedItemsId();
         
-        params.category = Array.isArray(categoryFilter) ? categoryFilter.join(",") : categoryFilter
+        params.category = Array.isArray(categoryFilter) ? categoryFilter.join(",") : categoryFilter;
       }
 
       if ($("#search-freetext-input").val()) {
