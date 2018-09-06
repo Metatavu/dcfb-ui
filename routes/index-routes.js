@@ -35,7 +35,7 @@
     async indexGet(req, res) {
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
-      res.render("pages/index", await this.getCategoryDatas(categoriesApi));
+      res.render("pages/index", await this.getCategoryDatas(categoriesApi, req));
     }
     
     /**

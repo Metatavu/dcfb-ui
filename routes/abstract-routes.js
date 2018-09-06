@@ -8,6 +8,7 @@
   const log4js = require("log4js");
   const logger = log4js.getLogger(`${__dirname}/${__filename}`);
   const anonymousAuth = require(`${__dirname}/../anonymous-auth`);
+  const localeHelpers = require(`${__dirname}/../util/locale-helpers`);
 
   /**
    * Abstract base class for all route classes
@@ -28,11 +29,14 @@
     /**
      * Returns category data for rendering main views
      * 
-     * @param {CategoriesApi} categoriesApi 
+     * @param {CategoriesApi} categoriesApi
+     * @param {Object} http request
      * @return {Promise} promise for category datas
      */
-    async getCategoryDatas(categoriesApi) {
-      const allCategories = await categoriesApi.listCategories();
+    async getCategoryDatas(categoriesApi, req) {
+      const allCategories = await categoriesApi.listCategories({
+        maxResults: 1000
+      });
 
       const indexCategories = [];
       const footerMainCategories = [];
@@ -63,13 +67,73 @@
         }
       });
 
+      let categoryTree = {};
+      try {
+        categoryTree = await this.getCategoryTree(null, allCategories, "title", "subs", req);
+      } catch (err) {
+        console.log(err);
+      }
+
       return {
         indexCategories: indexCategories,
         allCategories: allCategories,
         footerMainCategories: footerMainCategories,
         footerSideCategories: footerSideCategories,
         childCategories: childCategories,
-        categoryMap: categoryMap
+        categoryMap: categoryMap,
+        categoryTree: categoryTree
+      };
+    }
+
+    /**
+     * Created tree presentation from categories, either categoriesApi or List of categories must be provided
+     * If both are provided, categoryList will be ignored and new list fetched from api
+     *  
+     * @param {DcfbApiClient.CategoriesApi} categoriesApi initialized categories api, if specified categories will be listed from api and category list parameter is ignored
+     * @param {[DcfbApiClient.Category]} categoryList if categoriesApi parameter is not displayed category list parameter is expected to be ready list of categories.
+     * @param {string} nameProperty property that name should be displayed
+     * @param {string} childrenProperty property that category children should be displayed
+     * @param {object} req http request
+     */
+    async getCategoryTree(categoriesApi, categoryList, nameProperty, childrenProperty, req) {
+      let allCategories = null;
+      if (categoriesApi) {
+        allCategories = await categoriesApi.listCategories({
+          maxResults: 1000
+        });
+      } else {
+        allCategories = categoryList;
+      }
+
+      const rootCategories = [];
+      const childCategories = {};
+      allCategories.forEach((category) => {
+        if (!category.parentId) {
+          rootCategories.push(category);
+        } else {
+          childCategories[category.parentId] = childCategories[category.parentId] || [];
+          childCategories[category.parentId].push(category);
+        }
+      });
+
+      return rootCategories.map(rootCategory => this.processCategoryData(rootCategory, childCategories, nameProperty, childrenProperty, req));
+    }
+
+    /**
+     * Helper function for get category tree
+     * 
+     * @param {DcfbApiClient.Category} category category object
+     * @param {object} childCategories child category map
+     * @param {string} nameProperty property that category name should be displayed
+     * @param {string} childrenProperty property that category children should be displayed
+     * @param {object} req http request
+     */
+    processCategoryData(category, childCategories, nameProperty, childrenProperty, req) {
+      return {
+        id: category.id,
+        [nameProperty]: localeHelpers._LP(category.title, req),
+        category: category,
+        [childrenProperty]: childCategories[category.id] ? childCategories[category.id].map(childCategory => this.processCategoryData(childCategory, childCategories, nameProperty, childrenProperty, req)) : []
       };
     }
 
