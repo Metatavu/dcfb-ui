@@ -110,8 +110,11 @@
       res.send(204);
     }
 
-    categoryManagementGet(req, res) {
-      res.render("pages/category-management");
+    async categoryManagementGet(req, res) {
+      const apiClient = new ApiClient(await this.getToken(req));
+      const categoriesApi = apiClient.getCategoriesApi();
+
+      res.render("pages/category-management", {topMenuCategories: await this.getTopMenuCategories(categoriesApi, null)});
     }
   }
 

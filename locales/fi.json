@@ -61,6 +61,7 @@
   "admin.category.name-en-plural": "Nimi englanniksi - monikko",
   "admin.category.name-en-plural-placeholder": "Nimi englanniksi monikko muodossa",
   "admin.category.icon": "Ikoni",
+  "admin.category.ui-top-menu": "Näytä ylävalikossa",
   "admin.category.ui-index-page": "Näytä bannerissa",
   "admin.category.ui-footer-side": "Näytä alatunnisteessa",
   "admin.category.button.add": "Lisää kategoria",

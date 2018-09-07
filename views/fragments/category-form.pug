@@ -22,6 +22,10 @@ input#category-id(type="hidden", value=data.id)
     = __("admin.category.icon")
   input#meta-ui-icon.form-control(type='text',value=data.icon)
 .form-check
+  input#meta-ui-top-menu.form-check-input(type='checkbox', value='', checked=data.topmenu)
+  label.form-check-label(for="meta-ui-top-menu") 
+    = __("admin.category.ui-top-menu")
+.form-check
   input#meta-ui-index-page.form-check-input(type='checkbox', value='', checked=data.indexpage)
   label.form-check-label(for="meta-ui-index-page") 
     = __("admin.category.ui-index-page")

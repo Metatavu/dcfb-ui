@@ -61,6 +61,7 @@
   "admin.category.name-en-plural": "Name in english - plural format",
   "admin.category.name-en-plural-placeholder": "English name in plural format",
   "admin.category.icon": "Icon",
+  "admin.category.ui-top-menu": "Display in topmenu",
   "admin.category.ui-index-page": "Display in banner",
   "admin.category.ui-footer-side": "Display in footer",
   "admin.category.button.add": "Add category",
