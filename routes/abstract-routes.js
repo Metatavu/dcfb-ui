@@ -47,8 +47,8 @@
       allCategories.forEach((category) => {
         categoryMap[category.id] = category;
         const metas = category.meta||[];
-        const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true" }).length > 0;
-        const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true" }).length > 0;
+        const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true"; }).length > 0;
+        const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true"; }).length > 0;
 
         if (indexCategory) {
           indexCategories.push(category);
@@ -98,7 +98,7 @@
       const topMenuCategories = [];
       allCategories.forEach((category) => {
         const metas = category.meta||[];
-        const topMenuCategory = metas.filter((meta) => { return meta.key === "ui-top-menu" && meta.value === "true" }).length > 0;
+        const topMenuCategory = metas.filter((meta) => { return meta.key === "ui-top-menu" && meta.value === "true"; }).length > 0;
 
         if (topMenuCategory) {
           topMenuCategories.push(category);
