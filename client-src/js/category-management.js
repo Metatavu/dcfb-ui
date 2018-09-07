@@ -126,12 +126,21 @@
       const metas = [];
       
       const icon = this.formContainer.find("#meta-ui-icon").val();
+      const inTopMenu = this.formContainer.find("#meta-ui-top-menu").is(":checked");
       const inIndexPage = this.formContainer.find("#meta-ui-index-page").is(":checked");
       const inFooterSide = this.formContainer.find("#meta-ui-footer-side").is(":checked");
+
       if (icon) {
         metas.push({
           key: "ui-icon",
           value: icon
+        });
+      }
+
+      if (inTopMenu) {
+        metas.push({
+          key: "ui-top-menu",
+          value: inTopMenu
         });
       }
 
@@ -167,6 +176,7 @@
         data.nameensingle = getValueByLocaleAndType(category.title, "en", "SINGLE");
         data.nameenplural = getValueByLocaleAndType(category.title, "en", "PLURAL");
         data.icon = this.getCategoryMeta(category, "ui-icon");
+        data.topmenu = this.getCategoryMeta(category, "ui-top-menu") == "true";
         data.indexpage = this.getCategoryMeta(category, "ui-index-page") == "true";
         data.footerside = this.getCategoryMeta(category, "ui-footer-side") == "true";
         data.hasChildren = this.selectedNode.children.length > 0;

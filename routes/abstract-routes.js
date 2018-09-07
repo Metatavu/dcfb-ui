@@ -46,28 +46,28 @@
 
       allCategories.forEach((category) => {
         categoryMap[category.id] = category;
+        const metas = category.meta||[];
+        const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true"; }).length > 0;
+        const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true"; }).length > 0;
 
-        if (!category.parentId) {
-          const metas = category.meta||[];
-          const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true" }).length > 0;
-          const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true" }).length > 0;
-
-          if (indexCategory) {
-            indexCategories.push(category);
-          } 
-          
-          if (sideCategory) {
-            footerSideCategories.push(category); 
-          } else {
-            footerMainCategories.push(category);
-          }
+        if (indexCategory) {
+          indexCategories.push(category);
+        } 
+        
+        if (sideCategory) {
+          footerSideCategories.push(category); 
         } else {
+          footerMainCategories.push(category);
+        }
+
+        if (category.parentId) {
           childCategories[category.parentId] = childCategories[category.parentId] || [];
           childCategories[category.parentId].push(category);
         }
       });
 
       return {
+        topMenuCategories: await this.getTopMenuCategories(null, allCategories),
         indexCategories: indexCategories,
         allCategories: allCategories,
         footerMainCategories: footerMainCategories,
@@ -76,6 +76,36 @@
         categoryMap: categoryMap,
         categoryTree: await this.getCategoryTree(null, allCategories, "title", "subs", req)
       };
+    }
+
+    /**
+     * Gets list of top menu categories. Either categoriesApi or List of categories must be provided
+     * If both are provided, categoryList will be ignored and new list fetched from api
+     * 
+     * @param {DcfbApiClient.categoriesApi} categoriesApi categoriesApi initialized categories api, if specified categories will be listed from api and category list parameter is ignored
+     * @param {[DcfbApiClient.Category]} categoryList categoryList if categoriesApi parameter is not displayed category list parameter is expected to be ready list of categories.
+     */
+    async getTopMenuCategories(categoriesApi, categoryList) {
+      let allCategories = null;
+      if (categoriesApi) {
+        allCategories = await categoriesApi.listCategories({
+          maxResults: 1000
+        });
+      } else {
+        allCategories = categoryList;
+      }
+
+      const topMenuCategories = [];
+      allCategories.forEach((category) => {
+        const metas = category.meta||[];
+        const topMenuCategory = metas.filter((meta) => { return meta.key === "ui-top-menu" && meta.value === "true"; }).length > 0;
+
+        if (topMenuCategory) {
+          topMenuCategories.push(category);
+        }
+      });
+
+      return topMenuCategories;
     }
 
     /**

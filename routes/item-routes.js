@@ -102,8 +102,12 @@
      * @param {http.ServerResponse} res server response object
      **/
     async addItemGet(req, res) {
+      const apiClient = new ApiClient(await this.getToken(req));
+      const categoriesApi = apiClient.getCategoriesApi();
+
       res.render("pages/add-item", {
-        maxFileSize: config.get("images:max-file-size") || 2097152
+        maxFileSize: config.get("images:max-file-size") || 2097152,
+        topMenuCategories: await this.getTopMenuCategories(categoriesApi, null)
       });
     }
 

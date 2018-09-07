@@ -2,26 +2,15 @@ mixin top-menu()
   nav.navbar.navbar-expand-lg.fixed-top.navbar-light
     .container
       a.navbar-brand.pr-5(href="/")
-        img.img-fluid(src="/gfx/logo.png", alt="Mansys")
+        img.img-fluid(src="/gfx/logo.png", alt="Mansyns")
       button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarCollapse", aria-controls="navbarCollapse", aria-expanded="false", aria-label="Toggle navigation")
         span.navbar-toggler-icon
       #navbarCollapse.collapse.navbar-collapse
         ul.navbar-nav.mr-auto
-          li.nav-item
-            a.nav-link(href="#")
-              =__("top.menu.materials")
-          li.nav-item
-            a.nav-link(href="#")
-              =__("top.menu.services")
-          li.nav-item
-            a.nav-link(href="#")
-              =__("top.menu.workforce")
-          li.nav-item
-            a.nav-link(href="#")
-              =__("top.menu.logistics")
-          li.nav-item
-            a.nav-link(href="#")
-              =__("top.menu.about")
+          each topMenuCategory in topMenuCategories || []
+            li.nav-item
+              a.nav-link(href="/search?category="+ topMenuCategory.id)
+                =_LP(topMenuCategory.title)
         form.form-inline.mt-2.mt-md-0
           a.locale-btn.locale-btn-fi(href="/?lang=fi")
             img(src="/gfx/locale_fi.png")
