@@ -17,8 +17,9 @@
 
     const accessToken = kauth.grant.access_token.content || {};
     const stripe = accessToken["stripe"] || req.session.stripe || {};
+    const skipStripe = req.session.skipStripe || false;
 
-    if (!stripe.accountId) {
+    if (!stripe.accountId && !skipStripe) {
       res.redirect("/stripe/onboard");
       return;
     }

@@ -34,6 +34,7 @@
       
       app.get("/stripe/onboard", [ keycloak.protect() ], this.catchAsync(this.stripeOnBoardGet.bind(this)));
       app.get("/stripe/onboardreturn", [ keycloak.protect() ], this.catchAsync(this.stripeOnBoardReturnGet.bind(this)));
+      app.get("/stripe/skip", [ keycloak.protect() ], this.catchAsync(this.stripeSkipGet.bind(this)));
       app.post("/ajax/stripe/purchase/:itemId", [ keycloak.protect() ], this.catchAsync(this.stripePurchaseItemGet.bind(this)));
     }
 
@@ -47,7 +48,8 @@
       const clientId = config.get("stripe:client-id");
 
       res.render("pages/stripe-onboard", {
-        "stripeLink": `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write`
+        "stripeLink": `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${clientId}&scope=read_write`,
+        "stripeSkipLink": "/stripe/skip"
       });
     }
 
@@ -112,6 +114,17 @@
         }
 
       }
+    }
+
+    /**
+     * Handles Stripe skip request
+     * 
+     * @param {Express.Request} req client request object
+     * @param {Express.Response} res server response object
+     **/
+    async stripeSkipGet(req, res) {
+      req.session.skipStripe = true;
+      res.redirect("/add/item");
     }
 
     /**

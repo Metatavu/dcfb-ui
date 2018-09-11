@@ -9,6 +9,7 @@
   const ApiClient = require(`${__dirname}/../api-client`);
   const DcfbApiClient = require("dcfb-api-client");
   const Item = DcfbApiClient.Item;
+  const Meta = DcfbApiClient.Meta;
   const LocalizedValue = DcfbApiClient.LocalizedValue;
   const Price = DcfbApiClient.Price;
   const Image = DcfbApiClient.Image;
@@ -70,14 +71,19 @@
       const categoriesApi = apiClient.getCategoriesApi();
       const locationsApi = apiClient.getLocationsApi();
       const item = await apiClient.findItemById(itemId);
-      const location = await locationsApi.findLocation(item.locationId);
-      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
-
+      
       if (!item) {
         res.status(404).send("Item not found");
         return;
       }
 
+      const location = await locationsApi.findLocation(item.locationId);
+      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
+      const itemMeta = item.meta || {};
+
+      const allowPurchaseCreditCard = itemMeta['allow-purchase-credit-card'] === "true";
+      const allowPurchaseContactSeller = itemMeta['allow-purchase-contact-seller'] === "true";
+      
       const stripeDetails = {
         itemId: item.id,
         unitPrice: item.unitPrice,
@@ -91,7 +97,10 @@
         item: item, 
         itemsLeft: itemsLeft,
         location: location,
-        stripeDetails: JSON.stringify(stripeDetails)
+        stripeDetails: JSON.stringify(stripeDetails),
+        allowPurchaseCreditCard: allowPurchaseCreditCard,
+        allowPurchaseContactSeller: allowPurchaseContactSeller,
+        onlyContactSellerPurchases: !allowPurchaseCreditCard && allowPurchaseContactSeller
       }, await this.getCategoryDatas(categoriesApi, req)));
     }
     
@@ -102,12 +111,16 @@
      * @param {http.ServerResponse} res server response object
      **/
     async addItemGet(req, res) {
+      const accessToken = this.getAccessToken(req);
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
+      const stripe = accessToken["stripe"] || req.session.stripe || {};
+      const stripeActive = !!stripe.accountId;
 
       res.render("pages/add-item", {
         maxFileSize: config.get("images:max-file-size") || 2097152,
-        topMenuCategories: await this.getTopMenuCategories(categoriesApi, null)
+        topMenuCategories: await this.getTopMenuCategories(categoriesApi, null),
+        stripeActive: stripeActive
       });
     }
 
@@ -129,6 +142,7 @@
       const imageNames = req.body["images"];
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
+      const purchaseMethods = req.body.purchaseMethod || [];
 
       if (!imageNames) {
         return res.status(400).send({
@@ -189,6 +203,12 @@
       const title = this.constructLocalizedFromPostBody(req.body, "title");
       const description = this.constructLocalizedFromPostBody(req.body, "description");
       const itemsApi = apiClient.getItemsApi();
+      const meta = purchaseMethods.map((purchaseMethod) => {
+        return Meta.constructFromObject({
+          "key": `allow-purchase-${purchaseMethod}`,
+          "value": "true"
+        });
+      });
 
       const item = Item.constructFromObject({
         "title": title,
@@ -202,7 +222,8 @@
         "images": images,
         "visibleToUsers": allowedUserIds,
         "visibilityLimited": visibilityLimited,
-        "sellerId": this.getLoggedUserId(req)
+        "sellerId": this.getLoggedUserId(req),
+        "meta": meta
       });
 
       const createdItem = await itemsApi.createItem(item);

@@ -66,6 +66,7 @@
       if (!place) {
         return;
       }
+      
       const locationName = place.formatted_address;
       const addressComponents = place.address_components;
       const latitude = place.geometry.location.lat();
@@ -77,7 +78,16 @@
 
       form.find(".btn").attr("disabled", "disabled");
       const data = form.serializeArray().reduce((map, item) => {
-        map[item.name] = item.value;
+        const name = item.name;
+        const value = item.value;
+
+        if (name === "purchase-method") {
+          map[name] = map[name] || [];
+          map[name].push(value);
+        } else {
+          map[name] = value;
+        }
+
         return map;
       }, {});
 

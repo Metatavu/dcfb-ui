@@ -9,9 +9,19 @@ block body
   .form-header.text-center
     h2
       =__("stripe.onboard-header")
-  .container.form-container.add-item-form-container
-    p
-      =__("stripe.onboard-text")
-    a.stripe-connect(href=stripeLink)
-      span
-         =__("stripe.onboard-link")
+  .container.form-container
+    .row
+      .col
+        p
+          =__("stripe.onboard-text")
+        a.stripe-connect(href=stripeLink)
+          span
+            =__("stripe.onboard-link")    
+    .row
+      .col.mt-4
+        p
+          =__("stripe.skip-text")
+        a.btn.btn-info.stripe-skip(href=stripeSkipLink)
+          span
+            =__("stripe.skip-link")
+    

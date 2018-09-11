@@ -1,7 +1,7 @@
 .netbeans.xml
 /nbproject
 node_modules
-/config.json
+/config*.json
 .sass-cache
 keycloak-3.*
 keycloak-4.*
