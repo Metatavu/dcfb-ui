@@ -81,7 +81,15 @@
   app.set("view engine", "pug");
   
   app.use((req, res, next) => {
-    res.locals.authenticated = req.kauth.grant ? true : false;
+    const authenticated = req.kauth.grant ? true : false;
+    res.locals.authenticated = authenticated;
+
+    if (authenticated) {
+      res.locals.username = req.kauth.grant.access_token.content.name;
+      res.locals.accountUrl = keycloak.accountUrl();
+      res.locals.userId = req.kauth.grant.access_token.content.sub;
+    }
+
     next();
   });
 

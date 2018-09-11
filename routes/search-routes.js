@@ -35,6 +35,7 @@
       const search = req.query.search || null;
       const nearLat = req.query.nearLat || null;
       const nearLon = req.query.nearLon || null;
+      const userIds = req.query.userIds || null;
 
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
@@ -44,7 +45,8 @@
         search: search,
         nearLat: nearLat,
         nearLon: nearLon,
-        categoryIds: categoryIds
+        categoryIds: categoryIds,
+        userIds: userIds
       });
 
       const locations = await Promise.all(items
