@@ -150,6 +150,12 @@
         });
       }
 
+      if (purchaseMethods.length) {
+        return res.status(400).send({
+          "message": "At least one purchase method is required"
+        });
+      }
+
       const images = imageNames.split(",").map((imageName) => {
         return Image.constructFromObject({
           "url": imageUploads.getUrl(imageName),
