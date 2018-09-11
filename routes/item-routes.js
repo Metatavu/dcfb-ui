@@ -79,10 +79,10 @@
 
       const location = await locationsApi.findLocation(item.locationId);
       const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
-      const itemMeta = item.meta || {};
+      const itemMeta = item.meta || {};
 
-      const allowPurchaseCreditCard = itemMeta['allow-purchase-credit-card'] === "true";
-      const allowPurchaseContactSeller = itemMeta['allow-purchase-contact-seller'] === "true";
+      const allowPurchaseCreditCard = itemMeta["allow-purchase-credit-card"] === "true";
+      const allowPurchaseContactSeller = itemMeta["allow-purchase-contact-seller"] === "true";
       
       const stripeDetails = {
         itemId: item.id,
@@ -142,7 +142,7 @@
       const imageNames = req.body["images"];
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
-      const purchaseMethods = req.body.purchaseMethod || [];
+      const purchaseMethods = req.body.purchaseMethod || [];
 
       if (!imageNames) {
         return res.status(400).send({

@@ -81,8 +81,8 @@
         const name = item.name;
         const value = item.value;
 
-        if (name === "purchase-method") {
-          map[name] = map[name] || [];
+        if (name === "purchase-method") {
+          map[name] = map[name] || [];
           map[name].push(value);
         } else {
           map[name] = value;
