@@ -17,9 +17,18 @@ mixin top-menu()
           a.locale-btn.locale-btn-en(href="/?lang=en")
             img(src="/gfx/locale_en.png")
           if authenticated
-            a.login-link(href="/logout")
-              i.far.fa-user-circle
-              =__("top.menu.logout")
+            .dropdown
+              a#navbarAccountDropdown.nav-link.dropdown-toggle(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                i.far.fa-user-circle
+                =" "+username
+              .dropdown-menu(aria-labelledby='navbarAccountDropdown')
+                a.dropdown-item(href=accountUrl)
+                  =__("top.menu.profile")
+                a.dropdown-item(href='/search?userIds='+userId)
+                  =__("top.menu.myitems")
+                .dropdown-divider
+                a.dropdown-item(href="/logout")
+                  =__("top.menu.logout")
           else
             a.login-link(href="/login")
               i.far.fa-user-circle
