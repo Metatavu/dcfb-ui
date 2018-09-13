@@ -78,11 +78,10 @@
       }
 
       const location = await locationsApi.findLocation(item.locationId);
-      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
-      const itemMeta = item.meta || {};
+      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount);
 
-      const allowPurchaseCreditCard = itemMeta["allow-purchase-credit-card"] === "true";
-      const allowPurchaseContactSeller = itemMeta["allow-purchase-contact-seller"] === "true";
+      const allowPurchaseCreditCard = item.paymentMethods.allowCreditCard;
+      const allowPurchaseContactSeller = item.paymentMethods.allowContactSeller;
       
       const stripeDetails = {
         itemId: item.id,
@@ -142,17 +141,11 @@
       const imageNames = req.body["images"];
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
-      const purchaseMethods = req.body.purchaseMethod || [];
+      const purchaseMethods = req.body["purchase-method"] || [];
 
       if (!imageNames) {
         return res.status(400).send({
           "message": "At least one image is required"
-        });
-      }
-
-      if (purchaseMethods.length) {
-        return res.status(400).send({
-          "message": "At least one purchase method is required"
         });
       }
 
@@ -177,7 +170,7 @@
         });
       }
 
-      if (!locationData) {
+      if (!locationData || !locationData.name) {
         return res.status(400).send({
           "message": "Location is required"
         });
@@ -202,6 +195,7 @@
         address: address
       });
       
+
       const apiClient = new ApiClient(await this.getToken(req));
       const locationsApi = apiClient.getLocationsApi();
       const createdLocation = await locationsApi.createLocation(location);
@@ -209,12 +203,14 @@
       const title = this.constructLocalizedFromPostBody(req.body, "title");
       const description = this.constructLocalizedFromPostBody(req.body, "description");
       const itemsApi = apiClient.getItemsApi();
-      const meta = purchaseMethods.map((purchaseMethod) => {
-        return Meta.constructFromObject({
-          "key": `allow-purchase-${purchaseMethod}`,
-          "value": "true"
+      const allowCreditCard = purchaseMethods.indexOf("credit-card") > -1;
+      const allowContactSeller = purchaseMethods.indexOf("contact-seller") > -1;
+
+      if (!allowCreditCard && !allowContactSeller) {
+        return res.status(400).send({
+          "message": "At least one purchase method is required"
         });
-      });
+      }
 
       const item = Item.constructFromObject({
         "title": title,
@@ -229,7 +225,10 @@
         "visibleToUsers": allowedUserIds,
         "visibilityLimited": visibilityLimited,
         "sellerId": this.getLoggedUserId(req),
-        "meta": meta
+        "paymentMethods": {
+          allowCreditCard: allowCreditCard,
+          allowContactSeller: allowContactSeller
+        }
       });
 
       const createdItem = await itemsApi.createItem(item);
