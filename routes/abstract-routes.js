@@ -216,10 +216,14 @@
      */
     catchAsync(handler) {
       return (req, res) => {
-        return Promise.resolve(handler(req, res)).catch((err) => {
-          logger.error(err);
-          res.status(500).send(err);
-        });
+        try {
+          return Promise.resolve(handler(req, res)).catch((err) => {
+            console.error(err);
+            res.status(500).send(err);
+          });
+        } catch (e) {
+          console.error(e);
+        }
       };
     }
     

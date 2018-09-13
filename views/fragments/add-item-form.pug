@@ -39,6 +39,19 @@ mixin add-item-form()
       //        input#deliveryNotIncludedInput.form-check-input(type='radio', name='delivery-not-included', value='no')
       //        label.form-check-label(for='deliveryNotIncludedInput')
       //          =__("add-item.form.delivery-not-included")
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            = __("add-item.form.purchase-method")
+          .col
+            .form-check
+              input#purchaseMethodCreditCard.form-check-input(type='checkbox', name='purchase-method', value='credit-card', checked=stripeActive, disabled=!stripeActive)
+              label.form-check-label(for='purchaseMethodCreditCard')
+                = __("add-item.form.credit-card")
+            .form-check
+              input#purchaseMethodContactSeller.form-check-input(type='checkbox', name='purchase-method', value='contact-seller', checked='')
+              label.form-check-label(for='purchaseMethodContactSeller')
+                = __("add-item.form.contact-seller")
       .form-group.row
         label.col-sm-2.col-form-label(for='inputExpire')
           =__("add-item.form.expires")

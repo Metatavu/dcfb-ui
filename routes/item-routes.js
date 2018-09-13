@@ -13,7 +13,6 @@
   const Price = DcfbApiClient.Price;
   const Image = DcfbApiClient.Image;
   const Location = DcfbApiClient.Location;
-  const i18n = require("i18n");
   const imageUploads = require(`${__dirname}/../images/uploads`);
   const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
 
@@ -70,14 +69,18 @@
       const categoriesApi = apiClient.getCategoriesApi();
       const locationsApi = apiClient.getLocationsApi();
       const item = await apiClient.findItemById(itemId);
-      const location = await locationsApi.findLocation(item.locationId);
-      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount); 
-
+      
       if (!item) {
         res.status(404).send("Item not found");
         return;
       }
 
+      const location = await locationsApi.findLocation(item.locationId);
+      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount);
+
+      const allowPurchaseCreditCard = item.paymentMethods.allowCreditCard;
+      const allowPurchaseContactSeller = item.paymentMethods.allowContactSeller;
+      
       const stripeDetails = {
         itemId: item.id,
         unitPrice: item.unitPrice,
@@ -91,7 +94,10 @@
         item: item, 
         itemsLeft: itemsLeft,
         location: location,
-        stripeDetails: JSON.stringify(stripeDetails)
+        stripeDetails: JSON.stringify(stripeDetails),
+        allowPurchaseCreditCard: allowPurchaseCreditCard,
+        allowPurchaseContactSeller: allowPurchaseContactSeller,
+        onlyContactSellerPurchases: !allowPurchaseCreditCard && allowPurchaseContactSeller
       }, await this.getCategoryDatas(categoriesApi, req)));
     }
     
@@ -102,12 +108,16 @@
      * @param {http.ServerResponse} res server response object
      **/
     async addItemGet(req, res) {
+      const accessToken = this.getAccessToken(req);
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
+      const stripe = accessToken["stripe"] || req.session.stripe || {};
+      const stripeActive = !!stripe.accountId;
 
       res.render("pages/add-item", {
         maxFileSize: config.get("images:max-file-size") || 2097152,
-        topMenuCategories: await this.getTopMenuCategories(categoriesApi, null)
+        topMenuCategories: await this.getTopMenuCategories(categoriesApi, null),
+        stripeActive: stripeActive
       });
     }
 
@@ -129,6 +139,7 @@
       const imageNames = req.body["images"];
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
+      const purchaseMethods = req.body["purchase-method"] || [];
 
       if (!imageNames) {
         return res.status(400).send({
@@ -157,7 +168,7 @@
         });
       }
 
-      if (!locationData) {
+      if (!locationData || !locationData.name) {
         return res.status(400).send({
           "message": "Location is required"
         });
@@ -182,6 +193,7 @@
         address: address
       });
       
+
       const apiClient = new ApiClient(await this.getToken(req));
       const locationsApi = apiClient.getLocationsApi();
       const createdLocation = await locationsApi.createLocation(location);
@@ -189,6 +201,14 @@
       const title = this.constructLocalizedFromPostBody(req.body, "title");
       const description = this.constructLocalizedFromPostBody(req.body, "description");
       const itemsApi = apiClient.getItemsApi();
+      const allowCreditCard = purchaseMethods.indexOf("credit-card") > -1;
+      const allowContactSeller = purchaseMethods.indexOf("contact-seller") > -1;
+
+      if (!allowCreditCard && !allowContactSeller) {
+        return res.status(400).send({
+          "message": "At least one purchase method is required"
+        });
+      }
 
       const item = Item.constructFromObject({
         "title": title,
@@ -202,7 +222,11 @@
         "images": images,
         "visibleToUsers": allowedUserIds,
         "visibilityLimited": visibilityLimited,
-        "sellerId": this.getLoggedUserId(req)
+        "sellerId": this.getLoggedUserId(req),
+        "paymentMethods": {
+          allowCreditCard: allowCreditCard,
+          allowContactSeller: allowContactSeller
+        }
       });
 
       const createdItem = await itemsApi.createItem(item);

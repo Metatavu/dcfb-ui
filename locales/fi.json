@@ -48,11 +48,13 @@
   "index.about.calltoaction.title": "Rekisteröidy ja aloita myynti",
   "index.about.calltoaction.text": "Myy tavaraa, työvoimaa tai tarjoa palveluita muille yrityksille.",
   "index.about.calltoaction.button": "Aloita myynti",
-  "item.purchase.button": "Osta",
+  "item.purchase.creditCardButton": "Osta luottokortilla",
   "item.purchase.units": "Määrä",
   "item.purchase.units-placeholder": "Syötä määrä",
   "item.purchase.processing-message": "Maksua käsitellään...",
   "item.purchase.success-message": "Kiitos ostoksestasi",
+  "item.purchase-allowed-only-by-contacting-seller": "Tuotteen voi ostaa vain ottamalla yhteyttä suoraan myyjään",
+  "item.purchase-allowed-also-by-contacting-seller": "Tuotteen voi ostaa myös ottamalla yhteyttä suoraan myyjään",
   "admin.category.header": "Muokkaa tai lisää kategoria",
   "admin.category.name-fi-single": "Nimi suomeksi - yksikkö",
   "admin.category.name-fi-single-placeholder": "Nimi suomeksi ykskkömuodossa",
@@ -105,6 +107,11 @@
   "footer.feedback.link": "Lähetä palautetta tai ilmoita ongelmasta",
   "footer.copyright": "Copyright © 2018 Mansyns" ,
   "stripe.onboard-header": "Yhdistä tilisi Stripeen aloittaaksesi myynnin",
-  "stripe.onboard-text": "In order to receive payments for your goods you need to connect yout account with Stripe payments platform. Please click the button below and follow instructions",
-  "stripe.onboard-link": "Yhdistä Stripe tiliisi"
+  "stripe.onboard-text": "Voidaksesi vastaanottaa luottokorttimaksuja tavaroistasi, on sinun liitettävä tilisi Stripe-maksuihin. Napsauta alla olevaa painiketta ja noudata ohjeita",
+  "stripe.onboard-link": "Yhdistä Stripe tiliisi",
+  "stripe.skip-text": "Mikäli haluat myydä tavaroitasi ilman luottokorttimaksuja, voit myös ohittaa tämän vaiheen.", 
+  "stripe.skip-link": "Ohita Stripe-tilin yhdistäminen",
+  "add-item.form.purchase-method": "Voidaan ostaa:",
+  "add-item.form.credit-card": "Luottokortilla",
+  "add-item.form.contact-seller": "Ottamalla yhteyttä myyjään"
 }

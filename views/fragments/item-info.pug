@@ -33,13 +33,22 @@ mixin item-info(item, currentLocale)
               = " " + _LS(location.name)
           p
             = _LS(item.description)
-        if itemsLeft > 0
+        if !onlyContactSellerPurchases && itemsLeft > 0
           p
             = __("item.purchase.units") 
             span.ml-2
             input.product-units(type="number",step=1,min=1,max=itemsLeft, required=true,placeholder=__("item.purchase.units-placeholder"))
-          button.btn.btn-primary.buy-btn(disabled=true)
-            = __("item.purchase.button")
+          if allowPurchaseCreditCard
+            button.btn.btn-primary.buy-btn(disabled=true)
+              = __("item.purchase.creditCardButton")
+        if allowPurchaseContactSeller
+          p
+            b
+              i
+                if onlyContactSellerPurchases
+                  = __("item.purchase-allowed-only-by-contacting-seller")
+                else
+                  = __("item.purchase-allowed-also-by-contacting-seller")
       .col-4.col-sm-2.pt-2
         .result-side-details
           p

@@ -48,11 +48,13 @@
   "index.about.calltoaction.title": "Register and start selling",
   "index.about.calltoaction.text": "Sell your inventory, workforce or offer services to other companies.",
   "index.about.calltoaction.button": "Start selling",
-  "item.purchase.button": "Buy",
+  "item.purchase.creditCardButton": "Purchase with credit card",
   "item.purchase.units": "Amount",
   "item.purchase.units-placeholder": "Enter amount",
   "item.purchase.processing-message": "Processing your payment...",
   "item.purchase.success-message": "Thank you for your purchase",
+  "item.purchase-allowed-only-by-contacting-seller": "This item can be purchased only by contacting the seller directly",
+  "item.purchase-allowed-also-by-contacting-seller": "This item can also be purchased by contacting the seller directly",
   "admin.category.header": "Edit or add category",
   "admin.category.name-fi-single": "Name in finnish - single format",
   "admin.category.name-fi-single-placeholder": "Finnish name in single format",
@@ -105,6 +107,11 @@
   "footer.feedback.link": "Give us feedback or make a bug report",
   "footer.copyright": "Copyright © 2018 Mansyns",
   "stripe.onboard-header": "Connect you account with Stripe to start selling",
-  "stripe.onboard-text": "In order to receive payments for your goods you need to connect yout account with Stripe payments platform. Please click the button below and follow instructions",
-  "stripe.onboard-link": "Connect with Stripe"
+  "stripe.onboard-text": "In order to receive credit card payments for your goods you need to connect yout account with Stripe payments platform. Please click the button below and follow instructions",
+  "stripe.onboard-link": "Connect with Stripe",
+  "stripe.skip-text": "If you want to sell the item without credit card payments, you can also skip this step.", 
+  "stripe.skip-link": "Skip Stripe-account connection",
+  "add-item.form.purchase-method": "May be purchased by",
+  "add-item.form.credit-card": "Credit card",
+  "add-item.form.contact-seller": "Contacting seller"
 }
