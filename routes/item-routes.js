@@ -9,12 +9,10 @@
   const ApiClient = require(`${__dirname}/../api-client`);
   const DcfbApiClient = require("dcfb-api-client");
   const Item = DcfbApiClient.Item;
-  const Meta = DcfbApiClient.Meta;
   const LocalizedValue = DcfbApiClient.LocalizedValue;
   const Price = DcfbApiClient.Price;
   const Image = DcfbApiClient.Image;
   const Location = DcfbApiClient.Location;
-  const i18n = require("i18n");
   const imageUploads = require(`${__dirname}/../images/uploads`);
   const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
 
@@ -141,7 +139,7 @@
       const imageNames = req.body["images"];
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
-      const purchaseMethods = req.body["purchase-method"] || [];
+      const purchaseMethods = req.body["purchase-method"] || [];
 
       if (!imageNames) {
         return res.status(400).send({
