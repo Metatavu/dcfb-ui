@@ -23,7 +23,9 @@
       $(document).on("click", ".item-info .result-sm-img", this.onItemInfoSmallImageClick.bind(this));
       $(document).on("click", ".buy-btn", this.onItemBuyClick.bind(this));
       $(document).on("click", ".delete-item-button", this.onDeleteItemClick.bind(this));
+      $(document).on("click", ".sell-item-button", this.onItemSoldClick.bind(this));
       $(document).on("change", ".product-units", this.onProductUnitsInputChange.bind(this));
+      
     }
 
     async onStripeToken(token) {
@@ -110,6 +112,51 @@
           }),
           Noty.button(noText, "btn btn-default", () => {
             deletePrompt.close();
+          })
+        ]
+      }).show();
+    }
+
+    async onItemSoldClick(e) {
+      const buttonElement = $(e.target).closest(".sell-item-button");
+      const itemId = buttonElement.attr("data-item-id");
+      const promptText = buttonElement.attr("data-prompt-message");
+      const yesText = buttonElement.attr("data-yes-button-text");
+      const noText = buttonElement.attr("data-no-button-text");
+      const sellPrompt = new Noty({
+        type: "info",
+        layout: "center",
+        theme: "bootstrap-v4",
+        closeWith: ["button"],
+        text: promptText + "<br/><input type='number' step='1' name='sold-amount-input' />",
+        buttons: [
+          Noty.button(yesText, "btn btn-success", async () => {
+            try {
+              const response = await putJSON("/ajax/item/sell", itemId, {
+                amount: $("input[name='sold-amount-input']").val()
+              });
+              sellPrompt.close();
+              new Noty({
+                timeout: 3000,
+                text: response.message,
+                type: "success",
+                callbacks: {
+                  onClose: () => {
+                    window.location.reload()
+                  }
+                }
+              }).show();
+            } catch (err) {
+              sellPrompt.close();
+              new Noty({
+                timeout: 3000,
+                text: "There was an error updating item.",
+                type: "error"
+              }).show();
+            }
+          }),
+          Noty.button(noText, "btn btn-default", () => {
+            sellPrompt.close();
           })
         ]
       }).show();

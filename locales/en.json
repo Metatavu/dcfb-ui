@@ -119,5 +119,9 @@
   "item-delete.no-btn-text": "No",
   "update-item.form.header": "Edit item",
   "update-item.created-message": "Item updated successfully.",
-  "item-delete.success-message": "Item removed successfully"
+  "item-delete.success-message": "Item removed successfully",
+  "item-sell.prompt": "Mark item as sold. How many:",
+  "item-sell.yes-btn-text": "Sell",
+  "item-sell.no-btn-text": "Cancel",
+  "sell-item.success-message": "Sale was successfull"
 }
