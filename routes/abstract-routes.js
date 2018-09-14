@@ -54,7 +54,7 @@
         const metas = category.meta||[];
         const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true"; }).length > 0;
         const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true"; }).length > 0;
-        const iconMeta = metas.find((meta) => { return meta.key === "ui-icon" });
+        const iconMeta = metas.find((meta) => { return meta.key === "ui-icon"; });
         category.icon = iconMeta ? iconMeta.value : "";
 
         if (indexCategory) {

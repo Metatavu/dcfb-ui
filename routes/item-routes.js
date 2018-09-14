@@ -157,7 +157,7 @@
       const allowedUserIds = [];
       const purchaseMethods = req.body["purchase-method"] || [];
 
-      let images = req.body.preservedImages || [];
+      let images = req.body.preservedImages || [];
       if (imageNames) {
         const newImages = imageNames.split(",").map((imageName) => {
           return Image.constructFromObject({
@@ -218,14 +218,14 @@
 
         const apiClient = new ApiClient(await this.getToken(req));
         const locationsApi = apiClient.getLocationsApi();
-        let createdLocation = null
+        let createdLocation = null;
         try {
           createdLocation = await locationsApi.createLocation(location);
         } catch (error) {
           console.error("Error creating location", error);
         }
 
-        if (!createdLocation || !createdLocation.id) {
+        if (!createdLocation || !createdLocation.id) {
           return res.status(400).send({
             "message": "Invalid location information"
           });
@@ -260,7 +260,7 @@
       item.paymentMethods = {
         allowCreditCard: allowCreditCard,
         allowContactSeller: allowContactSeller
-      }
+      };
 
       const updatedItem = await apiClient.updateItem(item.id, item);
       if (!updatedItem) {
@@ -398,14 +398,14 @@
 
       const apiClient = new ApiClient(await this.getToken(req));
       const locationsApi = apiClient.getLocationsApi();
-      let createdLocation = null
+      let createdLocation = null;
       try {
         createdLocation = await locationsApi.createLocation(location);
       } catch (error) {
         console.error("Error creating location", error);
       }
 
-      if (!createdLocation || !createdLocation.id) {
+      if (!createdLocation || !createdLocation.id) {
         return res.status(400).send({
           "message": "Invalid location information"
         });
