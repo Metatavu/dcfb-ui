@@ -44,13 +44,13 @@
         address: {
           city: args["shipping_address_city"] || "",
           country: args["shipping_address_country_code"] || "",
-          line1: args["shipping_address_line1"] || "",
-          line2: args["shipping_address_line2"] || "",
+          line1: args["shipping_address_line1"] || "",
+          line2: args["shipping_address_line2"] || "",
           postal_code: args["shipping_address_zip"] || "",
           state: args["shipping_address_state"] || ""
         },
-        name: args["shipping_name"] || "",
-        phone: args["shipping_phone"] || "" 
+        name: args["shipping_name"] || "",
+        phone: args["shipping_phone"] || "" 
       };
 
       try {
