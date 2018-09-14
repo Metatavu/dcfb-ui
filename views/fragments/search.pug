@@ -7,7 +7,7 @@ mixin search()
         .col
           h1.search-title.text-center
             =__("search.title")
-      .row.no-gutters
+      .row.no-gutters.search-inputs-container
         .col-lg-4.py-2.py-lg-0.pr-lg-1
           input#search-freetext-input.search-input.form-control.form-control-lg.py-2(name="search-freetext", type="text", placeholder=__("search.freetext.placeholder"))
         .col-lg.py-2.py-lg-0.pr-lg-1
@@ -17,11 +17,6 @@ mixin search()
         .col-lg-2.pt-5.pb-3.pt-lg-0.pb-lg-0.pr-lg-1.pl-lg-1.text-center.text-lg-left
           a#search-execute-btn.btn.btn-success.search-btn.btn-lg(href="#")
             =__("search.button.text")
-      .row.no-gutters
-        .col
-        .col-lg-2.text-center.text-lg-left.px-2.py-lg-3
-          a.advanced-search-link(href="#")
-            =__("search.advanced.link")
       .quick-categories-container
         -var c = 0
         while c < indexCategories.length

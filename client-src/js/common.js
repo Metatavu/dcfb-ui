@@ -13,6 +13,13 @@
         source : JSON.parse($("#search-category-input").attr("data-source")),
         isMultiple: false
       });
+      $('#search-category-input,#search-freetext-input,#search-location-input').keydown(this.onSearchInputKeyDown.bind(this));
+    }
+
+    onSearchInputKeyDown(e) {
+      if(e.keyCode == 13){
+        this.onSearchBtnClick();
+      }
     }
 
     onSearchBtnClick() {

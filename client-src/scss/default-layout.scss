@@ -18,6 +18,12 @@ h5 {
   font-weight: 700;
 }
 
+.banner-category-icon {
+  color: $search-quick-category-text;
+  padding-right: 5px;
+  font-size: 25px;
+}
+
 .btn-success {
   background-color: $btn-success-background-color;
   border-color: $btn-success-background-color;
@@ -100,6 +106,10 @@ h5 {
   background-size: cover;
   background-position: center center;
   
+  .search-inputs-container {
+    padding-bottom: 30px;
+  }
+
   select.form-control.form-control-lg {
     height: 2.6rem;
   }

@@ -116,7 +116,7 @@
       const accessToken = this.getAccessToken(req);
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
-      const stripe = accessToken["stripe"] || req.session.stripe || {};
+      const stripe = this.getStripe(req);
       const stripeActive = !!stripe.accountId;
 
       res.render("pages/add-item", {
@@ -305,7 +305,7 @@
 
       const accessToken = this.getAccessToken(req);
       const categoriesApi = apiClient.getCategoriesApi();
-      const stripe = accessToken["stripe"] || req.session.stripe || {};
+      const stripe = this.getStripe(req);
       const stripeActive = !!stripe.accountId;
 
       res.render("pages/update-item", {

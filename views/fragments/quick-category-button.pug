@@ -1,6 +1,6 @@
 mixin quick-category-button(category)
   a(href="/search?category=" + category.id)
     .quick-category-btn.text-center
-      i.fas(class=category.icon)
+      i.banner-category-icon.fas(class=category.icon)
       h3
         = _LP(category.title)

@@ -161,7 +161,7 @@
     processCategoryData(category, childCategories, nameProperty, childrenProperty, req) {
       return {
         id: category.id,
-        [nameProperty]: localeHelpers._LP(category.title, req),
+        [nameProperty]: localeHelpers._LP(category.title, req) || category.slug,
         category: category,
         [childrenProperty]: childCategories[category.id] ? childCategories[category.id].map(childCategory => this.processCategoryData(childCategory, childCategories, nameProperty, childrenProperty, req)) : []
       };
@@ -176,6 +176,13 @@
     getToken(req) {
       const accessToken = this.getAccessToken(req);
       return accessToken ? accessToken.token : anonymousAuth.getAccessToken();
+    }
+
+    getStripe(req) {
+      const accessToken = this.getAccessToken(req);
+  
+      const accessTokenContent = accessToken.content || {};
+      return accessTokenContent["stripe"] || req.session.stripe || {};
     }
 
     /**

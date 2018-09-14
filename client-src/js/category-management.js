@@ -57,7 +57,7 @@
 
       const updatedNode = await putJSON("/ajax/admin/categories", category.id, category);
       this.element.tree("updateNode", movedNode, {
-        name: updatedNode.slug,
+        name: getLocalized(updatedNode.title, "PLURAL") || updatedNode.slug,
         id: updatedNode.id,
         category: updatedNode
       });
@@ -189,10 +189,11 @@
       const data = this.getCategoryData(true);
       const res = await postJSON("/ajax/admin/categories", data);
       this.element.tree("appendNode", {
-        name: res.slug,
+        name: getLocalized(res.title, "PLURAL") || res.slug,
         id: res.id,
         children: []
       }, this.selectedNode);
+      window.location.reload();
     }
 
     async deleteCategory() {
@@ -210,7 +211,7 @@
         const selectedNodeId = this.selectedNode.id;
         const updatedNode = await putJSON("/ajax/admin/categories", selectedNodeId, data);
         this.element.tree("updateNode", this.selectedNode, {
-          name: updatedNode.slug,
+          name: getLocalized(updatedNode.title, "PLURAL") || updatedNode.slug,
           id: updatedNode.id,
           category: updatedNode
         });
