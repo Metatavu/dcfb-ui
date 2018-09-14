@@ -142,7 +142,7 @@
                 type: "success",
                 callbacks: {
                   onClose: () => {
-                    window.location.reload()
+                    window.location.reload();
                   }
                 }
               }).show();
