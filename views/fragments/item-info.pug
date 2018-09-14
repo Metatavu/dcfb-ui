@@ -1,5 +1,12 @@
 mixin item-info(item, currentLocale)
   .item-info
+    if hasManagementPermission
+      .row
+        .col
+          a(href="/update/item/"+item.id).btn.btn-primary.float-right
+            i.fas.fa-cogs
+          button.btn.btn-danger.float-right.delete-item-button(data-item-id=item.id, data-success-message=__("item-delete.success-message"), data-prompt-message=__("item-delete.prompt"), data-yes-button-text=__("item-delete.yes-btn-text"), data-no-button-text=__("item-delete.no-btn-text"))
+            i.fas.fa-trash-alt
     .row
       .col-lg-5
         if item.images.length

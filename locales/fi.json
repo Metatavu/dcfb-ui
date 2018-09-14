@@ -113,5 +113,11 @@
   "stripe.skip-link": "Ohita Stripe-tilin yhdistäminen",
   "add-item.form.purchase-method": "Voidaan ostaa:",
   "add-item.form.credit-card": "Luottokortilla",
-  "add-item.form.contact-seller": "Ottamalla yhteyttä myyjään"
+  "add-item.form.contact-seller": "Ottamalla yhteyttä myyjään",
+  "item-delete.prompt": "Oletko varma että haluat poistaa esineen?",
+  "item-delete.yes-btn-text": "Kyllä",
+  "item-delete.no-btn-text": "En",
+  "update-item.form.header": "Muokkaa esinettä",
+  "update-item.created-message": "Esineen muokkaus onnistui.",
+  "item-delete.success-message": "Esineen poisto onnistui"
 }

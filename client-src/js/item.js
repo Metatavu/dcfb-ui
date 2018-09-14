@@ -22,6 +22,7 @@
 
       $(document).on("click", ".item-info .result-sm-img", this.onItemInfoSmallImageClick.bind(this));
       $(document).on("click", ".buy-btn", this.onItemBuyClick.bind(this));
+      $(document).on("click", ".delete-item-button", this.onDeleteItemClick.bind(this));
       $(document).on("change", ".product-units", this.onProductUnitsInputChange.bind(this));
     }
 
@@ -71,6 +72,47 @@
           closeWith: ["click", "button"]
         }).show();
       }
+    }
+
+    async onDeleteItemClick(e) {
+      const buttonElement = $(e.target).closest(".delete-item-button");
+      const itemId = buttonElement.attr("data-item-id");
+      const promptText = buttonElement.attr("data-prompt-message");
+      const successText = buttonElement.attr("data-success-message");
+      const yesText = buttonElement.attr("data-yes-button-text");
+      const noText = buttonElement.attr("data-no-button-text");
+      const deletePrompt = new Noty({
+        type: 'alert',
+        text: promptText,
+        buttons: [
+          Noty.button(yesText, "btn btn-danger", async () => {
+            try {
+              await deleteJSON("/delete/item", itemId);
+              deletePrompt.close();
+              new Noty({
+                timeout: 3000,
+                text: successText,
+                type: "info",
+                callbacks: {
+                  onClose: () => {
+                    window.location.href = "/";
+                  }
+                }
+              }).show();
+            } catch (err) {
+              deletePrompt.close();
+              new Noty({
+                timeout: 3000,
+                text: "There was an error deleting item.",
+                type: "error"
+              }).show();
+            }
+          }),
+          Noty.button(noText, "btn btn-default", () => {
+            deletePrompt.close();
+          })
+        ]
+      }).show();
     }
 
     onItemInfoSmallImageClick(event) {
