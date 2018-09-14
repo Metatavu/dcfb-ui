@@ -89,12 +89,12 @@
       const stripeDetails = {
         itemId: item.id,
         unitPrice: item.unitPrice,
+        deliveryPrice: item.deliveryPrice ? Math.round(parseFloat(item.deliveryPrice.price) * 100) : 0,
         publicKey: config.get("stripe:public-key"),
         productDescription: res.locals._LS(item.title),
         processingMessage: res.__("item.purchase.processing-message"),
         successMessage:  res.__("item.purchase.success-message")
       };
-
       res.render("pages/item", Object.assign({ 
         item: item,
         hasManagementPermission: hasManagementPermission, 
@@ -114,7 +114,7 @@
      * @param {object} res http response
      */
     async sellItemPut(req, res) {
-      const amount = req.body.amount;
+      const amount = parseInt(req.body.amount);
       const itemId = req.params.id;
 
       const apiClient = new ApiClient(await this.getToken(req));
@@ -205,6 +205,13 @@
       const unitPrice = req.body["unit-price"];
       const amount = req.body["amount"];
       const imageNames = req.body["images"];
+      const contactEmail = req.body["contact-email"];
+      const contactPhone = req.body["contact-phone"];
+      const allowPickup = req.body["allow-pickup"];
+      const allowDelivery = req.body["allow-delivery"];
+      const deliveryPrice = req.body["delivery-price"];
+      const termsOfDelivery = req.body["terms-of-delivery"];
+
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
       const purchaseMethods = req.body["purchase-method"] || [];
@@ -309,6 +316,12 @@
       item.visibleToUsers = allowedUserIds;
       item.visibilityLimited = visibilityLimited;
       item.sellerId = this.getLoggedUserId(req);
+      item.deliveryPrice = Price.constructFromObject({ "price": deliveryPrice, "currency": "EUR" });
+      item.contactEmail = contactEmail;
+      item.contactPhone = contactPhone;
+      item.allowDelivery = allowDelivery;
+      item.allowPickup = allowPickup;
+      item.termsOfDelivery = termsOfDelivery;
       item.paymentMethods = {
         allowCreditCard: allowCreditCard,
         allowContactSeller: allowContactSeller
@@ -394,6 +407,12 @@
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
       const purchaseMethods = req.body["purchase-method"] || [];
+      const contactEmail = req.body["contact-email"];
+      const contactPhone = req.body["contact-phone"];
+      const allowPickup = req.body["allow-pickup"];
+      const allowDelivery = req.body["allow-delivery"];
+      const deliveryPrice = req.body["delivery-price"];
+      const termsOfDelivery = req.body["terms-of-delivery"];
 
       if (!imageNames) {
         return res.status(400).send({
@@ -486,6 +505,12 @@
         "unit": unit,
         "amount": amount,
         "images": images,
+        "deliveryPrice": Price.constructFromObject({ "price": deliveryPrice, "currency": "EUR" }),
+        "contactEmail": contactEmail,
+        "contactPhone": contactPhone,
+        "allowDelivery": allowDelivery,
+        "allowPickup": allowPickup,
+        "termsOfDelivery": termsOfDelivery,
         "visibleToUsers": allowedUserIds,
         "visibilityLimited": visibilityLimited,
         "sellerId": this.getLoggedUserId(req),

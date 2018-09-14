@@ -123,5 +123,18 @@
   "item-sell.prompt": "Merkkaa esinettä myydyksi. Kuinka monta:",
   "item-sell.yes-btn-text": "Myy",
   "item-sell.no-btn-text": "Peruuta",
-  "sell-item.success-message": "Myynti onnistui"
+  "sell-item.success-message": "Myynti onnistui",
+  "add-item.form.contact-email": "Myyjän sähköposti",
+  "add-item.form.contact-phone": "Myyjän puhelinnumero",
+  "add-item.form.delivery-time": "Toimitus aika päivinä",
+  "add-item.form.terms-of-delivery": "Toimitusehdot",
+  "add-item.form.delivery-methods": "Toimitustavat",
+  "add-item.form.allow-delivery": "Toimitus",
+  "add-item.form.allow-pickup": "Nouto",
+  "add-item.form.delivery-price": "Toimituskulut",
+  "item.purchase.delivery": "Toimitustapa",
+  "item.purchase.deliveryterms": "Toimitusehdot",
+  "item.purchase.delivery.pickup": "Nouto",
+  "item.purchase.delivery.delivery": "Toimitus",
+  "stripe.delivered-text": "+ toimitus"
 }

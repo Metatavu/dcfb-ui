@@ -42,6 +42,37 @@ mixin item-info(item, currentLocale)
               = " " + _LS(location.name)
           p
             = _LS(item.description)
+          if item.contactEmail
+            p
+              i.fas.fa-envelope-open
+              =" " + item.contactEmail
+          if item.contactPhone
+            p
+              i.fas.fa-phone
+              =" " + item.contactPhone
+          p
+            b
+              =__("item.purchase.delivery")
+          if item.allowPickup
+            .form-check
+              input#pickupInput.form-check-input(type='radio', name='delivery-method', value='pickup')
+              label.form-check-label(for='pickupInput')
+                =__("item.purchase.delivery.pickup")
+          if item.allowDelivery
+            .form-check
+              input#deliveryInput.form-check-input(type='radio', name='delivery-method', value='delivery')
+              label.form-check-label(for='deliveryInput')
+                =__("item.purchase.delivery.delivery")
+                span
+                  -var deliveryPrice = item.deliveryPrice ? item.deliveryPrice : null;
+                  if deliveryPrice
+                    =" ( "+ deliveryPrice.price+" "+deliveryPrice.currency+" )"
+          if item.termsOfDelivery
+            p.mt-2
+              b
+                =__("item.purchase.deliveryterms")
+              br
+              =item.termsOfDelivery
         if !onlyContactSellerPurchases && itemsLeft > 0
           p
             = __("item.purchase.units") 

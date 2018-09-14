@@ -138,6 +138,7 @@
       const token = req.body.token;
       const shipping = req.body.shipping;
       const units = parseInt(req.body.units);
+      const deliveryMethod = req.body.deliveryMethod;
 
       if (!itemId || !token || !units) {
         res.status(400).send("Missing reequired parameters");
@@ -173,13 +174,22 @@
         amount: units
       }));
 
-      const amount = Math.round(units * parseFloat(item.unitPrice.price) * 100);
+      let description = `${units} ${item.unit} ${res.locals._LS(item.title)}`;
+      let deliveryPrice = 0;
+      if (item.allowDelivery && deliveryMethod === "delivery") {
+        const deliveryPriceString = item.deliveryPrice ? item.deliveryPrice.price : "0";
+        deliveryPrice = Math.round(parseFloat(deliveryPriceString) * 100);
+        description += ` ${res.__("stripe.delivered-text")}`;
+      }
+
+      const amount = Math.round(units * parseFloat(item.unitPrice.price) * 100) + deliveryPrice;
       const currency = item.unitPrice.currency;
 
       await stripe.charges.create({
         amount: amount,
         currency: currency,
         source: token,
+        description: description,
         shipping: shipping,
         destination: {
           account: stripeAccountId

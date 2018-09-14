@@ -40,6 +40,8 @@
         closeWith: []
       }).show();
 
+      const deliveryMethod = $("input[name='delivery-method']:checked").val();
+
       const shipping = {
         address: {
           city: args["shipping_address_city"] || "",
@@ -57,7 +59,8 @@
         await postJSON(`/ajax/stripe/purchase/${this.stripeDetails.itemId}`, {
           token: token.id,
           units: this.units,
-          shipping: shipping
+          shipping: shipping,
+          deliveryMethod: deliveryMethod
         });
 
         loadNoty.close();
@@ -185,7 +188,11 @@
       event.preventDefault();
       const userEmail = $(event.target).closest(".buy-btn").attr("data-user-email") || "";
       this.units = $(".product-units").val();
-      const amount = this.units * Math.round(parseFloat(this.stripeDetails.unitPrice.price) * 100);
+      let amount = this.units * Math.round(parseFloat(this.stripeDetails.unitPrice.price) * 100);
+      const deliveryMethod = $("input[name='delivery-method']:checked").val();
+      if (deliveryMethod === "delivery") {
+        amount += this.stripeDetails.deliveryPrice;
+      }
 
       this.stripeHandler.open({
         name: "Mansyns",

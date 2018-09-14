@@ -122,6 +122,44 @@ mixin add-item-form()
           =__("add-item.form.unitPrice")
         .col-sm-10
           input#inputPricePerUnit.form-control(type='text', required='required', name="unit-price")
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            = __("add-item.form.delivery-methods")
+          .col
+            .form-check
+              input#allowDelivery.form-check-input(type='checkbox', name='allow-delivery', value='true')
+              label.form-check-label(for='allowDelivery')
+                = __("add-item.form.allow-delivery")
+            .form-check
+              input#allowPickup.form-check-input(type='checkbox', name='allow-pickup', value='true')
+              label.form-check-label(for='allowPickup')
+                = __("add-item.form.allow-pickup")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputDeliveryPrice')
+          =__("add-item.form.delivery-price")
+        .col-sm-10
+          input#inputDeliveryPrice.form-control(type='text', name="delivery-price")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='deliveryTime')
+          =__("add-item.form.delivery-time")
+        .col-sm-10
+          input#deliveryTime.form-control(type='number', step="1", name="delivery-time")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='termsOfDelivery')
+          =__("add-item.form.terms-of-delivery")
+        .col-sm-10
+          textarea#termsOfDelivery.form-control(row="4", name='terms-of-delivery')
+      .form-group.row
+        label.col-sm-2.col-form-label(for='contactEmail')
+          =__("add-item.form.contact-email")
+        .col-sm-10
+          input#contactEmail.form-control(type='email', name="contact-email" value=userEmail)
+      .form-group.row
+        label.col-sm-2.col-form-label(for='contactPhone')
+          =__("add-item.form.contact-phone")
+        .col-sm-10
+          input#contactPhone.form-control(type='text' name="contact-phone")
     .row
       .col.text-right.pt-3
         button.btn.btn-warning.continue-btn

@@ -123,5 +123,18 @@
   "item-sell.prompt": "Mark item as sold. How many:",
   "item-sell.yes-btn-text": "Sell",
   "item-sell.no-btn-text": "Cancel",
-  "sell-item.success-message": "Sale was successfull"
+  "sell-item.success-message": "Sale was successful",
+  "add-item.form.contact-email": "Contact email",
+  "add-item.form.contact-phone": "Contact phone",
+  "add-item.form.delivery-time": "Delivery time (days)",
+  "add-item.form.terms-of-delivery": "Terms of delivery",
+  "add-item.form.delivery-methods": "Delivery methods",
+  "add-item.form.allow-delivery": "Delivery",
+  "add-item.form.allow-pickup": "Pickup",
+  "add-item.form.delivery-price": "Delivery price",
+  "item.purchase.delivery": "Delivery method",
+  "item.purchase.deliveryterms": "Terms of delivery",
+  "item.purchase.delivery.pickup": "Pickup",
+  "item.purchase.delivery.delivery": "Delivery",
+  "stripe.delivered-text": "with delivery"
 }
