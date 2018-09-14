@@ -85,7 +85,7 @@
         type: 'alert',
         text: promptText,
         buttons: [
-          Noty.button(yesText, 'btn btn-danger', async () => {
+          Noty.button(yesText, "btn btn-danger", async () => {
             try {
               await deleteJSON("/delete/item", itemId);
               deletePrompt.close();
@@ -108,8 +108,8 @@
               }).show();
             }
           }),
-          Noty.button(noText, 'btn btn-default', () => {
-              deletePrompt.close();
+          Noty.button(noText, "btn btn-default", () => {
+            deletePrompt.close();
           })
         ]
       }).show();

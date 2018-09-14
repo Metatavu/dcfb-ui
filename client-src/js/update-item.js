@@ -110,9 +110,6 @@
     async onFormSubmit(event) {
       event.preventDefault();
       const form = $(event.target);
-      
-
-
       form.find(".btn").attr("disabled", "disabled");
       const data = form.serializeArray().reduce((map, item) => {
         const name = item.name;
