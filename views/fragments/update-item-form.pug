@@ -1,0 +1,141 @@
+mixin update-item-form()
+  form.add-item-form(method="POST", action="")
+    input(type="hidden", id="itemIdInput", value=item.id)
+    section
+      strong
+        =__("add-item.form.basic.header")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputLocation')
+          =__("add-item.form.location")
+        .col-sm-10
+          input#inputLocation.form-control(type='text',required='required', value=_LS(location.name))
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputCategory')
+          =__("add-item.form.category")
+        .col-sm-10
+          input#inputCategory.form-control(data-initial-value=JSON.stringify(itemCategory) type='text',required='required',name='category-id')
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            =__("add-item.form.type-of-business")
+          .col-sm-10
+            .form-check
+              input#sellingInput.form-check-input(type='radio', name='type', value='selling', checked='')
+              label.form-check-label(for='sellingInput')
+                =__("add-item.form.selling")
+            //.form-check
+            //  input#buyingInput.form-check-input(type='radio', name='buyingInput', value='bying')
+            //  label.form-check-label(for='buyingInput')
+            //    =__("add-item.form.bying")
+      //fieldset.form-group
+      //  .row
+      //    legend.col-form-label.col-sm-2.pt-0
+      //      =__("add-item.form.delivery")
+      //    .col-sm-10
+      //      .form-check
+      //        input#deliveryIncludedInput.form-check-input(type='radio', name='delivery-included', value='yes', checked='')
+      //        label.form-check-label(for='deliveryIncludedInput')
+      //          =__("add-item.form.delivery-included")
+      //      .form-check
+      //        input#deliveryNotIncludedInput.form-check-input(type='radio', name='delivery-not-included', value='no')
+      //        label.form-check-label(for='deliveryNotIncludedInput')
+      //          =__("add-item.form.delivery-not-included")
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            = __("add-item.form.purchase-method")
+          .col
+            .form-check
+              input#purchaseMethodCreditCard.form-check-input(type='checkbox', name='purchase-method', value='credit-card', checked=allowPurchaseCreditCard, disabled=!stripeActive)
+              label.form-check-label(for='purchaseMethodCreditCard')
+                = __("add-item.form.credit-card")
+            .form-check
+              input#purchaseMethodContactSeller.form-check-input(type='checkbox', name='purchase-method', value='contact-seller', checked=allowPurchaseContactSeller)
+              label.form-check-label(for='purchaseMethodContactSeller')
+                = __("add-item.form.contact-seller")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputExpire')
+          =__("add-item.form.expires")
+        .col-sm-10
+          input#inputExpire.form-control(type='text',name='expires' value=item.expiresAt)
+      .form-group.row
+        label.col-sm-2.col-form-label(for="images")
+          = __("add-item.form.images")
+        .col-sm-10
+          button.upload-add-file-button.btn.btn-success
+            = __("add-item.form.add-image")
+          input#images(aria-labelledby="images", type="file", multiple="multiple", name="file", data-max-file-size=maxFileSize, data-invalid-file-type=__("add-item.form.add-image-invalid-file-type-message"), data-file-size-too-big=__("add-item.form.add-image-file-size-too-big-message"), data-upload-fail-message=__("add-item.form.add-image-upload-failed-message"), data-remove-button-text=__("add-item.form.add-image-upload-remove-button-text"))
+          input(type="hidden",name="images")
+          .progress.upload-progress.mt-2
+            .progress-bar(role="progressbar",aria-valuemin="0",aria-valuemax="100",aria-valuenow="0")
+          .upload-files
+      .form-group.row
+        .col-sm-2.col-form-label
+        .col-sm-10
+          ul.list-group
+            each image in item.images
+              li.item-previous-image-container.list-group-item.d-flex.justify-content-between.align-items-center(data-image=JSON.stringify(image))
+                a(href=image.url, target="_blank")
+                  =image.url
+                span.badge.badge-danger.badge-pill.remove-existing-img
+                  i.fas.fa-trash-alt
+    section
+      strong
+        =__("add-item.form.detail.header")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputTitleFi')
+          =__("add-item.form.titleFi")
+        .col-sm-10
+          input#inputTitle.form-control(type='text', required='required', name='title-fi' value=getValueByLangAndType(item.title, 'fi', 'SINGLE'))
+        label.col-sm-2.col-form-label(for='inputTitleSv')
+          =__("add-item.form.titleSv")
+        .col-sm-10
+          input#inputTitle.form-control(type='text', name='title-sv', value=getValueByLangAndType(item.title, 'sv', 'SINGLE'))
+        label.col-sm-2.col-form-label(for='inputTitleEn')
+          =__("add-item.form.titleEn")
+        .col-sm-10
+          input#inputTitle.form-control(type='text', name='title-en', value=getValueByLangAndType(item.title, 'en', 'SINGLE'))
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputDescriptionFi')
+          =__("add-item.form.descriptionFi")
+        .col-sm-10
+          textarea#inputDescription.form-control(row="4", required='required', name='description-fi')
+            =value=getValueByLangAndType(item.description, 'fi', 'SINGLE')
+        label.col-sm-2.col-form-label(for='inputDescriptionSv')
+          =__("add-item.form.descriptionSv")
+        .col-sm-10
+          textarea#inputDescription.form-control(row="4", name='description-sv')
+            =value=getValueByLangAndType(item.description, 'sv', 'SINGLE')
+        label.col-sm-2.col-form-label(for='inputDescriptionEn')
+          =__("add-item.form.descriptionEn")
+        .col-sm-10
+          textarea#inputDescription.form-control(row="4", name='description-en')
+            =value=getValueByLangAndType(item.description, 'en', 'SINGLE')
+      fieldset.form-group
+        .row
+          legend.col-form-label.col-sm-2.pt-0
+            =__("add-item.form.unit")
+          .col-sm-10
+            .form-check
+              input#unitKgInput.form-check-input(type='radio', name='unit', value='kg', checked=item.unit=='kg')
+              label.form-check-label(for='unitKgInput')
+                =__("add-item.form.unit-kg")
+            .form-check
+              input#unitKplInput.form-check-input(type='radio', name='unit', value='kpl', checked=item.unit=='kpl')
+              label.form-check-label(for='unitKplInput')
+                =__("add-item.form.unit-kpl")
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputAmount')
+          =__("add-item.form.amount")
+        .col-sm-10
+          input#inputAmount.form-control(type='text', required='required', name="amount", value=item.amount)
+      .form-group.row
+        label.col-sm-2.col-form-label(for='inputPricePerUnit')
+          =__("add-item.form.unitPrice")
+        .col-sm-10
+          input#inputPricePerUnit.form-control(type='text', required='required', name="unit-price", value=item.unitPrice.price)
+    .row
+      .col.text-right.pt-3
+        button.btn.btn-warning.continue-btn
+          =__("add-item.form.continue.button")
+

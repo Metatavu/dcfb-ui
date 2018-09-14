@@ -107,6 +107,14 @@
       return localeHelpers._LP(localizedValues, req);
     };
 
+    res.locals.getValueByLangAndType = (localizedValues, lang, type) => {
+      const localizedValueByLangAndType = localizedValues.find((localizedValue) => {
+        return localizedValue.type === type && localizedValue.language === lang
+      });
+
+      return localizedValueByLangAndType ? localizedValueByLangAndType.value : "";
+    };
+
     next();
   });
 

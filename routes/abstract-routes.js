@@ -9,6 +9,11 @@
   const logger = log4js.getLogger(`${__dirname}/${__filename}`);
   const anonymousAuth = require(`${__dirname}/../anonymous-auth`);
   const localeHelpers = require(`${__dirname}/../util/locale-helpers`);
+  const { URLSearchParams } = require("url");
+  const fetch = require("node-fetch");
+  const config = require("nconf");
+
+  const MANAGEMENT_SCOPE = "item:manage";
 
   /**
    * Abstract base class for all route classes
@@ -49,6 +54,8 @@
         const metas = category.meta||[];
         const indexCategory = metas.filter((meta) => { return meta.key === "ui-index-page" && meta.value === "true"; }).length > 0;
         const sideCategory = metas.filter((meta) => { return meta.key === "ui-footer-side" && meta.value === "true"; }).length > 0;
+        const iconMeta = metas.find((meta) => { return meta.key === "ui-icon" });
+        category.icon = iconMeta ? iconMeta.value : "";
 
         if (indexCategory) {
           indexCategories.push(category);
@@ -206,6 +213,53 @@
     hasRealmRole(req, role) {
       const accessToken = this.getAccessToken(req);
       return accessToken.hasRealmRole(role);
+    }
+
+    /**
+     * Checks if user has management scope permissions for given resource
+     * 
+     * @param {object} req http request
+     * @param {string} resourceId resource id
+     */
+    async hasManagementPermission(req, resourceId) {
+      const rpt = await this.getEntitlements(req, resourceId, MANAGEMENT_SCOPE);
+      return !!rpt;
+    }
+
+    /**
+     * Gets users entitlements for given resource or scope, returns null if not allowed
+     * 
+     * @param {object} req Http request 
+     * @param {string} resourceId resource id
+     * @param {string} scope scope
+     */
+    async getEntitlements(req, resourceId, scope) {
+      const keycloak = config.get("keycloak");
+      const realm = keycloak.realm;
+      const authServerUrl = keycloak["auth-server-url"];
+      const headers = {
+        "Authorization": `Bearer ${this.getToken(req)}`,
+        "Content-Type": "application/x-www-form-urlencoded"
+      };
+      const url = `${authServerUrl}/realms/${realm}/protocol/openid-connect/token`;
+      const params = new URLSearchParams();
+      params.append("grant_type", "urn:ietf:params:oauth:grant-type:uma-ticket");
+      params.append("client_id", keycloak.resource);
+      params.append("audience", config.get("resource-server-id"));
+      params.append("response_include_resource_name", true);
+      params.append("permission", `${resourceId}#${scope}`);
+
+      try {
+        const res = await fetch(url, { method: "POST", headers: headers, body: params });
+        if (!(res.status >= 200 && res.status < 300)) {
+          return null;
+        }
+        const data = await res.json();
+        return data["access_token"];
+      } catch(err) {
+        logger.error("Error requesting RPT token", err);
+        return null;
+      }
     }
 
     /**

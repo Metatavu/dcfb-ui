@@ -113,5 +113,11 @@
   "stripe.skip-link": "Skip Stripe-account connection",
   "add-item.form.purchase-method": "May be purchased by",
   "add-item.form.credit-card": "Credit card",
-  "add-item.form.contact-seller": "Contacting seller"
+  "add-item.form.contact-seller": "Contacting seller",
+  "item-delete.prompt": "Are you sure that you want to delete item?",
+  "item-delete.yes-btn-text": "Yes",
+  "item-delete.no-btn-text": "No",
+  "update-item.form.header": "Edit item",
+  "update-item.created-message": "Item updated successfully.",
+  "item-delete.success-message": "Item removed successfully"
 }

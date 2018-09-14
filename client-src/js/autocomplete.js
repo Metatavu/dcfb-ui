@@ -62,6 +62,17 @@
     }
 
     /**
+     * Sets current label and value for the input
+     * 
+     * @param {string} label label to show 
+     * @param {string} value actual value
+     */
+    setValue(label, value) {
+      this.input.val(value);
+      this.altInput.val(label);
+    }
+
+    /**
      * Event handler for input open
      * 
      * @param {Object} event event object

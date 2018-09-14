@@ -86,6 +86,58 @@
     }
 
     /**
+     * Updates item and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {String} itemId id of the item to update
+     * @param {DcfbApiClient.Item} item item object
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
+    async updateItem(itemId, item, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const itemsApi = this.getItemsApi();
+      try {
+        return await itemsApi.updateItem(itemId, item);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.updateItem(itemId, item, true);
+      }
+    }
+
+    /**
+     * Deletes item and retries request if 401 or 403 response is received with www-authenticate header
+     * 
+     * @param {String} itemId id of the item to delete
+     * @param {boolean} isRetryParam is current method call retry, defaults to false
+     */
+    async deleteItem(itemId, isRetryParam) {
+      const isRetry =  isRetryParam ? isRetryParam : false;
+      const itemsApi = this.getItemsApi();
+      try {
+        return await itemsApi.deleteItem(itemId);
+      } catch (err) {
+        if (!(err.status === 401 || err.status === 403) || isRetry) {
+          return Promise.reject(err);
+        }
+
+        const rpt = await this.getRPT(err);
+        if (!rpt) {
+          return Promise.reject(err);
+        }
+
+        this.accessToken = rpt;
+        return this.deleteItem(itemId, true);
+      }
+    }
+    /**
      * Creates item reservation and retries request if 401 or 403 response is received with www-authenticate header
      * 
      * @param {DcfbApiClient.ItemReservation} itemReservation itemReservation object

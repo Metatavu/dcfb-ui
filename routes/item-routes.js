@@ -34,6 +34,9 @@
       app.get("/item/:id", [ ], this.catchAsync(this.itemGet.bind(this)));
       app.get("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemGet.bind(this)));
       app.post("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemPost.bind(this)));
+      app.get("/update/item/:id", [ keycloak.protect() ], this.catchAsync(this.updateItemGet.bind(this)));
+      app.put("/update/item/:id", [ keycloak.protect() ], this.catchAsync(this.updateItemPut.bind(this)));
+      app.delete("/delete/item/:id", [ keycloak.protect() ], this.catchAsync(this.itemDelete.bind(this)));
     }
 
     /**
@@ -81,6 +84,7 @@
       const allowPurchaseCreditCard = item.paymentMethods.allowCreditCard;
       const allowPurchaseContactSeller = item.paymentMethods.allowContactSeller;
       
+      const hasManagementPermission = item.resourceId ? await this.hasManagementPermission(req, item.resourceId) : false;
       const stripeDetails = {
         itemId: item.id,
         unitPrice: item.unitPrice,
@@ -91,7 +95,8 @@
       };
 
       res.render("pages/item", Object.assign({ 
-        item: item, 
+        item: item,
+        hasManagementPermission: hasManagementPermission, 
         itemsLeft: itemsLeft,
         location: location,
         stripeDetails: JSON.stringify(stripeDetails),
@@ -118,6 +123,203 @@
         maxFileSize: config.get("images:max-file-size") || 2097152,
         topMenuCategories: await this.getTopMenuCategories(categoriesApi, null),
         stripeActive: stripeActive
+      });
+    }
+
+    /**
+     * Handles item update put request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     **/
+    async updateItemPut(req, res) {
+      const itemId = req.params.id;
+
+      const apiClient = new ApiClient(await this.getToken(req));
+      const item = await apiClient.findItemById(itemId);
+      
+      if (!item) {
+        return res.status(404).send({
+          "message": "Item not found"
+        });
+      }
+
+      const requiredFields = ["category-id", "type", "title-fi", "description-fi", "unit-price", "unit", "amount"];
+      const locationData = req.body.location;
+      const categoryId = req.body["category-id"];
+      const type = req.body["type"];
+      const expiresAt = req.body["expires"];
+      const unit = req.body["unit"];
+      const unitPrice = req.body["unit-price"];
+      const amount = req.body["amount"];
+      const imageNames = req.body["images"];
+      const visibilityLimited = req.body["visibilityLimited"] || false;
+      const allowedUserIds = [];
+      const purchaseMethods = req.body["purchase-method"] || [];
+
+      let images = req.body.preservedImages || [];
+      if (imageNames) {
+        const newImages = imageNames.split(",").map((imageName) => {
+          return Image.constructFromObject({
+            "url": imageUploads.getUrl(imageName),
+            "type": imageUploads.getType(imageName)
+          });
+        });
+
+        images = images.concat(newImages);
+      }
+      if (images.length < 1) {
+        return res.status(400).send({
+          "message": "At least one image is required"
+        });
+      }
+
+      for (let i = 0; i < requiredFields.length; i++) {
+        if (!req.body[requiredFields[i]]) {
+          return res.status(400).send({
+            "message": `${requiredFields[i]} is required`
+          });
+        }
+      }
+
+      if (type !== "selling") {
+        return res.status(400).send({
+          "message": `Unknown type ${type}`
+        });
+      }
+
+      let locationId = item.locationId;
+      if (locationData) {
+        if (!locationData.name) {
+          return res.status(400).send({
+            "message": "Location is required"
+          });
+        }
+
+        const locationName = [{
+          "language": "en",
+          "value": locationData.name,
+          "type": "SINGLE"
+        }];
+
+        const coordinates = {
+          crs: "epsg4326",
+          latitude: locationData.coordinates.lat,
+          longitude: locationData.coordinates.lng
+        };
+
+        const address = this.parseAddress(locationData.addressComponents);
+        const location = Location.constructFromObject({
+          name: locationName,
+          coordinate: coordinates,
+          address: address
+        });
+        
+
+        const apiClient = new ApiClient(await this.getToken(req));
+        const locationsApi = apiClient.getLocationsApi();
+        let createdLocation = null
+        try {
+          createdLocation = await locationsApi.createLocation(location);
+        } catch (error) {
+          console.error("Error creating location", error);
+        }
+
+        if (!createdLocation || !createdLocation.id) {
+          return res.status(400).send({
+            "message": "Invalid location information"
+          });
+        }
+
+        locationId = createdLocation.id;
+      }
+
+      const title = this.constructLocalizedFromPostBody(req.body, "title");
+      const description = this.constructLocalizedFromPostBody(req.body, "description");
+      const allowCreditCard = purchaseMethods.indexOf("credit-card") > -1;
+      const allowContactSeller = purchaseMethods.indexOf("contact-seller") > -1;
+
+      if (!allowCreditCard && !allowContactSeller) {
+        return res.status(400).send({
+          "message": "At least one purchase method is required"
+        });
+      }
+
+      item.title = title;
+      item.description = description;
+      item.categoryId = categoryId;
+      item.locationId = locationId;
+      item.expiresAt = expiresAt;
+      item.unitPrice = Price.constructFromObject({ "price": unitPrice, "currency": "EUR" });
+      item.unit = unit;
+      item.amount = amount;
+      item.images = images;
+      item.visibleToUsers = allowedUserIds;
+      item.visibilityLimited = visibilityLimited;
+      item.sellerId = this.getLoggedUserId(req);
+      item.paymentMethods = {
+        allowCreditCard: allowCreditCard,
+        allowContactSeller: allowContactSeller
+      }
+
+      const updatedItem = await apiClient.updateItem(item.id, item);
+      if (!updatedItem) {
+        return res.status(500).send("Failed to update item");
+      }
+
+      res.send({
+        "message": res.__("update-item.created-message"), 
+        "location": `/item/${updatedItem.id}`
+      });
+    }
+
+    /**
+     * Handles item update get request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     **/
+    async updateItemGet(req, res) {
+      const itemId = req.params.id;
+
+      const apiClient = new ApiClient(await this.getToken(req));
+      const locationsApi = apiClient.getLocationsApi();
+      const item = await apiClient.findItemById(itemId);
+      
+      if (!item) {
+        res.status(404).send("Item not found");
+        return;
+      }
+
+      const hasManagementPermission = item.resourceId ? await this.hasManagementPermission(req, item.resourceId) : false;
+      if (!hasManagementPermission) {
+        res.status(404).send("Item not found");
+        return;
+      }
+
+      const location = await locationsApi.findLocation(item.locationId);
+      const itemsLeft = item.amount - (item.reservedAmount + item.soldAmount);
+
+      const allowPurchaseCreditCard = item.paymentMethods.allowCreditCard;
+      const allowPurchaseContactSeller = item.paymentMethods.allowContactSeller;
+
+      const accessToken = this.getAccessToken(req);
+      const categoriesApi = apiClient.getCategoriesApi();
+      const stripe = accessToken["stripe"] || req.session.stripe || {};
+      const stripeActive = !!stripe.accountId;
+
+      res.render("pages/update-item", {
+        maxFileSize: config.get("images:max-file-size") || 2097152,
+        topMenuCategories: await this.getTopMenuCategories(categoriesApi, null),
+        stripeActive: stripeActive,
+        item: item,
+        itemCategory: await categoriesApi.findCategory(item.categoryId),
+        hasManagementPermission: hasManagementPermission, 
+        itemsLeft: itemsLeft,
+        location: location,
+        allowPurchaseCreditCard: allowPurchaseCreditCard,
+        allowPurchaseContactSeller: allowPurchaseContactSeller,
+        onlyContactSellerPurchases: !allowPurchaseCreditCard && allowPurchaseContactSeller
       });
     }
 
@@ -196,7 +398,19 @@
 
       const apiClient = new ApiClient(await this.getToken(req));
       const locationsApi = apiClient.getLocationsApi();
-      const createdLocation = await locationsApi.createLocation(location);
+      let createdLocation = null
+      try {
+        createdLocation = await locationsApi.createLocation(location);
+      } catch (error) {
+        console.error("Error creating location", error);
+      }
+
+      if (!createdLocation || !createdLocation.id) {
+        return res.status(400).send({
+          "message": "Invalid location information"
+        });
+      }
+
       const locationId = createdLocation.id;
       const title = this.constructLocalizedFromPostBody(req.body, "title");
       const description = this.constructLocalizedFromPostBody(req.body, "description");
@@ -238,6 +452,35 @@
         "message": res.__("add-item.created-message"), 
         "location": `/item/${createdItem.id}`
       });
+    }
+    /**
+     * Handles item delete request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     **/
+    async itemDelete(req, res) {
+      const itemId = req.params.id;
+
+      const apiClient = new ApiClient(await this.getToken(req));
+      const item = await apiClient.findItemById(itemId);
+      
+      if (!item) {
+        return res.status(404).send({
+          "message": "Item not found"
+        });
+      }
+
+      try {
+        await apiClient.deleteItem(item.id);
+        res.status(204).send();
+      } catch (error) {
+        console.error("Error deleting item", error);
+        return res.status(400).send({
+          "message": "Error deleting item"
+        });
+      }
+
     }
 
     /**
