@@ -132,14 +132,14 @@
         });
       }
 
-      const totalSoldAmount = item.soldAmount + amount;
+      const totalSoldAmount = item.soldAmount + item.reservedAmount + amount ;
       if (totalSoldAmount > item.amount) {
         return res.status(400).send({
           "message": "There is not that many items in stock"
         });
       }
 
-      item.soldAmount = totalSoldAmount;
+      item.soldAmount = item.soldAmount + amount;
       try {
         const updatedItem = await apiClient.updateItem(item.id, item);
         if (!updatedItem) {
