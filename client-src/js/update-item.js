@@ -25,7 +25,7 @@
         source: this.searchCategories.bind(this) 
       });
 
-      const initialCategory = JSON.parse($("#inputCategory").attr("data-initial-value"))
+      const initialCategory = JSON.parse($("#inputCategory").attr("data-initial-value"));
       this.categoryAutocomplete.setValue(getLocalized(initialCategory.title, "SINGLE"), initialCategory.id);
 
       new ImageUpload({
@@ -41,7 +41,7 @@
       $("form").submit(this.onFormSubmit.bind(this));
     }
 
-    onLocationfocus(e) {
+    onLocationfocus() {
       if (!this.locationAutocompleteInitialized) {
         this.locationAutocompleteInitialized = true;
         this.locationAutocomplete = new google.maps.places.Autocomplete((document.getElementById("inputLocation")),{
@@ -51,7 +51,7 @@
     }
 
     onRemoveExistingImage(e) {
-      $(e.target).closest('li').remove();
+      $(e.target).closest("li").remove();
     }
 
     async searchLocations(term) {
