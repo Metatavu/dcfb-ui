@@ -31,6 +31,7 @@
       super(app, keycloak);
       
       app.get("/ajax/searchItems", [ ], this.catchAsync(this.searchItemsGet.bind(this)));
+      app.put("/ajax/item/sell/:id", [ keycloak.protect() ], this.catchAsync(this.sellItemPut.bind(this)));
       app.get("/item/:id", [ ], this.catchAsync(this.itemGet.bind(this)));
       app.get("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemGet.bind(this)));
       app.post("/add/item", [ keycloak.protect(), stripeOnboard ], this.catchAsync(this.addItemPost.bind(this)));
@@ -105,7 +106,59 @@
         onlyContactSellerPurchases: !allowPurchaseCreditCard && allowPurchaseContactSeller
       }, await this.getCategoryDatas(categoriesApi, req)));
     }
-    
+
+    /**
+     * Handles sell item ajax request
+     * 
+     * @param {object} req http request
+     * @param {object} res http response
+     */
+    async sellItemPut(req, res) {
+      const amount = req.body.amount;
+      const itemId = req.params.id;
+
+      const apiClient = new ApiClient(await this.getToken(req));
+      const item = await apiClient.findItemById(itemId);
+      
+      if (!amount) {
+        return res.status(400).send({
+          "message": "Amount is required"
+        });
+      }
+
+      if (!item) {
+        return res.status(404).send({
+          "message": "Item not found"
+        });
+      }
+
+      const totalSoldAmount = item.soldAmount + item.reservedAmount + amount ;
+      if (totalSoldAmount > item.amount) {
+        return res.status(400).send({
+          "message": "There is not that many items in stock"
+        });
+      }
+
+      item.soldAmount = item.soldAmount + amount;
+      try {
+        const updatedItem = await apiClient.updateItem(item.id, item);
+        if (!updatedItem) {
+          return res.status(500).send({
+            "message": "Failed to update item"
+          });
+        }
+
+        res.send({
+          "message": res.__("sell-item.success-message") 
+        });
+      } catch (err) {
+        console.error("Error selling item", err);
+        return res.status(500).send({
+          "message": "Failed to update item"
+        });
+      }
+    }
+
     /**
      * Handles / get request
      * 
@@ -113,7 +166,6 @@
      * @param {http.ServerResponse} res server response object
      **/
     async addItemGet(req, res) {
-      const accessToken = this.getAccessToken(req);
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
       const stripe = this.getStripe(req);

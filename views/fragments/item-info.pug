@@ -3,6 +3,8 @@ mixin item-info(item, currentLocale)
     if hasManagementPermission
       .row
         .col
+          button.btn.btn-success.float-right.sell-item-button(data-item-id=item.id, data-prompt-message=__("item-sell.prompt"), data-yes-button-text=__("item-sell.yes-btn-text"), data-no-button-text=__("item-sell.no-btn-text"))
+            i.fas.fa-balance-scale
           a(href="/update/item/"+item.id).btn.btn-primary.float-right
             i.fas.fa-cogs
           button.btn.btn-danger.float-right.delete-item-button(data-item-id=item.id, data-success-message=__("item-delete.success-message"), data-prompt-message=__("item-delete.prompt"), data-yes-button-text=__("item-delete.yes-btn-text"), data-no-button-text=__("item-delete.no-btn-text"))

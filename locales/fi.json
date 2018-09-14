@@ -119,5 +119,9 @@
   "item-delete.no-btn-text": "En",
   "update-item.form.header": "Muokkaa esinettä",
   "update-item.created-message": "Esineen muokkaus onnistui.",
-  "item-delete.success-message": "Esineen poisto onnistui"
+  "item-delete.success-message": "Esineen poisto onnistui",
+  "item-sell.prompt": "Merkkaa esinettä myydyksi. Kuinka monta:",
+  "item-sell.yes-btn-text": "Myy",
+  "item-sell.no-btn-text": "Peruuta",
+  "sell-item.success-message": "Myynti onnistui"
 }
