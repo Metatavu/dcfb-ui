@@ -24,14 +24,13 @@
       $(document).on("click", ".buy-btn", this.onItemBuyClick.bind(this));
       $(document).on("click", ".delete-item-button", this.onDeleteItemClick.bind(this));
       $(document).on("click", ".sell-item-button", this.onItemSoldClick.bind(this));
-      $(document).on("change", ".product-units", this.onProductUnitsInputChange.bind(this));
+      $(document).on("keyup", ".product-units", this.onProductUnitsInputChange.bind(this));
       
     }
 
-    async onStripeToken(token) {
+    async onStripeToken(token, args) {
       const processingMessage = this.stripeDetails.processingMessage || "Processing your payment...";
       const successMessage = this.stripeDetails.successMessage || "Thank you for your purchase";
-
       const loadNoty = new Noty({
         theme: "bootstrap-v4",
         text: `<div class="p-4"><i class="p-2 fas fa-spinner fa-spin"></i> ${processingMessage}</div>`,
@@ -41,10 +40,24 @@
         closeWith: []
       }).show();
 
+      const shipping = {
+        address: {
+          city: args["shipping_address_city"] || "",
+          country: args["shipping_address_country_code"] || "",
+          line1: args["shipping_address_line1"] || "",
+          line2: args["shipping_address_line2"] || "",
+          postal_code: args["shipping_address_zip"] || "",
+          state: args["shipping_address_state"] || ""
+        },
+        name: args["shipping_name"] || "",
+        phone: args["shipping_phone"] || "" 
+      };
+
       try {
         await postJSON(`/ajax/stripe/purchase/${this.stripeDetails.itemId}`, {
           token: token.id,
-          units: this.units
+          units: this.units,
+          shipping: shipping
         });
 
         loadNoty.close();
@@ -170,7 +183,7 @@
 
     onItemBuyClick(event) {
       event.preventDefault();
-
+      const userEmail = $(event.target).closest(".buy-btn").attr("data-user-email") || "";
       this.units = $(".product-units").val();
       const amount = this.units * Math.round(parseFloat(this.stripeDetails.unitPrice.price) * 100);
 
@@ -178,7 +191,10 @@
         name: "Mansyns",
         description: this.stripeDetails.productDescription,
         currency: this.stripeDetails.unitPrice.currency,
-        amount: amount
+        amount: amount,
+        shippingAddress: true,
+        billingAddress: true,
+        email: userEmail
       });
 
     }

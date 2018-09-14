@@ -85,6 +85,7 @@
     res.locals.authenticated = authenticated;
 
     if (authenticated) {
+      res.locals.userEmail = req.kauth.grant.access_token.content.email;
       res.locals.username = req.kauth.grant.access_token.content.name || req.kauth.grant.access_token.content.preferred_username;
       res.locals.accountUrl = keycloak.accountUrl();
       res.locals.userId = req.kauth.grant.access_token.content.sub;
