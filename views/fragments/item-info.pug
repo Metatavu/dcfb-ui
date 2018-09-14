@@ -48,7 +48,7 @@ mixin item-info(item, currentLocale)
             span.ml-2
             input.product-units(type="number",step=1,min=1,max=itemsLeft, required=true,placeholder=__("item.purchase.units-placeholder"))
           if allowPurchaseCreditCard
-            button.btn.btn-primary.buy-btn(disabled=true)
+            button.btn.btn-primary.buy-btn(disabled=true, data-user-email=userEmail)
               = __("item.purchase.creditCardButton")
         if allowPurchaseContactSeller
           p

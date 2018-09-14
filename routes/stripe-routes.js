@@ -136,6 +136,7 @@
     async stripePurchaseItemGet(req, res) {
       const itemId = req.params.itemId;
       const token = req.body.token;
+      const shipping = req.body.shipping;
       const units = parseInt(req.body.units);
 
       if (!itemId || !token || !units) {
@@ -179,6 +180,7 @@
         amount: amount,
         currency: currency,
         source: token,
+        shipping: shipping,
         destination: {
           account: stripeAccountId
         },
