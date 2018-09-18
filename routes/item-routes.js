@@ -15,6 +15,7 @@
   const Location = DcfbApiClient.Location;
   const imageUploads = require(`${__dirname}/../images/uploads`);
   const stripeOnboard = require(`${__dirname}/../stripe/onboard-middleware`);
+  const keycloakAdmin = require(`${__dirname}/../keycloak-admin`);
 
   /**
    * Item routes
@@ -27,9 +28,9 @@
      * @param {Object} app Express app
      * @param {Object} keycloak keycloak
      */
-    constructor (app, keycloak) {
+    constructor (app, keycloak, transactionLogger) {
       super(app, keycloak);
-      
+      this.transactionLogger = transactionLogger;
       app.get("/ajax/searchItems", [ ], this.catchAsync(this.searchItemsGet.bind(this)));
       app.put("/ajax/item/sell/:id", [ keycloak.protect() ], this.catchAsync(this.sellItemPut.bind(this)));
       app.get("/item/:id", [ ], this.catchAsync(this.itemGet.bind(this)));
@@ -132,6 +133,18 @@
         });
       }
 
+      const sellerId = item.sellerId;
+      if (!sellerId) {
+        res.status(400).send("missing seller id");
+        return;
+      }
+
+      const seller = await keycloakAdmin.findUser(sellerId);
+      if (!seller) {
+        res.status(400).send("missing seller");
+        return;
+      }
+
       const totalSoldAmount = item.soldAmount + item.reservedAmount + amount ;
       if (totalSoldAmount > item.amount) {
         return res.status(400).send({
@@ -147,7 +160,8 @@
             "message": "Failed to update item"
           });
         }
-
+        let description = `${amount} ${item.unit} ${res.locals._LS(item.title)}`;
+        this.transactionLogger.log(item, description, null, null, seller, sellerId, null);
         res.send({
           "message": res.__("sell-item.success-message") 
         });

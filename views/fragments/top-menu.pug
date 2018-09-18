@@ -26,6 +26,8 @@ mixin top-menu()
                   =__("top.menu.profile")
                 a.dropdown-item(href='/search?userIds='+userId)
                   =__("top.menu.myitems")
+                a.dropdown-item(href="/transactions")
+                  =__("top.menu.history")
                 .dropdown-divider
                 a.dropdown-item(href="/logout")
                   =__("top.menu.logout")

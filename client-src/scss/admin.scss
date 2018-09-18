@@ -6,3 +6,13 @@ body {
   width: 100%;
   min-height: 500px;
 }
+
+#historyRoleSelect {
+  max-width: 25%;
+}
+
+.form-inline {
+  select,label {
+    margin-top: 0 !important;
+  }
+}

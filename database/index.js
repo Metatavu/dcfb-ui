@@ -193,51 +193,65 @@
         data: Sequelize.TEXT
       });
 
-     /* this.defineModel("SocketData", {
-        socketId: {
-          type: Sequelize.STRING(191),
+      this.defineModel("TransactionLog", {
+        id: { 
+          type: Sequelize.INTEGER,
+          autoIncrement: true,
           primaryKey: true
         },
-        data: Sequelize.STRING(191)
-      });*/
-    }
-
-    /**
-     * Upserts single socket data entity
-     * 
-     * @param {string} socketId 
-     * @param {string} data 
-     */
-    upsertSocketData(socketId, data) {
-      return this.SocketData.upsert({
-        socketId: socketId,
-        data: data
+        item: Sequelize.TEXT,
+        description: Sequelize.TEXT,
+        amount: Sequelize.INTEGER,
+        buyer: Sequelize.TEXT,
+        seller: Sequelize.TEXT,
+        sellerId: Sequelize.STRING(191),
+        buyerId: Sequelize.STRING(191)
       });
     }
 
-    /**
-     * Finds single socket data entity
-     * 
-     * @param {string} socketId socket id 
-     */
-    findSocketData(socketId) {
-      return this.SocketData.findOne({ where: { socketId : socketId } });
+    createTransactionLog(item, description, amount, buyer, seller, sellerId, buyerId) {
+      return this.TransactionLog.create({
+        item: JSON.stringify(item),
+        description: description,
+        amount: amount,
+        buyer: buyer ? JSON.stringify(buyer) : null,
+        seller: JSON.stringify(seller),
+        buyerId: buyerId,
+        sellerId: sellerId
+      });
     }
 
-    /**
-     * Lists all available socket data entities
-     */
-    listSocketDatas() {
-      return this.SocketData.findAll();
+    findTransactionLogsByCreatedAtBetween(min, max) {
+      return this.TransactionLog.findAll({ 
+        where: { 
+          createdAt: { 
+            $between: [min, max]
+          }
+        }
+      });
     }
 
-    /**
-     * Deletes socket data entity
-     * 
-     * @param {string} socketId 
-     */
-    deleteSocketData(socketId) {
-      return this.SocketData.destroy({ where: { socketId : socketId } });
+
+    findTransactionLogsBySellerIdAndCreatedAtBetween(sellerId, min, max) {
+      return this.TransactionLog.findAll({ 
+        where: { 
+          createdAt: { 
+            $between: [min, max]
+          },
+          sellerId: sellerId
+        }
+      });
+    }
+
+    findTransactionLogsByBuyerIdAndCreatedAtBetween(buyerId, min, max) {
+      return this.TransactionLog.findAll({ 
+        where: { 
+          createdAt: { 
+            $between: [min, max]
+          },
+          buyerId: buyerId
+        }
+      });
     }
 
   }

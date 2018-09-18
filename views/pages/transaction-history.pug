@@ -1,0 +1,47 @@
+extends ../layout/admin
+
+block custom-head
+  link(rel="stylesheet", href="//cdn.metatavu.io/libs/daterangepicker/3.0.3/daterangepicker.css")
+  script(defer="defer", src="//cdn.metatavu.io/libs/moment/2.19.2/moment-with-locales.min.js", type="text/javascript")
+  script(defer="defer", src="//cdn.metatavu.io/libs/daterangepicker/3.0.3/daterangepicker.min.js", type="text/javascript")
+  script(defer="defer", src="/js/transaction-history.min.js", type="text/javascript")
+
+block body
+  input#rangeLocales(value=JSON.stringify(rangeLocales), type="hidden")
+  .category-management-container.container
+    .row
+      .col
+        .card
+          .card-body
+            h5.card-title
+              =__("transaction-history.header")
+            hr
+            form.form-inline
+              label.my-1.mr-2(for="historyRoleSelect")
+                =__("transaction-history.select-label")
+              select#historyRoleSelect.custom-select.my-1.mr-sm-2
+                option(value="SELLER")
+                  =__("transaction-history.select-sales")
+                option(value="BUYER")
+                  =__("transaction-history.select-puchases")
+                if isAdmin
+                  option(value="ALL")
+                    =__("transaction-history.select-all")
+              input#historyDateRangePicker.form-control.mb-2.mr-sm-2(type='text')
+              button.btn.btn-primary.mb-2(type='submit')
+                =__("transaction-history.submit")
+            hr
+            table.table
+              thead
+                tr
+                  th(scope='col')
+                    =__("transaction-history.table-buyer")
+                  th(scope='col')
+                    =__("transaction-history.table-seller")
+                  th(scope='col')
+                    =__("transaction-history.table-description")
+                  th(scope='col')
+                    =__("transaction-history.table-amount")
+                  th(scope='col')
+                    =__("transaction-history.table-time")
+              tbody#transactionTableRows

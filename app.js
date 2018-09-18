@@ -22,7 +22,8 @@
   const SequelizeStore = require("connect-session-sequelize")(session.Store);
   const Routes = require(`${__dirname}/routes`);
   const Database = require(`${__dirname}/database`);
-  
+  const TransactionLogger = require(`${__dirname}/transactions`);
+
   const LOCALE_COOKIE = "dcfb-locale";
   const localeHelpers = require(`${__dirname}/util/locale-helpers`);
 
@@ -43,7 +44,9 @@
     db: database.getSequelizeInstance(),
     table: "ConnectSession"
   });
-  
+
+  const transactionLogger = new TransactionLogger(database);
+
   const app = express();
   const httpServer = http.createServer(app);
   const keycloak = new Keycloak({ store: sessionStore }, config.get("keycloak"));
@@ -127,7 +130,7 @@
     next();
   });
 
-  new Routes(app, keycloak);
+  new Routes(app, keycloak, transactionLogger);
   
   httpServer.listen(config.get('port'), () => {
     logger.info("Http server started");
