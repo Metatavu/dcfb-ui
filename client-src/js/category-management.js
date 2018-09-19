@@ -137,26 +137,20 @@
         });
       }
 
-      if (inTopMenu) {
-        metas.push({
-          key: "ui-top-menu",
-          value: inTopMenu
-        });
-      }
+      metas.push({
+        key: "ui-top-menu",
+        value: inTopMenu
+      });
 
-      if (inIndexPage) {
-        metas.push({
-          key: "ui-index-page",
-          value: inIndexPage
-        });
-      }
+      metas.push({
+        key: "ui-index-page",
+        value: inIndexPage
+      });
 
-      if (inFooterSide) {
-        metas.push({
-          key: "ui-footer-side",
-          value: inFooterSide
-        });
-      }
+      metas.push({
+        key: "ui-footer-side",
+        value: inFooterSide
+      });
 
       return {
         parentId: updateParent ? this.selectedNode ? this.selectedNode.id : null : this.selectedNode ? this.selectedNode.category.parentId : null,
@@ -193,7 +187,17 @@
         id: res.id,
         children: []
       }, this.selectedNode);
-      window.location.reload();
+      new Noty({ 
+        text: "OK",
+        type: "success",
+        timeout: 2000,
+        closeWith: ["click", "button"],
+        callbacks: {
+          onClose: () => {
+            window.location.reload(true);
+          }
+        }
+      }).show();
     }
 
     async deleteCategory() {
@@ -202,6 +206,12 @@
         await deleteJSON("/ajax/admin/categories", selectedCategoryId);
         this.element.tree("removeNode", this.selectedNode);
         this.selectedNode = null;
+        new Noty({ 
+          text: "OK",
+          type: "success",
+          timeout: 3000,
+          closeWith: ["click", "button"],
+        }).show();
       }
     }
 
@@ -215,6 +225,12 @@
           id: updatedNode.id,
           category: updatedNode
         });
+        new Noty({ 
+          text: "OK",
+          type: "success",
+          timeout: 3000,
+          closeWith: ["click", "button"],
+        }).show();
       }
     }
 
