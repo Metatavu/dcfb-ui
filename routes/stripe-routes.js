@@ -29,13 +29,13 @@
      * @param {Object} app Express app
      * @param {Object} keycloak keycloak
      */
-    constructor (app, keycloak) {
+    constructor (app, keycloak, transactionLogger) {
       super(app, keycloak);
-      
+      this.transactionLogger = transactionLogger;
       app.get("/stripe/onboard", [ keycloak.protect() ], this.catchAsync(this.stripeOnBoardGet.bind(this)));
       app.get("/stripe/onboardreturn", [ keycloak.protect() ], this.catchAsync(this.stripeOnBoardReturnGet.bind(this)));
       app.get("/stripe/skip", [ keycloak.protect() ], this.catchAsync(this.stripeSkipGet.bind(this)));
-      app.post("/ajax/stripe/purchase/:itemId", [ keycloak.protect() ], this.catchAsync(this.stripePurchaseItemGet.bind(this)));
+      app.post("/ajax/stripe/purchase/:itemId", [ keycloak.protect() ], this.catchAsync(this.stripePurchaseItemPost.bind(this)));
     }
 
     /**
@@ -133,7 +133,7 @@
      * @param {Express.Request} req client request object
      * @param {Express.Response} res server response object
      **/
-    async stripePurchaseItemGet(req, res) {
+    async stripePurchaseItemPost(req, res) {
       const itemId = req.params.itemId;
       const token = req.body.token;
       const shipping = req.body.shipping;
@@ -199,6 +199,7 @@
         }
       });
 
+      this.transactionLogger.log(item, description, amount, this.getAccessTokenContent(req), seller, sellerId, this.getLoggedUserId(req));
       res.send("ok");
     }
   }

@@ -23,12 +23,12 @@
       super(app, keycloak);
       
       app.get("/ajax/searchCategories", [ ], this.catchAsync(this.ajaxSearchCategoriesGet.bind(this)));
-      app.get("/ajax/admin/categories", [ keycloak.protect() ], this.catchAsync(this.adminAjaxCategoriesGet.bind(this)));
-      app.post("/ajax/admin/categoryform", [ keycloak.protect() ], this.catchAsync(this.adminAjaxCategogyFormPost.bind(this)));
-      app.post("/ajax/admin/categories", [ keycloak.protect() ], this.catchAsync(this.adminAjaxCategoriesPost.bind(this)));
-      app.put("/ajax/admin/categories/:id", [ keycloak.protect() ], this.catchAsync(this.adminAjaxCategoriesPut.bind(this)));
-      app.delete("/ajax/admin/categories/:id", [ keycloak.protect() ], this.catchAsync(this.adminAjaxCategoriesDelete.bind(this)));
-      app.get("/admin/categories", [ keycloak.protect() ], this.catchAsync(this.categoryManagementGet.bind(this)));
+      app.get("/ajax/admin/categories", [ keycloak.protect("realm:admin") ], this.catchAsync(this.adminAjaxCategoriesGet.bind(this)));
+      app.post("/ajax/admin/categoryform", [ keycloak.protect("realm:admin") ], this.catchAsync(this.adminAjaxCategogyFormPost.bind(this)));
+      app.post("/ajax/admin/categories", [ keycloak.protect("realm:admin") ], this.catchAsync(this.adminAjaxCategoriesPost.bind(this)));
+      app.put("/ajax/admin/categories/:id", [ keycloak.protect("realm:admin") ], this.catchAsync(this.adminAjaxCategoriesPut.bind(this)));
+      app.delete("/ajax/admin/categories/:id", [ keycloak.protect("realm:admin") ], this.catchAsync(this.adminAjaxCategoriesDelete.bind(this)));
+      app.get("/admin/categories", [ keycloak.protect("realm:admin") ], this.catchAsync(this.categoryManagementGet.bind(this)));
     }
 
     /**

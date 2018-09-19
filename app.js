@@ -19,9 +19,12 @@
   const session = require("express-session");
   const i18n = require("i18n");
   const cors = require("cors");
-  const RedisStore = require("connect-redis")(session);
+  const SequelizeStore = require("connect-session-sequelize")(session.Store);
   const Routes = require(`${__dirname}/routes`);
-  
+  const Database = require(`${__dirname}/database`);
+  const TransactionLogger = require(`${__dirname}/transactions`);
+  const moment = require("moment");
+
   const LOCALE_COOKIE = "dcfb-locale";
   const localeHelpers = require(`${__dirname}/util/locale-helpers`);
 
@@ -34,10 +37,19 @@
   process.on("unhandledRejection", (error) => {
     console.error("UNHANDLED REJECTION", error ? error.stack : null);
   });
-  
+
+  const database = new Database();
+  await database.initialize();
+
+  const sessionStore = new SequelizeStore({
+    db: database.getSequelizeInstance(),
+    table: "ConnectSession"
+  });
+
+  const transactionLogger = new TransactionLogger(database);
+
   const app = express();
   const httpServer = http.createServer(app);
-  const sessionStore = new RedisStore(config.get("redis"));
   const keycloak = new Keycloak({ store: sessionStore }, config.get("keycloak"));
 
   app.use((req, res, next) => {
@@ -95,7 +107,7 @@
   });
 
   app.locals.googleApiKey = config.get("google:apikey");
-
+  app.locals.moment = moment;
 
   app.use((req, res, next) => {
     res.locals._L = (localizedValues, type) => {
@@ -119,7 +131,7 @@
     next();
   });
 
-  new Routes(app, keycloak);
+  new Routes(app, keycloak, transactionLogger);
   
   httpServer.listen(config.get('port'), () => {
     logger.info("Http server started");

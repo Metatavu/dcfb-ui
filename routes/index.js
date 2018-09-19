@@ -12,6 +12,7 @@
   const CategoryRoutes = require(`${__dirname}/category-routes`);
   const MigrateRoutes = require(`${__dirname}/migrate-routes`);
   const StripeRoutes = require(`${__dirname}/stripe-routes`);
+  const TransactionLogRoutes = require(`${__dirname}/transactionlog-routes`);
   
   /**
    * Routes
@@ -24,15 +25,16 @@
      * @param {Object} app Express app
      * @param {Object} keycloak keycloak
      */
-    constructor (app, keycloak) {
+    constructor (app, keycloak, transactionLogger) {
       new IndexRoutes(app, keycloak);
       new ImageRoutes(app, keycloak);
       new SearchRoutes(app, keycloak);
-      new ItemRoutes(app, keycloak);
+      new ItemRoutes(app, keycloak, transactionLogger);
       new LocationRoutes(app, keycloak);
       new CategoryRoutes(app, keycloak);
       new MigrateRoutes(app, keycloak);
-      new StripeRoutes(app, keycloak);
+      new StripeRoutes(app, keycloak, transactionLogger);
+      new TransactionLogRoutes(app, keycloak, transactionLogger);
     }
   }
 

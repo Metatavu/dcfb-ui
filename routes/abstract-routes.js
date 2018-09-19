@@ -64,7 +64,9 @@
         if (sideCategory) {
           footerSideCategories.push(category); 
         } else {
-          footerMainCategories.push(category);
+          if (!category.parentId) {
+            footerMainCategories.push(category);
+          }
         }
 
         if (category.parentId) {
@@ -199,6 +201,13 @@
       
       return null;   
     }
+
+    getAccessTokenContent(req) {
+      const accessToken = this.getAccessToken(req);
+  
+      const accessTokenContent = accessToken.content || {};
+      return accessTokenContent;
+    } 
 
     /**
      * Gets user id from request

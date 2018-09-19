@@ -136,5 +136,25 @@
   "item.purchase.deliveryterms": "Toimitusehdot",
   "item.purchase.delivery.pickup": "Nouto",
   "item.purchase.delivery.delivery": "Toimitus",
-  "stripe.delivered-text": "+ toimitus"
+  "stripe.delivered-text": "+ toimitus",
+  "transaction-history.header": "Historia",
+  "transaction-history.select-label": "Näytä",
+  "transaction-history.select-sales": "Myynnit",
+  "transaction-history.select-puchases": "Ostot",
+  "transaction-history.select-all": "Kaikki tapahtumat",
+  "transaction-history.submit": "Lähetä",
+  "transaction-history.range-today": "Tänään",
+  "transaction-history.range-yesterday":"Eilen",
+  "transaction-history.range-last7": "Viimeiset 7 päivää",
+  "transaction-history.range-last30": "Viimeiset 30 päivää",
+  "transaction-history.range-month": "Tämä kuukausi",
+  "transaction-history.range-lastmonth": "Viime kuukausi",
+  "transaction-history.table-buyer": "Ostaja",
+  "transaction-history.table-seller": "Myyjä",
+  "transaction-history.table-description": "Kuvaus",
+  "transaction-history.table-amount": "Summa",
+  "transaction-history.table-time": "Aika",
+  "top.menu.history": "Historia",
+  "search-results.amount":"Varastossa"
+
 }
