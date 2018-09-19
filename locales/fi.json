@@ -154,6 +154,7 @@
   "transaction-history.table-description": "Kuvaus",
   "transaction-history.table-amount": "Summa",
   "transaction-history.table-time": "Aika",
-  "top.menu.history": "Historia"
+  "top.menu.history": "Historia",
+  "search-results.amount":"Varastossa"
 
 }

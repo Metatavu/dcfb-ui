@@ -53,9 +53,40 @@
 
       const apiClient = new ApiClient(await this.getToken(req));
       const itemsApi = apiClient.getItemsApi();
+      const locationsApi = apiClient.getLocationsApi();
       const items = await itemsApi.listItems({
         firstResult: firstResult,
         maxResults: maxResults
+      });
+
+      const locations = await Promise.all(items
+        .map((item) => item.locationId)
+        .filter((itemId, index, array) => index === array.indexOf(itemId))
+        .map((locationId) => {
+          return locationsApi.findLocation(locationId);
+        }));
+
+      const locationMap = locations.reduce((map, location) => {
+        map[location.id] = location;
+        return map;
+      }, {});
+
+      const sellers = await Promise.all(items
+        .map((item) => item.sellerId)
+        .filter((itemId, index, array) => index === array.indexOf(itemId))
+        .map((sellerId) => {
+          return keycloakAdmin.findUser(sellerId);
+        }));
+
+      const sellerMap = sellers.reduce((map, seller) => {
+        map[seller.id] = seller;
+        return map;
+      }, {});
+
+      items.forEach((item) => {
+        item.location = res.locals._LS(locationMap[item.locationId].name);
+        const sellerObj = sellerMap[item.sellerId];
+        item.seller = sellerObj.firstName && sellerObj.lastName ? `${sellerObj.firstName} ${sellerObj.lastName}` : sellerObj.username;
       });
 
       res.send(items);

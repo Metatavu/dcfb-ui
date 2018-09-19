@@ -154,5 +154,6 @@
   "transaction-history.table-description": "Description",
   "transaction-history.table-amount": "Amount",
   "transaction-history.table-time": "Time",
-  "top.menu.history": "History"
+  "top.menu.history": "History",
+  "search-results.amount":"In stock"
 }

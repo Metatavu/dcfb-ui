@@ -23,6 +23,7 @@
   const Routes = require(`${__dirname}/routes`);
   const Database = require(`${__dirname}/database`);
   const TransactionLogger = require(`${__dirname}/transactions`);
+  const moment = require("moment");
 
   const LOCALE_COOKIE = "dcfb-locale";
   const localeHelpers = require(`${__dirname}/util/locale-helpers`);
@@ -106,7 +107,7 @@
   });
 
   app.locals.googleApiKey = config.get("google:apikey");
-
+  app.locals.moment = moment;
 
   app.use((req, res, next) => {
     res.locals._L = (localizedValues, type) => {

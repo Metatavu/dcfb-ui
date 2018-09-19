@@ -18,17 +18,15 @@ mixin search-result(item, currentLocale)
             p
               = __("search-results.amount")
               b
-                = " " + item.amount + " " + item.unit
+                = " " + (item.amount - item.soldAmount - item.reservedAmount) + " " + item.unit
             p
-              = __("search-results.location")
-              b
-                = " " + _LS(locationMap[item.locationId].name)
+              =_LS(item.description)
         .col-4.col-sm-2.pt-2
           .result-side-details
             p
-              =item.date
+              =moment(item.createdAt).format("DD.MM.YYYY")
               br
-              =item.time
+              =moment(item.createdAt).format("H:MM")
             p.item-location
               img.location-icon(src="/gfx/icons/location-icon-small.png")
-              =item.location
+              = " " + _LS(locationMap[item.locationId].name)

@@ -49,7 +49,7 @@
         const amount = (transaction.amount / 100).toFixed(2);
         const time = moment(transaction.createdAt);
         this.tableRows.append(pugTransactionTableRow({
-          seller: sellerData.name || sellerData.username,
+          seller: sellerData.firstName && sellerData.lastName ? `${sellerData.firstName} ${sellerData.lastName}` : sellerData.username,
           buyer: buyerData.name || buyerData["preferred_username"],
           description: transaction.description,
           amount: `${amount} €`,
