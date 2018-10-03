@@ -42,12 +42,12 @@
   "top.menu.calltoaction.btn": "Aloita myyminen",
   "top.menu.login": "Kirjaudu sisään",
   "top.menu.logout": "Kirjaudu ulos",
-  "index.about.title": "Mikä on Mansyns?",
-  "index.about.text": "Kauppapaikka yrityksille jotka myyvät esimerkiksi terästä, puuta sekä komposiitteja.",
+  "index.about.title": "Mikä on Mansyns.fi?",
+  "index.about.text": "Kauppapaikka ja kiertotalouden mahdollistava alusta yrityksille, joilla jää esimerkiksi omasta tuotannosta yli terästä, puuta tai muita materiaaleja, ja jotka haluavat tarjota näitä tai muita resursseja toisille yrityksille. Ostot voi tehdä kortilla tai laskulla.",
   "index.about.link": "Lue lisää >",
   "index.about.calltoaction.title": "Rekisteröidy ja aloita myynti",
-  "index.about.calltoaction.text": "Myy tavaraa, työvoimaa tai tarjoa palveluita muille yrityksille.",
-  "index.about.calltoaction.button": "Aloita myynti",
+  "index.about.calltoaction.text": "Kierrätä ja myy materiaaleja, vuokraa työvoimaa tai tarjoa palveluja muille yrityksille tai yksityisille.",
+  "index.about.calltoaction.button": "Aloita myynti tai vuokraus",
   "item.purchase.creditCardButton": "Osta luottokortilla",
   "item.purchase.units": "Määrä",
   "item.purchase.units-placeholder": "Syötä määrä",
@@ -155,6 +155,10 @@
   "transaction-history.table-amount": "Summa",
   "transaction-history.table-time": "Aika",
   "top.menu.history": "Historia",
-  "search-results.amount":"Varastossa"
-
+  "search-results.amount":"Varastossa",
+  "item-sell.button-title": "Merkkaa esineitä myydyksi",
+  "item-edit.button-title": "Muokkaa esinettä",
+  "item-delete.button-title": "Poista esine",
+  "add-item.form.contact-businessname": "Yritys",
+  "search-results.businessName": "Yritys"
 }

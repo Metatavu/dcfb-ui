@@ -6,7 +6,7 @@ mixin sale-poster(item, currentLocale)
       h3
         = _LS(item.title)
       small
-        =item.seller
+        =item.businessName || item.seller
       p.item-location
         img.location-icon(src="/gfx/icons/location-icon-small.png")
         =item.location

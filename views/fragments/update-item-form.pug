@@ -23,23 +23,6 @@ mixin update-item-form()
               input#sellingInput.form-check-input(type='radio', name='type', value='selling', checked='')
               label.form-check-label(for='sellingInput')
                 =__("add-item.form.selling")
-            //.form-check
-            //  input#buyingInput.form-check-input(type='radio', name='buyingInput', value='bying')
-            //  label.form-check-label(for='buyingInput')
-            //    =__("add-item.form.bying")
-      //fieldset.form-group
-      //  .row
-      //    legend.col-form-label.col-sm-2.pt-0
-      //      =__("add-item.form.delivery")
-      //    .col-sm-10
-      //      .form-check
-      //        input#deliveryIncludedInput.form-check-input(type='radio', name='delivery-included', value='yes', checked='')
-      //        label.form-check-label(for='deliveryIncludedInput')
-      //          =__("add-item.form.delivery-included")
-      //      .form-check
-      //        input#deliveryNotIncludedInput.form-check-input(type='radio', name='delivery-not-included', value='no')
-      //        label.form-check-label(for='deliveryNotIncludedInput')
-      //          =__("add-item.form.delivery-not-included")
       fieldset.form-group
         .row
           legend.col-form-label.col-sm-2.pt-0
@@ -173,6 +156,11 @@ mixin update-item-form()
           =__("add-item.form.contact-phone")
         .col-sm-10
           input#contactPhone.form-control(type='text' name="contact-phone", value=item.contactPhone)
+      .form-group.row
+        label.col-sm-2.col-form-label(for='contactBusinessName')
+          =__("add-item.form.contact-businessname")
+        .col-sm-10
+          input#contactBusinessName.form-control(type='text' name="contact-businessname", value=item.businessName)
     .row
       .col.text-right.pt-3
         button.btn.btn-warning.continue-btn

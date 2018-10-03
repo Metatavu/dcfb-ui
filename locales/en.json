@@ -155,5 +155,10 @@
   "transaction-history.table-amount": "Amount",
   "transaction-history.table-time": "Time",
   "top.menu.history": "History",
-  "search-results.amount":"In stock"
+  "search-results.amount":"In stock",
+  "item-sell.button-title": "Mark items sold",
+  "item-edit.button-title": "Edit item",
+  "item-delete.button-title": "Delete item",
+  "add-item.form.contact-businessname": "Company",
+  "search-results.businessName": "Company"
 }

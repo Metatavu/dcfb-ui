@@ -256,6 +256,7 @@
       const allowDelivery = req.body["allow-delivery"];
       const deliveryPrice = req.body["delivery-price"];
       const termsOfDelivery = req.body["terms-of-delivery"];
+      const businessName = req.body["contact-businessname"];
 
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
@@ -367,6 +368,7 @@
       item.allowDelivery = allowDelivery;
       item.allowPickup = allowPickup;
       item.termsOfDelivery = termsOfDelivery;
+      item.businessName = businessName;
       item.paymentMethods = {
         allowCreditCard: allowCreditCard,
         allowContactSeller: allowContactSeller
@@ -458,6 +460,7 @@
       const allowDelivery = req.body["allow-delivery"];
       const deliveryPrice = req.body["delivery-price"];
       const termsOfDelivery = req.body["terms-of-delivery"];
+      const businessName = req.body["contact-businessname"];
 
       if (!imageNames) {
         return res.status(400).send({
@@ -559,6 +562,7 @@
         "visibleToUsers": allowedUserIds,
         "visibilityLimited": visibilityLimited,
         "sellerId": this.getLoggedUserId(req),
+        "businessName": businessName,
         "paymentMethods": {
           allowCreditCard: allowCreditCard,
           allowContactSeller: allowContactSeller

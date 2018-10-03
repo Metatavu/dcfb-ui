@@ -196,10 +196,9 @@ h5 {
     
     .quick-category-btn {
       background-color: $search-quick-category-background;
-      display: inline-block;
+      display: inline-table;
       width: calc(50% - 1px);
-      padding-top: 45px;
-      padding-bottom: 45px;
+      padding-top: 36px;
       margin-right: 1px;
       margin-bottom: 1px;
       height: 125px;

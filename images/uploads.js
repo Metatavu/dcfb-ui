@@ -100,7 +100,7 @@
      * @param {Function} callback callback
      */
     uploadFileFilter(req, file, callback) {
-      const ext = path.extname(file.originalname);
+      const ext = path.extname(file.originalname).toLowerCase();
 
       if (this.allowedExtensions.includes(ext)) {
         return callback(null, true);

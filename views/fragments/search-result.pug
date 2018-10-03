@@ -10,6 +10,11 @@ mixin search-result(item, currentLocale)
             = _LS(item.title)
           strong
             = _LS(categoryMap[item.categoryId].title)
+          if item.businessName
+            p
+              = __("search-results.businessName")
+              b
+                = " " + item.businessName
           p
             b
               =item.unitPrice.price + " " + item.unitPrice.currency
