@@ -84,6 +84,7 @@
       }, {});
 
       items.forEach((item) => {
+        item.typeOfBusinessText = item.typeOfBusiness === "SALE" ? res.__("item-type-of-business-selling-text") : res.__("item-type-of-business-bying-text")
         item.location = res.locals._LS(locationMap[item.locationId].name);
         const sellerObj = sellerMap[item.sellerId];
         item.seller = sellerObj.firstName && sellerObj.lastName ? `${sellerObj.firstName} ${sellerObj.lastName}` : sellerObj.username;
@@ -234,17 +235,16 @@
 
       const apiClient = new ApiClient(await this.getToken(req));
       const item = await apiClient.findItemById(itemId);
-      
+      const typeOfBusiness = item.typeOfBusiness;
       if (!item) {
         return res.status(404).send({
           "message": "Item not found"
         });
       }
 
-      const requiredFields = ["category-id", "type", "title-fi", "description-fi", "unit-price", "unit", "amount"];
+      const requiredFields = typeOfBusiness === "SALE" ? ["category-id", "title-fi", "description-fi", "unit-price", "unit", "amount"] : ["category-id", "title-fi", "description-fi"];
       const locationData = req.body.location;
       const categoryId = req.body["category-id"];
-      const type = req.body["type"];
       const expiresAt = req.body["expires"];
       const unit = req.body["unit"];
       const unitPrice = req.body["unit-price"];
@@ -252,15 +252,15 @@
       const imageNames = req.body["images"];
       const contactEmail = req.body["contact-email"];
       const contactPhone = req.body["contact-phone"];
-      const allowPickup = req.body["allow-pickup"];
-      const allowDelivery = req.body["allow-delivery"];
-      const deliveryPrice = req.body["delivery-price"];
-      const termsOfDelivery = req.body["terms-of-delivery"];
+      const allowPickup = typeOfBusiness === "SALE" ? req.body["allow-pickup"] : false;
+      const allowDelivery = typeOfBusiness === "SALE" ? req.body["allow-delivery"] : false;
+      const deliveryPrice = typeOfBusiness === "SALE" ? req.body["delivery-price"] : null;
+      const termsOfDelivery = typeOfBusiness === "SALE" ? req.body["terms-of-delivery"] : null;
       const businessName = req.body["contact-businessname"];
 
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
-      const purchaseMethods = req.body["purchase-method"] || [];
+      const purchaseMethods = typeOfBusiness === "SALE" ? req.body["purchase-method"] || [] : [];
 
       let images = req.body.preservedImages || [];
       if (imageNames) {
@@ -273,11 +273,6 @@
 
         images = images.concat(newImages);
       }
-      if (images.length < 1) {
-        return res.status(400).send({
-          "message": "At least one image is required"
-        });
-      }
 
       for (let i = 0; i < requiredFields.length; i++) {
         if (!req.body[requiredFields[i]]) {
@@ -285,12 +280,6 @@
             "message": `${requiredFields[i]} is required`
           });
         }
-      }
-
-      if (type !== "selling") {
-        return res.status(400).send({
-          "message": `Unknown type ${type}`
-        });
       }
 
       let locationId = item.locationId;
@@ -344,7 +333,7 @@
       const allowCreditCard = purchaseMethods.indexOf("credit-card") > -1;
       const allowContactSeller = purchaseMethods.indexOf("contact-seller") > -1;
 
-      if (!allowCreditCard && !allowContactSeller) {
+      if (typeOfBusiness === "SALE" && !allowCreditCard && !allowContactSeller) {
         return res.status(400).send({
           "message": "At least one purchase method is required"
         });
@@ -355,14 +344,14 @@
       item.categoryId = categoryId;
       item.locationId = locationId;
       item.expiresAt = expiresAt;
-      item.unitPrice = Price.constructFromObject({ "price": unitPrice, "currency": "EUR" });
+      item.unitPrice = unitPrice ? Price.constructFromObject({ "price": unitPrice, "currency": "EUR" }) : null;
       item.unit = unit;
       item.amount = amount;
       item.images = images;
       item.visibleToUsers = allowedUserIds;
       item.visibilityLimited = visibilityLimited;
       item.sellerId = this.getLoggedUserId(req);
-      item.deliveryPrice = Price.constructFromObject({ "price": deliveryPrice, "currency": "EUR" });
+      item.deliveryPrice = deliveryPrice ? Price.constructFromObject({ "price": deliveryPrice, "currency": "EUR" }) : null;
       item.contactEmail = contactEmail;
       item.contactPhone = contactPhone;
       item.allowDelivery = allowDelivery;
@@ -415,7 +404,6 @@
       const allowPurchaseCreditCard = item.paymentMethods.allowCreditCard;
       const allowPurchaseContactSeller = item.paymentMethods.allowContactSeller;
 
-      const accessToken = this.getAccessToken(req);
       const categoriesApi = apiClient.getCategoriesApi();
       const stripe = this.getStripe(req);
       const stripeActive = !!stripe.accountId;
@@ -442,10 +430,11 @@
      * @param {http.ServerResponse} res server response object
      */
     async addItemPost(req, res) {
-      const requiredFields = ["category-id", "type", "title-fi", "description-fi", "unit-price", "unit", "amount"];
+      const typeOfBusiness = req.body["type-of-business"];
+
+      const requiredFields = typeOfBusiness === "SALE" ? ["category-id", "title-fi", "description-fi", "unit-price", "unit", "amount"] : ["category-id", "title-fi", "description-fi"];
       const locationData = req.body.location;
       const categoryId = req.body["category-id"];
-      const type = req.body["type"];
       const expiresAt = req.body["expires"];
       const unit = req.body["unit"];
       const unitPrice = req.body["unit-price"];
@@ -453,27 +442,21 @@
       const imageNames = req.body["images"];
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
-      const purchaseMethods = req.body["purchase-method"] || [];
+      const purchaseMethods = typeOfBusiness === "SALE" ? req.body["purchase-method"] || [] : [];
       const contactEmail = req.body["contact-email"];
       const contactPhone = req.body["contact-phone"];
-      const allowPickup = req.body["allow-pickup"];
-      const allowDelivery = req.body["allow-delivery"];
-      const deliveryPrice = req.body["delivery-price"];
-      const termsOfDelivery = req.body["terms-of-delivery"];
+      const allowPickup = typeOfBusiness === "SALE" ? req.body["allow-pickup"] : false;
+      const allowDelivery = typeOfBusiness === "SALE" ? req.body["allow-delivery"] : false;
+      const deliveryPrice = typeOfBusiness === "SALE" ? req.body["delivery-price"] : null;
+      const termsOfDelivery = typeOfBusiness === "SALE" ? req.body["terms-of-delivery"] : null;
       const businessName = req.body["contact-businessname"];
 
-      if (!imageNames) {
-        return res.status(400).send({
-          "message": "At least one image is required"
-        });
-      }
-
-      const images = imageNames.split(",").map((imageName) => {
+      const images = imageNames ? imageNames.split(",").map((imageName) => {
         return Image.constructFromObject({
           "url": imageUploads.getUrl(imageName),
           "type": imageUploads.getType(imageName)
         });
-      });
+      }) : [];
 
       for (let i = 0; i < requiredFields.length; i++) {
         if (!req.body[requiredFields[i]]) {
@@ -481,12 +464,6 @@
             "message": `${requiredFields[i]} is required`
           });
         }
-      }
-
-      if (type !== "selling") {
-        return res.status(400).send({
-          "message": `Unknown type ${type}`
-        });
       }
 
       if (!locationData || !locationData.name) {
@@ -537,7 +514,7 @@
       const allowCreditCard = purchaseMethods.indexOf("credit-card") > -1;
       const allowContactSeller = purchaseMethods.indexOf("contact-seller") > -1;
 
-      if (!allowCreditCard && !allowContactSeller) {
+      if (typeOfBusiness === "SALE" && !allowCreditCard && !allowContactSeller) {
         return res.status(400).send({
           "message": "At least one purchase method is required"
         });
@@ -545,15 +522,16 @@
 
       const item = Item.constructFromObject({
         "title": title,
+        "typeOfBusiness": typeOfBusiness,
         "description": description,
         "categoryId": categoryId,
         "locationId": locationId,
         "expiresAt": expiresAt,
-        "unitPrice": Price.constructFromObject({ "price": unitPrice, "currency": "EUR" }),
+        "unitPrice": unitPrice ? Price.constructFromObject({ "price": unitPrice, "currency": "EUR" }) : null,
         "unit": unit,
         "amount": amount,
         "images": images,
-        "deliveryPrice": Price.constructFromObject({ "price": deliveryPrice, "currency": "EUR" }),
+        "deliveryPrice": deliveryPrice ? Price.constructFromObject({ "price": deliveryPrice, "currency": "EUR" }) : null,
         "contactEmail": contactEmail,
         "contactPhone": contactPhone,
         "allowDelivery": allowDelivery,

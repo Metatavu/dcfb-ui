@@ -5,9 +5,13 @@ mixin search-result(item, currentLocale)
         .col-md-3.d-none.d-sm-block
           if item.images.length
             .result-img(style="background-image: url("+ item.images[0].url +");")
+          else
+            .result-img(style="background-image: url(/gfx/image-placeholder.png);")
         .col.pt-2
           h2
             = _LS(item.title)
+          h6
+            = item.typeOfBusiness === "SALE" ? __("item-type-of-business-selling-text") : __("item-type-of-business-bying-text")
           strong
             = _LS(categoryMap[item.categoryId].title)
           if item.businessName
@@ -15,15 +19,22 @@ mixin search-result(item, currentLocale)
               = __("search-results.businessName")
               b
                 = " " + item.businessName
-          p
-            b
-              =item.unitPrice.price + " " + item.unitPrice.currency
-            = " / " + __("search-results.unit")
-          .result-details
+          if item.unitPrice.price
             p
-              = __("search-results.amount")
               b
-                = " " + (item.amount - item.soldAmount - item.reservedAmount) + " " + item.unit
+                =item.unitPrice.price + " " + item.unitPrice.currency
+              = " / " + __("search-results.unit")
+          .result-details
+            if item.typeOfBusiness == "SALE"
+              p
+                = __("search-results.amount")
+                b
+                  = " " + (item.amount - item.soldAmount - item.reservedAmount) + " " + item.unit
+            else
+              p
+                = __("search-results.buy-amount")
+                b
+                  = " " + (item.amount - item.soldAmount - item.reservedAmount) + " " + item.unit
             p
               =_LS(item.description)
         .col-4.col-sm-2.pt-2

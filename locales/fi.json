@@ -156,9 +156,12 @@
   "transaction-history.table-time": "Aika",
   "top.menu.history": "Historia",
   "search-results.amount":"Varastossa",
+  "search-results.buy-amount":"Tarvitaan",
   "item-sell.button-title": "Merkkaa esineitä myydyksi",
   "item-edit.button-title": "Muokkaa esinettä",
   "item-delete.button-title": "Poista esine",
   "add-item.form.contact-businessname": "Yritys",
-  "search-results.businessName": "Yritys"
+  "search-results.businessName": "Yritys",
+  "item-type-of-business-selling-text": "Myydään",
+  "item-type-of-business-bying-text": "Ostetaan"
 }

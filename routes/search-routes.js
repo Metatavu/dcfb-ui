@@ -42,7 +42,7 @@
       const itemsApi = apiClient.getItemsApi();
       const locationsApi = apiClient.getLocationsApi();
       const items = await itemsApi.listItems({
-        search: search,
+        search: search ? search + "*" : null,
         nearLat: nearLat,
         nearLon: nearLon,
         categoryIds: categoryIds,

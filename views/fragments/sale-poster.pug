@@ -3,8 +3,13 @@ mixin sale-poster(item, currentLocale)
     .sale-poster
       if item.images.length
         .poster-img(style="background-image: url("+ item.images[0].url +");")
+      else
+        .poster-img(style="background-image: url(gfx/image-placeholder.png);")
       h3
         = _LS(item.title)
+      b
+        =item.typeOfBusinessText
+      br
       small
         =item.businessName || item.seller
       p.item-location

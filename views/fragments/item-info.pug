@@ -16,26 +16,42 @@ mixin item-info(item, currentLocale)
             .result-sm-imgs
               each image, index in item.images
                 .result-sm-img(style="background-image: url("+ image.url +");")
+        else
+          .result-img(style="background-image: url(/gfx/image-placeholder.png);")
 
       .col.pt-2
         h2
           = _LS(item.title)
+        h5
+          = item.typeOfBusiness === "SALE" ? __("item-type-of-business-selling-text") : __("item-type-of-business-bying-text")
         strong
           = _LS(categoryMap[item.categoryId].title)
-        p
-          b
-            =item.unitPrice.price + " " + item.unitPrice.currency
+        if item.unitPrice.price
+          p
+            b
+              =item.unitPrice.price + " " + item.unitPrice.currency + "( alv 0% )"
           = " / " + __("search-results.unit")
         .result-details
-          p
-            = __("search-results.in-stock")
-            | 
-            b
-              if itemsLeft > 0
-                = " " + itemsLeft + " " + item.unit
-              else
-                span.out-of-stock
-                  = __("search-results.out-of-stock")
+          if typeOfBusiness == "SALE"
+            p
+              = __("search-results.in-stock")
+              | 
+              b
+                if itemsLeft > 0
+                  = " " + itemsLeft + " " + item.unit
+                else
+                  span.out-of-stock
+                    = __("search-results.out-of-stock")
+          else
+            p
+              = __("search-results.buy-amount")
+              | 
+              b
+                if itemsLeft > 0
+                  = " " + itemsLeft + " " + item.unit
+                else
+                  span.out-of-stock
+                    = __("search-results.out-of-stock")
           if item.businessName
             p
               = __("search-results.businessName")
@@ -51,45 +67,46 @@ mixin item-info(item, currentLocale)
             p
               i.fas.fa-phone
               =" " + item.contactPhone
-          p
-            b
-              =__("item.purchase.delivery")
-          if item.allowPickup
-            .form-check
-              input#pickupInput.form-check-input(type='radio', name='delivery-method', value='pickup')
-              label.form-check-label(for='pickupInput')
-                =__("item.purchase.delivery.pickup")
-          if item.allowDelivery
-            .form-check
-              input#deliveryInput.form-check-input(type='radio', name='delivery-method', value='delivery')
-              label.form-check-label(for='deliveryInput')
-                =__("item.purchase.delivery.delivery")
-                span
-                  -var deliveryPrice = item.deliveryPrice ? item.deliveryPrice : null;
-                  if deliveryPrice
-                    =" ( "+ deliveryPrice.price+" "+deliveryPrice.currency+" )"
-          if item.termsOfDelivery
-            p.mt-2
+          if item.typeOfBusiness === "SALE"
+            p
               b
-                =__("item.purchase.deliveryterms")
-              br
-              =item.termsOfDelivery
-        if !onlyContactSellerPurchases && itemsLeft > 0
-          p
-            = __("item.purchase.units") 
-            span.ml-2
-            input.product-units(type="number",step=1,min=1,max=itemsLeft, required=true,placeholder=__("item.purchase.units-placeholder"))
-          if allowPurchaseCreditCard
-            button.btn.btn-primary.buy-btn(disabled=true, data-user-email=userEmail)
-              = __("item.purchase.creditCardButton")
-        if allowPurchaseContactSeller
-          p
-            b
-              
-                if onlyContactSellerPurchases
-                  = __("item.purchase-allowed-only-by-contacting-seller")
-                else
-                  = __("item.purchase-allowed-also-by-contacting-seller")
+                =__("item.purchase.delivery")
+            if item.allowPickup
+              .form-check
+                input#pickupInput.form-check-input(type='radio', name='delivery-method', value='pickup')
+                label.form-check-label(for='pickupInput')
+                  =__("item.purchase.delivery.pickup")
+            if item.allowDelivery
+              .form-check
+                input#deliveryInput.form-check-input(type='radio', name='delivery-method', value='delivery')
+                label.form-check-label(for='deliveryInput')
+                  =__("item.purchase.delivery.delivery")
+                  span
+                    -var deliveryPrice = item.deliveryPrice ? item.deliveryPrice : null;
+                    if deliveryPrice
+                      =" ( "+ deliveryPrice.price+" "+deliveryPrice.currency+" )"
+            if item.termsOfDelivery
+              p.mt-2
+                b
+                  =__("item.purchase.deliveryterms")
+                br
+                =item.termsOfDelivery
+          if item.typeOfBusiness === "SALE" && !onlyContactSellerPurchases && itemsLeft > 0
+            p
+              = __("item.purchase.units") 
+              span.ml-2
+              input.product-units(type="number",step=1,min=1,max=itemsLeft, required=true,placeholder=__("item.purchase.units-placeholder"))
+            if allowPurchaseCreditCard
+              button.btn.btn-primary.buy-btn(disabled=true, data-user-email=userEmail)
+                = __("item.purchase.creditCardButton")
+          if allowPurchaseContactSeller
+            p
+              b
+                
+                  if onlyContactSellerPurchases
+                    = __("item.purchase-allowed-only-by-contacting-seller")
+                  else
+                    = __("item.purchase-allowed-also-by-contacting-seller")
       .col-4.col-sm-2.pt-2
         .result-side-details
           p

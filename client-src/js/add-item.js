@@ -36,6 +36,31 @@
       });
 
       $("form").submit(this.onFormSubmit.bind(this));
+      $("input[name='type-of-business']").change(this.onTypeOfBusinessChange.bind(this));
+    }
+
+    onTypeOfBusinessChange () {
+      if ($("#sellingInput").is(":checked")) {
+        $(".terms-of-delivery-container").show();
+        $(".delivery-time-container").show();
+        $(".delivery-price-container").show();
+        $(".delivery-methods-container").show();
+        $(".purchase-method-container").show();
+        $("#inputPricePerUnit").attr("required", "required");
+      } else if ($("#byingInput").is(":checked")) {
+        $(".terms-of-delivery-container").hide();
+        $(".delivery-time-container").hide();
+        $(".delivery-price-container").hide();
+        $(".delivery-methods-container").hide();
+        $(".purchase-method-container").hide();
+        $("#inputPricePerUnit").removeAttr("required", "required");
+
+        $(".terms-of-delivery-container input").val("");
+        $(".delivery-time-container input").val("");
+        $(".delivery-price-container input").val("");
+        $(".delivery-methods-container input").val("");
+        $(".purchase-method-container input").val("");
+      }
     }
 
     async searchLocations(term) {

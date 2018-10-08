@@ -78,7 +78,7 @@
   "add-item.form.category": "Category:",
   "add-item.form.type-of-business": "Type of business:",
   "add-item.form.selling": "Selling",
-  "add-item.form.bying": "Bying",
+  "add-item.form.bying": "Buying",
   "add-item.form.delivery": "Delivery:",
   "add-item.form.delivery-included": "Included",
   "add-item.form.delivery-not-included": "Not included",
@@ -156,9 +156,12 @@
   "transaction-history.table-time": "Time",
   "top.menu.history": "History",
   "search-results.amount":"In stock",
+  "search-results.buy-amount":"Needed",
   "item-sell.button-title": "Mark items sold",
   "item-edit.button-title": "Edit item",
   "item-delete.button-title": "Delete item",
   "add-item.form.contact-businessname": "Company",
-  "search-results.businessName": "Company"
+  "search-results.businessName": "Company",
+  "item-type-of-business-selling-text": "Selling",
+  "item-type-of-business-bying-text": "Buying"
 }
