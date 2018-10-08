@@ -19,10 +19,14 @@ mixin add-item-form()
             =__("add-item.form.type-of-business")
           .col-sm-10
             .form-check
-              input#sellingInput.form-check-input(type='radio', name='type', value='selling', checked='')
+              input#sellingInput.form-check-input(type='radio', name='type-of-business', value='SALE', checked)
               label.form-check-label(for='sellingInput')
                 =__("add-item.form.selling")
-      fieldset.form-group
+            .form-check
+              input#byingInput.form-check-input(type='radio', name='type-of-business', value='PURCHASE')
+              label.form-check-label(for='byingInput')
+                =__("add-item.form.bying")
+      fieldset.form-group.purchase-method-container
         .row
           legend.col-form-label.col-sm-2.pt-0
             = __("add-item.form.purchase-method")
@@ -32,7 +36,7 @@ mixin add-item-form()
               label.form-check-label(for='purchaseMethodCreditCard')
                 = __("add-item.form.credit-card")
             .form-check
-              input#purchaseMethodContactSeller.form-check-input(type='checkbox', name='purchase-method', value='contact-seller', checked='')
+              input#purchaseMethodContactSeller.form-check-input(type='checkbox', name='purchase-method', value='contact-seller', checked=!stripeActive)
               label.form-check-label(for='purchaseMethodContactSeller')
                 = __("add-item.form.contact-seller")
       .form-group.row
@@ -105,7 +109,7 @@ mixin add-item-form()
           =__("add-item.form.unitPrice")
         .col-sm-10
           input#inputPricePerUnit.form-control(type='text', required='required', name="unit-price")
-      fieldset.form-group
+      fieldset.form-group.delivery-methods-container
         .row
           legend.col-form-label.col-sm-2.pt-0
             = __("add-item.form.delivery-methods")
@@ -118,17 +122,17 @@ mixin add-item-form()
               input#allowPickup.form-check-input(type='checkbox', name='allow-pickup', value='true')
               label.form-check-label(for='allowPickup')
                 = __("add-item.form.allow-pickup")
-      .form-group.row
+      .form-group.row.delivery-price-container
         label.col-sm-2.col-form-label(for='inputDeliveryPrice')
           =__("add-item.form.delivery-price")
         .col-sm-10
           input#inputDeliveryPrice.form-control(type='text', name="delivery-price")
-      .form-group.row
+      .form-group.row.delivery-time-container
         label.col-sm-2.col-form-label(for='deliveryTime')
           =__("add-item.form.delivery-time")
         .col-sm-10
           input#deliveryTime.form-control(type='number', step="1", name="delivery-time")
-      .form-group.row
+      .form-group.row.terms-of-delivery-container
         label.col-sm-2.col-form-label(for='termsOfDelivery')
           =__("add-item.form.terms-of-delivery")
         .col-sm-10

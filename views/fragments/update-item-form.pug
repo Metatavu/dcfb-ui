@@ -14,28 +14,20 @@ mixin update-item-form()
           =__("add-item.form.category")
         .col-sm-10
           input#inputCategory.form-control(data-initial-value=JSON.stringify(itemCategory) type='text',required='required',name='category-id')
-      fieldset.form-group
-        .row
-          legend.col-form-label.col-sm-2.pt-0
-            =__("add-item.form.type-of-business")
-          .col-sm-10
-            .form-check
-              input#sellingInput.form-check-input(type='radio', name='type', value='selling', checked='')
-              label.form-check-label(for='sellingInput')
-                =__("add-item.form.selling")
-      fieldset.form-group
-        .row
-          legend.col-form-label.col-sm-2.pt-0
-            = __("add-item.form.purchase-method")
-          .col
-            .form-check
-              input#purchaseMethodCreditCard.form-check-input(type='checkbox', name='purchase-method', value='credit-card', checked=allowPurchaseCreditCard, disabled=!stripeActive)
-              label.form-check-label(for='purchaseMethodCreditCard')
-                = __("add-item.form.credit-card")
-            .form-check
-              input#purchaseMethodContactSeller.form-check-input(type='checkbox', name='purchase-method', value='contact-seller', checked=allowPurchaseContactSeller)
-              label.form-check-label(for='purchaseMethodContactSeller')
-                = __("add-item.form.contact-seller")
+      if item.typeOfBusiness == "SALE"
+        fieldset.form-group
+          .row
+            legend.col-form-label.col-sm-2.pt-0
+              = __("add-item.form.purchase-method")
+            .col
+              .form-check
+                input#purchaseMethodCreditCard.form-check-input(type='checkbox', name='purchase-method', value='credit-card', checked=allowPurchaseCreditCard, disabled=!stripeActive)
+                label.form-check-label(for='purchaseMethodCreditCard')
+                  = __("add-item.form.credit-card")
+              .form-check
+                input#purchaseMethodContactSeller.form-check-input(type='checkbox', name='purchase-method', value='contact-seller', checked=allowPurchaseContactSeller)
+                label.form-check-label(for='purchaseMethodContactSeller')
+                  = __("add-item.form.contact-seller")
       .form-group.row
         label.col-sm-2.col-form-label(for='inputExpire')
           =__("add-item.form.expires")
@@ -116,36 +108,40 @@ mixin update-item-form()
         label.col-sm-2.col-form-label(for='inputPricePerUnit')
           =__("add-item.form.unitPrice")
         .col-sm-10
-          input#inputPricePerUnit.form-control(type='text', required='required', name="unit-price", value=item.unitPrice.price)
-      fieldset.form-group
-        .row
-          legend.col-form-label.col-sm-2.pt-0
-            = __("add-item.form.delivery-methods")
-          .col
-            .form-check
-              input#allowDelivery.form-check-input(type='checkbox', name='allow-delivery', value='true' checked=item.allowDelivery)
-              label.form-check-label(for='allowDelivery')
-                = __("add-item.form.allow-delivery")
-            .form-check
-              input#allowPickup.form-check-input(type='checkbox', name='allow-pickup', value='true' checked=item.allowPickup)
-              label.form-check-label(for='allowPickup')
-                = __("add-item.form.allow-pickup")
-      .form-group.row
-        label.col-sm-2.col-form-label(for='inputDeliveryPrice')
-          =__("add-item.form.delivery-price")
-        .col-sm-10
-          input#inputDeliveryPrice.form-control(type='text', name="delivery-price" value=item.deliveryPrice ? item.deliveryPrice.price : "")
-      .form-group.row
-        label.col-sm-2.col-form-label(for='deliveryTime')
-          =__("add-item.form.delivery-time")
-        .col-sm-10
-          input#deliveryTime.form-control(type='number', step="1", name="delivery-time", value=item.deliveryTime)
-      .form-group.row
-        label.col-sm-2.col-form-label(for='termsOfDelivery')
-          =__("add-item.form.terms-of-delivery")
-        .col-sm-10
-          textarea#termsOfDelivery.form-control(row="4", name='terms-of-delivery')
-            =item.termsOfDelivery
+          input#inputPricePerUnit.form-control(type='text', required=item.typeOfBusiness === "SALE", name="unit-price", value=item.unitPrice.price)
+      if item.typeOfBusiness == "SALE"
+        fieldset.form-group
+          .row
+            legend.col-form-label.col-sm-2.pt-0
+              = __("add-item.form.delivery-methods")
+            .col
+              .form-check
+                input#allowDelivery.form-check-input(type='checkbox', name='allow-delivery', value='true' checked=item.allowDelivery)
+                label.form-check-label(for='allowDelivery')
+                  = __("add-item.form.allow-delivery")
+              .form-check
+                input#allowPickup.form-check-input(type='checkbox', name='allow-pickup', value='true' checked=item.allowPickup)
+                label.form-check-label(for='allowPickup')
+                  = __("add-item.form.allow-pickup")
+      if item.typeOfBusiness == "SALE"
+        .form-group.row
+          label.col-sm-2.col-form-label(for='inputDeliveryPrice')
+            =__("add-item.form.delivery-price")
+          .col-sm-10
+            input#inputDeliveryPrice.form-control(type='text', name="delivery-price" value=item.deliveryPrice ? item.deliveryPrice.price : "")
+      if item.typeOfBusiness == "SALE"
+        .form-group.row
+          label.col-sm-2.col-form-label(for='deliveryTime')
+            =__("add-item.form.delivery-time")
+          .col-sm-10
+            input#deliveryTime.form-control(type='number', step="1", name="delivery-time", value=item.deliveryTime)
+      if item.typeOfBusiness == "SALE"
+        .form-group.row
+          label.col-sm-2.col-form-label(for='termsOfDelivery')
+            =__("add-item.form.terms-of-delivery")
+          .col-sm-10
+            textarea#termsOfDelivery.form-control(row="4", name='terms-of-delivery')
+              =item.termsOfDelivery
       .form-group.row
         label.col-sm-2.col-form-label(for='contactEmail')
           =__("add-item.form.contact-email")

@@ -14,6 +14,13 @@
         isMultiple: false
       });
       $('#search-category-input,#search-freetext-input,#search-location-input').keydown(this.onSearchInputKeyDown.bind(this));
+      this.scrollToResults();
+    }
+
+    scrollToResults() {
+      if ($(".search-result").length > 0) {
+        $(".search-result")[0].scrollIntoView(false);
+      }
     }
 
     onSearchInputKeyDown(e) {
