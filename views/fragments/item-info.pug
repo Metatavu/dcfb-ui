@@ -57,6 +57,9 @@ mixin item-info(item, currentLocale)
               = __("search-results.businessName")
               b
                 = " " + item.businessName
+          if item.businessCode
+            p
+              =item.businessName
           p
             = _LS(item.description)
           if item.contactEmail
