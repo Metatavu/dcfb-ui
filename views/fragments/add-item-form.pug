@@ -141,17 +141,22 @@ mixin add-item-form()
         label.col-sm-2.col-form-label(for='contactEmail')
           =__("add-item.form.contact-email")
         .col-sm-10
-          input#contactEmail.form-control(type='email', name="contact-email" value=userEmail)
+          input#contactEmail.form-control(type='email', name="contact-email", value=userEmail)
       .form-group.row
         label.col-sm-2.col-form-label(for='contactPhone')
           =__("add-item.form.contact-phone")
         .col-sm-10
-          input#contactPhone.form-control(type='text' name="contact-phone")
+          input#contactPhone.form-control(type='text', name="contact-phone")
       .form-group.row
         label.col-sm-2.col-form-label(for='contactBusinessName')
           =__("add-item.form.contact-businessname")
         .col-sm-10
-          input#contactBusinessName.form-control(type='text' name="contact-businessname")
+          input#contactBusinessName.form-control(type='text', name="contact-businessname", value=businessDetails.name)
+      .form-group.row
+        label.col-sm-2.col-form-label(for='contactBusinessCode')
+          =__("add-item.form.contact-businesscode")
+        .col-sm-10
+          input#contactBusinessCode.form-control(type='text', value=businessDetails.code, name="contact-businesscode", required)
     .row
       .col.text-right.pt-3
         button.btn.btn-warning.continue-btn

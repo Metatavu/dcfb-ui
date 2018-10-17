@@ -216,11 +216,13 @@
       const categoriesApi = apiClient.getCategoriesApi();
       const stripe = this.getStripe(req);
       const stripeActive = !!stripe.accountId;
+      const businessDetails = this.getBusinessFromAccount(req);
 
       res.render("pages/add-item", {
         maxFileSize: config.get("images:max-file-size") || 2097152,
         topMenuCategories: await this.getTopMenuCategories(categoriesApi, null),
-        stripeActive: stripeActive
+        stripeActive: stripeActive,
+        businessDetails: businessDetails
       });
     }
 
@@ -257,10 +259,17 @@
       const deliveryPrice = typeOfBusiness === "SALE" ? req.body["delivery-price"] : null;
       const termsOfDelivery = typeOfBusiness === "SALE" ? req.body["terms-of-delivery"] : null;
       const businessName = req.body["contact-businessname"];
-
+      const businessCode = req.body["contact-businesscode"];
+      
       const visibilityLimited = req.body["visibilityLimited"] || false;
       const allowedUserIds = [];
       const purchaseMethods = typeOfBusiness === "SALE" ? req.body["purchase-method"] || [] : [];
+
+      if (!businessCode) {
+        return res.status(400).send({
+          "message": "business code is required"
+        });
+      }
 
       let images = req.body.preservedImages || [];
       if (imageNames) {
@@ -358,6 +367,7 @@
       item.allowPickup = allowPickup;
       item.termsOfDelivery = termsOfDelivery;
       item.businessName = businessName;
+      item.businessCode = businessCode;
       item.paymentMethods = {
         allowCreditCard: allowCreditCard,
         allowContactSeller: allowContactSeller
@@ -450,6 +460,13 @@
       const deliveryPrice = typeOfBusiness === "SALE" ? req.body["delivery-price"] : null;
       const termsOfDelivery = typeOfBusiness === "SALE" ? req.body["terms-of-delivery"] : null;
       const businessName = req.body["contact-businessname"];
+      const businessCode = req.body["contact-businesscode"];
+
+      if (!businessCode) {
+        return res.status(400).send({
+          "message": "business code is required"
+        });
+      }
 
       const images = imageNames ? imageNames.split(",").map((imageName) => {
         return Image.constructFromObject({
@@ -541,6 +558,7 @@
         "visibilityLimited": visibilityLimited,
         "sellerId": this.getLoggedUserId(req),
         "businessName": businessName,
+        "businessCode": businessCode,
         "paymentMethods": {
           allowCreditCard: allowCreditCard,
           allowContactSeller: allowContactSeller

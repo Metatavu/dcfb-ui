@@ -157,6 +157,11 @@ mixin update-item-form()
           =__("add-item.form.contact-businessname")
         .col-sm-10
           input#contactBusinessName.form-control(type='text' name="contact-businessname", value=item.businessName)
+      .form-group.row
+        label.col-sm-2.col-form-label(for='contactBusinessCode')
+          =__("add-item.form.contact-businesscode")
+        .col-sm-10
+          input#contactBusinessCode.form-control(type='text' name="contact-businesscode", value=item.businessCode, required)
     .row
       .col.text-right.pt-3
         button.btn.btn-warning.continue-btn

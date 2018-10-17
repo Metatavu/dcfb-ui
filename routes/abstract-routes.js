@@ -187,6 +187,13 @@
       return accessTokenContent["stripe"] || req.session.stripe || {};
     }
 
+    getBusinessFromAccount(req) {
+      const accessToken = this.getAccessToken(req);
+  
+      const accessTokenContent = accessToken.content || {};
+      return accessTokenContent["business"] || {};
+    }
+
     /**
      * Gets accesstoken from request
      * 

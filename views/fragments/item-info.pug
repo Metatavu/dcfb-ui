@@ -29,10 +29,10 @@ mixin item-info(item, currentLocale)
         if item.unitPrice.price
           p
             b
-              =item.unitPrice.price + " " + item.unitPrice.currency + "( alv 0% )"
-          = " / " + __("search-results.unit")
+              =item.unitPrice.price + " " + item.unitPrice.currency + " ( alv 24% )"
+            = " / " + item.unit
         .result-details
-          if typeOfBusiness == "SALE"
+          if item.typeOfBusiness == "SALE"
             p
               = __("search-results.in-stock")
               | 

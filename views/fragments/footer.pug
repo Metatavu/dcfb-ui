@@ -1,5 +1,5 @@
 mixin footer()
-  .container
+  .container.footer-container
     .row
       .col
         hr
@@ -8,16 +8,19 @@ mixin footer()
         .col
           dl
             dt
-              = _LP(category.title)
+              a(href="/search?category=" + category.id)
+                = _LP(category.title)
             if childCategories[category.id]
               each childCategory in childCategories[category.id]
                 dd
-                  = _LP(childCategory.title)
+                  a(href="/search?category=" + category.id)
+                    = _LP(childCategory.title)
       .col
         dl
           each category in footerSideCategories
             dt
-              = _LP(category.title)
+              a(href="/search?category=" + category.id)
+                = _LP(category.title)
     .row
       .col
         hr
