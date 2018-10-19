@@ -1,0 +1,29 @@
+extends ../layout/default
+
+block custom-head
+  link(rel="stylesheet", href="/css/contact-page.min.css")
+
+block body
+  .contact-container.container
+    .contacts
+      h3 
+        =__("contact.header")
+      p
+        b
+          ="Kimmo Haapea"
+        br
+        ="Mikkelin Kehitysyhtiö Miksei Oy"
+        br
+        ="+358 440 361 613"
+        br
+        ="etunimi.sukunimi@mikseimikkeli.fi"
+
+      p
+        b
+          ="Mikko Hokkanen"
+        br
+        ="Kaakkois-Suomen ammattikorkeakoulu Oy"
+        br
+        ="+358 40 673 9529"
+        br
+        ="etunimi.sukunimi@xamk.fi"

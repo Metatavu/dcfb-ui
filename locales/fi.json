@@ -164,5 +164,6 @@
   "add-item.form.contact-businessname": "Yritys",
   "search-results.businessName": "Yritys",
   "item-type-of-business-selling-text": "Myydään",
-  "item-type-of-business-bying-text": "Ostetaan"
+  "item-type-of-business-bying-text": "Ostetaan",
+  "contact.header": "Ota yhteyttä"
 }

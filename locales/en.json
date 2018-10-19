@@ -164,5 +164,6 @@
   "add-item.form.contact-businessname": "Company",
   "search-results.businessName": "Company",
   "item-type-of-business-selling-text": "Selling",
-  "item-type-of-business-bying-text": "Buying"
+  "item-type-of-business-bying-text": "Buying",
+  "contact.header": "Contact"
 }

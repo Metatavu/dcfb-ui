@@ -22,6 +22,7 @@
       super(app, keycloak);
       
       app.get("/", [ ], this.catchAsync(this.indexGet.bind(this)));
+      app.get("/contact", [ ], this.catchAsync(this.contactGet.bind(this)));
       app.get("/login", keycloak.protect(), this.catchAsync(this.loginGet.bind(this)));
       app.get("/logout", keycloak.protect(), this.catchAsync(this.logoutGet.bind(this)));
     }
@@ -36,6 +37,18 @@
       const apiClient = new ApiClient(await this.getToken(req));
       const categoriesApi = apiClient.getCategoriesApi();
       res.render("pages/index", await this.getCategoryDatas(categoriesApi, req));
+    }
+
+    /**
+     * Handles /contact get request
+     * 
+     * @param {http.ClientRequest} req client request object
+     * @param {http.ServerResponse} res server response object
+     **/
+    async contactGet(req, res) {
+      const apiClient = new ApiClient(await this.getToken(req));
+      const categoriesApi = apiClient.getCategoriesApi();
+      res.render("pages/contact", await this.getCategoryDatas(categoriesApi, req));
     }
     
     /**

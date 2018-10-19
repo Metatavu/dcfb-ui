@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+@import "breakpoints";
+@import "colors";
+@import "fonts";
+
+.contact-container {
+  margin-top: 50px;
+  
+  @include media-breakpoint-up-lg {
+    margin-top: -50px;
+  }
+  
+  .contacts {
+    background-color: $search-result-background-color;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+}
