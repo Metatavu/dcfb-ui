@@ -92,6 +92,8 @@
   "add-item.form.unit": "Unit:",
   "add-item.form.unit-kg": "kg",
   "add-item.form.unit-kpl": "units",
+  "add-item.form.unit-m": "m",
+  "add-item.form.unit-km": "km",
   "add-item.form.amount": "Amount:",
   "add-item.form.unitPrice": "Price per unit (EUR) (Price must include 24% VAT):",
   "add-item.form.continue.button": "Continue",

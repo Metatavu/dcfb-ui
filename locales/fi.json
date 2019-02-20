@@ -92,6 +92,8 @@
   "add-item.form.unit": "Yksikkö:",
   "add-item.form.unit-kg": "kg",
   "add-item.form.unit-kpl": "kpl",
+  "add-item.form.unit-m": "m",
+  "add-item.form.unit-km": "km",
   "add-item.form.amount": "Määrä:",
   "add-item.form.unitPrice": "Yksikköhinta: (Hinnan tulee sisältää 24% ALV)",
   "add-item.form.continue.button": "Jatka",

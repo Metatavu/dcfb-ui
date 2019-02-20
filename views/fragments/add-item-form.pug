@@ -99,6 +99,14 @@ mixin add-item-form()
               input#unitKplInput.form-check-input(type='radio', name='unit', value='kpl')
               label.form-check-label(for='unitKplInput')
                 =__("add-item.form.unit-kpl")
+            .form-check
+              input#unitMInput.form-check-input(type='radio', name='unit', value='m')
+              label.form-check-label(for='unitMInput')
+                =__("add-item.form.unit-m")
+            .form-check
+              input#unitKmInput.form-check-input(type='radio', name='unit', value='km')
+              label.form-check-label(for='unitKmInput')
+                =__("add-item.form.unit-km")
       .form-group.row
         label.col-sm-2.col-form-label(for='inputAmount')
           =__("add-item.form.amount")
