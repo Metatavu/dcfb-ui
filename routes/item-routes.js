@@ -56,7 +56,8 @@
       const locationsApi = apiClient.getLocationsApi();
       const items = await itemsApi.listItems({
         firstResult: firstResult,
-        maxResults: maxResults
+        maxResults: maxResults,
+        sort: ["CREATED_AT_DESC"]
       });
 
       const locations = await Promise.all(items
