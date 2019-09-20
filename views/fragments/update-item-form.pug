@@ -107,6 +107,22 @@ mixin update-item-form()
               input#unitKmInput.form-check-input(type='radio', name='unit', value='km', checked=item.unit=='km')
               label.form-check-label(for='unitKmInput')
                 =__("add-item.form.unit-km")
+            .form-check
+              input#unitM2Input.form-check-input(type='radio', name='unit', value='m2', checked=item.unit=='m2')
+              label.form-check-label(for='unitM2Input')
+                =__("add-item.form.unit-m2")
+            .form-check
+              input#unitM3Input.form-check-input(type='radio', name='unit', value='m3', checked=item.unit=='m3')
+              label.form-check-label(for='unitM3Input')
+                =__("add-item.form.unit-m3")
+            .form-check
+              input#unitHourInput.form-check-input(type='radio', name='unit', value='hour', checked=item.unit=='hour')
+              label.form-check-label(for='unitHourInput')
+                =__("add-item.form.unit-hour")
+            .form-check
+              input#unitDayInput.form-check-input(type='radio', name='unit', value='day', checked=item.unit=='day')
+              label.form-check-label(for='unitDayInput')
+                =__("add-item.form.unit-day")
       .form-group.row
         label.col-sm-2.col-form-label(for='inputAmount')
           =__("add-item.form.amount")

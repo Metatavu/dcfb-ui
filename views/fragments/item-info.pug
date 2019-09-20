@@ -119,4 +119,9 @@ mixin item-info(item, currentLocale)
           p.item-location
             img.location-icon(src="/gfx/icons/location-icon-small.png")
             =" " + _LS(location.name)
+          if item.expiresAt
+            small
+              =__("item.expireslabel")
+              br
+              =moment(item.expiresAt).format("DD.MM.YYYY H:MM")
   input.stripe-details(type="hidden",value=stripeDetails)
